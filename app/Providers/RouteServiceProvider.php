@@ -16,6 +16,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'App\Http\Controllers';
 
+    protected $namespaceGuest = 'App\Http\Controllers\Guest';
+
+    protected $namespaceAdmin = 'App\Http\Controllers\Admin';
+
+    protected $prefixAdmin = 'admin';
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -54,6 +60,23 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
+
+        //Router admin
+        $this->routeAdmin();
+    }
+
+    private function routeAdmin(){
+        //Router admin
+//        $middlewareAdmin = ['web','auth'];
+        $middlewareAdmin = ['web'];
+        $listRoute = ['route_home','route_common','route_product'];
+        foreach ($listRoute as $routeName){
+            Route::middleware($middlewareAdmin)
+                ->namespace($this->namespaceAdmin)
+                ->prefix($this->prefixAdmin)
+                ->name($this->prefixAdmin.'.')
+                ->group(base_path('routes/admin/'.$routeName.'.php'));
+        }
     }
 
     /**

@@ -1,0 +1,61 @@
+td{
+    vertical-align: middle!important;
+}
+
+.app-col-stt{
+    width: 15px;
+}
+
+.app-col-img{
+    width: 120px;
+}
+.app-col-img img{
+    width: 100px;
+    height: 100px;
+}
+
+.app-col-name{
+
+}
+
+.app-col-code{
+    width: 120px;
+}
+.app-col-type{
+    width: 180px;
+}
+
+.app-col-price{
+    width: 120px;
+}
+
+.app-col-status{
+    width: 170px;
+}
+
+.app-col-action{
+    width: 200px;
+}
+
+/*Update product*/
+.product-list-image img{
+    width: 100%;
+    height: 200px;
+}
+.product-list-image .delete-image{
+    text-align: center;
+}
+
+/*Product Type*/
+.product_type .upload__area-image > span img{
+    max-height: 150px;
+    min-height: 150px;
+}
+
+.product_type .upload__area-image > span > label{
+    line-height: 150px;
+}
+
+@media (max-width: 575.98px) {
+    th{width: auto!important;}
+}
