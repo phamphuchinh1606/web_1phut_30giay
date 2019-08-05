@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             BranchSeeder::class,
             ProductSeeder::class,
-            MaterialSeeder::class
+            MaterialSeeder::class,
         ]);
     }
 }

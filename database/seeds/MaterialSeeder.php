@@ -13,7 +13,7 @@ class MaterialSeeder extends Seeder
      */
     public function run()
     {
-        $arrayStatus = [
+        $arrayMaterial = [
             [
                 'name' => 'Bánh mì hamburger',
                 'unit' => 'Cái',
@@ -189,11 +189,125 @@ class MaterialSeeder extends Seeder
                 'price' => 18000,
                 'material_type_id' => 2
             ],
+            //Bao Bi
+            [
+                'name' => 'Khẩu trang y tế',
+                'unit' => 'Cái',
+                'price' => 350,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Bao tay xốp',
+                'unit' => 'Cái',
+                'price' => 50000,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Túi đựng ly 1p30s',
+                'unit' => 'Kg',
+                'price' => 65000,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Ly Logo',
+                'unit' => 'Kg',
+                'price' => 500,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Giấy gói bánh mì',
+                'unit' => 'Cái',
+                'price' => 370,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Khăn giấy',
+                'unit' => 'Xấp',
+                'price' => 4500,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Nắp ly',
+                'unit' => 'Cái',
+                'price' => 120,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Màng ép ly',
+                'unit' => 'Cuộn',
+                'price' => 470000,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Ống hút',
+                'unit' => 'Bao',
+                'price' => 21000,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Băng keo',
+                'unit' => 'Cuộn',
+                'price' => 1300,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Bịt rác đen lớn',
+                'unit' => 'Cái',
+                'price' => 1300,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Hộp buger Gà',
+                'unit' => 'Cái',
+                'price' => 1000,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Hộp nhựa đựng Sandwich',
+                'unit' => 'Cái',
+                'price' => 580,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Giấy gói Pita',
+                'unit' => 'Cái',
+                'price' => 630,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Hộp giấy Pita gà',
+                'unit' => 'Cái',
+                'price' => 1000,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Túi Hot Dog (Mới)',
+                'unit' => 'Cái',
+                'price' => 650,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Chỉ số màng ép',
+                'unit' => 'Cái',
+                'price' => 470000,
+                'material_type_id' => 3
+            ],
+            [
+                'name' => 'Thẻ cào',
+                'unit' => 'Thẻ',
+                'price' => 700,
+                'material_type_id' => 3
+            ],
         ];
-        foreach ($arrayStatus as $branch) {
+        foreach ($arrayMaterial as $material) {
+            $unit = \App\Models\Unit::where('unit_name',$material['unit'])->first();
+            $unitId = 0;
+            if(isset($unit)) $unitId = $unit->id;
             DB::table(Material::getTableName())->insert([
-                'branch_name' => $branch['name'],
-                'address' => $branch['address']
+                'material_name' => $material['name'],
+                'material_type_id' => $material['material_type_id'],
+                'price' => $material['price'],
+                'unit_id' => $unitId
             ]);
         }
     }

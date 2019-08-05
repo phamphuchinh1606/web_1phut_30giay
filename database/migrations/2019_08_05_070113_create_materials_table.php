@@ -18,6 +18,7 @@ class CreateMaterialsTable extends Migration
             $table->string('material_name')->nullable();
             $table->integer('material_type_id');
             $table->integer('unit_id');
+            $table->double('price');
             $table->timestamps();
         });
     }

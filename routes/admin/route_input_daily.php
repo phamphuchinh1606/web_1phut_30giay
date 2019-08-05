@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/input-daily','InputDailyController@index')->name('input_daily');
 
-Route::get('/address/init','AddressController@init')->name('address.init');
 
 
