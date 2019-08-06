@@ -7,4 +7,8 @@ class AppHelper{
         $publicPath = Constant::$PATH_FOLDER_PUBLIC;
         return asset("$publicPath/$file");
     }
+
+    public static function formatMoney($value){
+        return number_format($value);
+    }
 }

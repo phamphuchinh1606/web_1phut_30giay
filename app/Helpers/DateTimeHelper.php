@@ -1,6 +1,8 @@
 <?php
 namespace App\Helpers;
 
+use Carbon\Carbon;
+
 class DateTimeHelper{
 
     /**
@@ -21,6 +23,22 @@ class DateTimeHelper{
     public static function now()
     {
         return new \DateTime('now', static::timezone());
+    }
+
+    public static function dateFormat($value, $format = "d-m-Y H:i"){
+        return Carbon::parse($value,self::timezone())->format($format);
+    }
+
+    public static function startOfMonth($format = null){
+        if(isset($format)){
+            return self::now()->startOfMonth()->format($format);
+        }
+        return self::now()->startOfMonth();
+    }
+
+    public static function endOfMonth($format =null){
+        if(isset($format)) return self::now()->endOfMonth()->format($format);
+        return self::now()->endOfMonth();
     }
 
 }

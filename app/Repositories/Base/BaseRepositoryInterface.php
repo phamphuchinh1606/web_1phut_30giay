@@ -23,6 +23,13 @@ interface BaseRepositoryInterface
     public function updateById($id, $input);
 
     /**
+     * @param $values
+     * @param $whereKeys
+     * @return mixed
+     */
+    public function updateOrCreate($values, $whereKeys);
+
+    /**
      * @param $id
      * @param $relations
      * @return BaseModel

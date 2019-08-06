@@ -13,7 +13,7 @@ class UnitSeeder extends Seeder
      */
     public function run()
     {
-        $arrayStatus = ['Cái','Chai', 'Cuộn', 'Bao', 'Miếng','Kg','Lít', 'Thẻ', 'Trái', 'Xấp' ];
+        $arrayStatus = ['Cái','Cây','Chai', 'Cuộn', 'Bao', 'Miếng','Kg','Lít', 'Thẻ', 'Trái', 'Xấp' ];
         foreach ($arrayStatus as $unitName){
             DB::table(Unit::getTableName())->insert([
                 'unit_name' => $unitName

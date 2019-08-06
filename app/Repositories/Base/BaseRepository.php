@@ -28,6 +28,24 @@ abstract class BaseRepository implements BaseRepositoryInterface
             ->update($input);
     }
 
+    public function updateOrCreate($values, $whereKeys)
+    {
+        $query = $this->model::whereRaw('1=1');
+        foreach ($whereKeys as $key => $value){
+            $query->where($key, $values);
+        }
+        $modelData = $query->first();
+        if(isset($modelData)){
+            foreach ($values as $key => $value){
+                $modelData[$key] = $value;
+            }
+            $modelData->save();
+        }else{
+            $values = array_merge($values,$whereKeys);
+            $this->model->insert($values);
+        }
+    }
+
     public function selectAll()
     {
         return $this->model::all();

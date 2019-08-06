@@ -16,4 +16,8 @@ class EmployeeRepository extends BaseRepository
     {
         $this->model = $model;
     }
+
+    public function getEmployeeByBranch($branchId){
+        return $this->model->where('branch_id',$branchId)->get();
+    }
 }

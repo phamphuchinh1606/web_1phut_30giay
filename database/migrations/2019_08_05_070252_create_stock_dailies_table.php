@@ -15,6 +15,7 @@ class CreateStockDailiesTable extends Migration
     {
         Schema::create('stock_dailies', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('branch_id');
             $table->date('stock_date');
             $table->integer('material_id');
             $table->double('qty');

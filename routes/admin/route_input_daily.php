@@ -11,6 +11,7 @@
 |
 */
 Route::get('/input-daily','InputDailyController@index')->name('input_daily');
+Route::post('/input-daily/update-daily.js','InputDailyController@updateDaily')->name('input_daily.update_daily');
 
 
 

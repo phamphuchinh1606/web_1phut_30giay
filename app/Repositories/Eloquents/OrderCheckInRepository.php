@@ -17,4 +17,8 @@ class OrderCheckInRepository extends BaseRepository
         $this->model = $model;
     }
 
+    public function getCheckInToDay($date){
+        return $this->model::where('check_in_date',$date->format('y-d-m'))->get();
+    }
+
 }
