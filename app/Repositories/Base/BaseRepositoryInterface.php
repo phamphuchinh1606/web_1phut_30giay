@@ -37,6 +37,12 @@ interface BaseRepositoryInterface
     public function find($id, $relations);
 
     /**
+     * @param $whereKeys
+     * @return mixed
+     */
+    public function findByKey($whereKeys);
+
+    /**
      * @param $input
      * @return BaseModel
      */
@@ -55,4 +61,10 @@ interface BaseRepositoryInterface
     public function insertMulti($input);
 
     public function selectAll();
+
+    /**
+     * @param $model
+     * @return mixed
+     */
+    public function updateModel($model);
 }

@@ -29,6 +29,10 @@ class DateTimeHelper{
         return Carbon::parse($value,self::timezone())->format($format);
     }
 
+    public static function addDay($value, $day, $format = "d-m-Y H:i"){
+        return Carbon::parse($value,self::timezone())->addDay($day)->format($format);
+    }
+
     public static function startOfMonth($format = null){
         if(isset($format)){
             return self::now()->startOfMonth()->format($format);

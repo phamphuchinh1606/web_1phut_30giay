@@ -2,6 +2,7 @@
 namespace App\Repositories\Base;
 
 use App\Models\Base\BaseModel;
+use Illuminate\Support\Facades\Schema;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
@@ -22,6 +23,16 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->model->find($id);
     }
 
+    public function findByKey($whereKeys){
+        $query = $this->model::whereRaw('1=1');
+        foreach ($whereKeys as $key => $value){
+            if(Schema::hasColumn($this->model::getTableName(),$key)){
+                $query->where($key, $value);
+            }
+        }
+        return $query->first();
+    }
+
     public function updateById($id, $input)
     {
         return $this->model->where('id', $id)
@@ -32,7 +43,9 @@ abstract class BaseRepository implements BaseRepositoryInterface
     {
         $query = $this->model::whereRaw('1=1');
         foreach ($whereKeys as $key => $value){
-            $query->where($key, $values);
+            if(Schema::hasColumn($this->model::getTableName(),$key)){
+                $query->where($key, $value);
+            }
         }
         $modelData = $query->first();
         if(isset($modelData)){
@@ -64,6 +77,12 @@ abstract class BaseRepository implements BaseRepositoryInterface
     public function insertMulti($input)
     {
         return $this->model->insert($input);
+    }
+
+    public function updateModel($model){
+        if(isset($model)){
+            $model->save();
+        }
     }
 
 }

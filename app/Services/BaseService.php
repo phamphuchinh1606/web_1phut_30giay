@@ -7,6 +7,8 @@ use App\Repositories\Eloquents\MaterialTypeRepository;
 use App\Repositories\Eloquents\OrderCancelRepository;
 use App\Repositories\Eloquents\OrderCheckInRepository;
 use App\Repositories\Eloquents\OrderCheckOutRepository;
+use App\Repositories\Eloquents\ProductRepository;
+use App\Repositories\Eloquents\SaleRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\UnitRepository;
 
@@ -19,10 +21,12 @@ class BaseService {
     protected $orderCheckOutRepository;
     protected $orderCancelRepository;
     protected $stockDailyRepository;
+    protected $saleRepository;
+    protected $productRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
-                StockDailyRepository $stockDailyRepository)
+                StockDailyRepository $stockDailyRepository, SaleRepository $saleRepository, ProductRepository $productRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -31,6 +35,8 @@ class BaseService {
         $this->orderCheckOutRepository = $orderCheckOutRepository;
         $this->orderCancelRepository = $orderCancelRepository;
         $this->stockDailyRepository = $stockDailyRepository;
+        $this->saleRepository = $saleRepository;
+        $this->productRepository = $productRepository;
     }
 
 

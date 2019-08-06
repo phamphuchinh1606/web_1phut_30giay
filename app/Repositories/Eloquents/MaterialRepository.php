@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquents;
 
+use App\Helpers\DateTimeHelper;
 use App\Models\Material;
 use App\Models\OrderCancel;
 use App\Models\OrderCheckIn;
@@ -66,13 +67,13 @@ class MaterialRepository extends BaseRepository
                 $join->on("$orderCheckOutMoveTableName.material_id","$materialTableName.id")
                 ->where("$orderCheckOutMoveTableName.order_check_out_type",OrderCheckOut::MOVE_OUT_TYPE);
                 if(isset($date)){
-                    $join->where("$orderCheckOutMoveTableName.check_out_date",$date->format('y-m-d'));
+                    $join->where("$orderCheckOutMoveTableName.check_out_date",$date->format('Y-m-d'));
                 }
             })
             ->leftjoin("$stockDailyTableName as $stockFirstDailyTableName",function ($join) use ($stockFirstDailyTableName, $materialTableName,$date){
                 $join->on("$stockFirstDailyTableName.material_id","$materialTableName.id");
                 if(isset($date)){
-                    $join->where("$stockFirstDailyTableName.stock_date",$date->format('y-m-d'));
+                    $join->where("$stockFirstDailyTableName.stock_date",DateTimeHelper::addDay($date,-1,'Y-m-d'));
                 }
             })
             ->leftjoin($stockDailyTableName,function ($join) use ($stockDailyTableName, $materialTableName,$date){

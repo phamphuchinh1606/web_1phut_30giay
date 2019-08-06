@@ -105,14 +105,14 @@
                                     <td>
                                         <input class="input-daily" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
                                     </td>
-                                    <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($material->amount_in)}}</td>
+                                    <td class="text-right"><span class="amount_in">{{\App\Helpers\AppHelper::formatMoney($material->amount_in)}}</span></td>
                                     <td>
                                         <input class="input-daily" name="qty_in_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in_move)}}">
                                     </td>
                                     <td>
                                         <input class="input-daily" name="qty_out_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_out_move)}}">
                                     </td>
-                                    <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($material->qty_out)}}</td>
+                                    <td class="text-right"><span class="qty_out">{{\App\Helpers\AppHelper::formatMoney($material->qty_out)}}</span></td>
                                     <td>
                                         <input class="input-daily" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
                                     </td>
@@ -139,7 +139,7 @@
                 <table class="table table-striped table-bordered datatable dataTable no-footer" style="float:left">
                     <thead>
                     <tr role="row">
-                        <th rowspan="2" class="text-center" width="50px">Mã NV</th>
+                        <th rowspan="2" class="text-center" width="70px">Mã NV</th>
                         <th rowspan="2" class="text-center" width="150px">Tên Nhân Viên</th>
                         <th rowspan="2" class="text-center" width="100px">3 Giờ Đầu</th>
                         <th rowspan="2" class="text-center" width="100px">2 Giờ Sau</th>
@@ -149,7 +149,7 @@
                     <tbody>
                         @foreach($employees as $employee)
                             <tr>
-                                <td>{{$employee->id}}</td>
+                                <td class="text-center">{{$employee->id}}</td>
                                 <td>{{$employee->name}}</td>
                                 <td>
                                     <input>
@@ -190,9 +190,9 @@
                                 <td>{{$product->product_name}}</td>
                                 <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($product->price)}}</td>
                                 <td>
-                                    <input>
+                                    <input value="{{\App\Helpers\AppHelper::formatMoney($product->qty)}}">
                                 </td>
-                                <td class="text-right">{{0}}</td>
+                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($product->amount)}}</td>
                             </tr>
                         @endforeach
                         <tr>
@@ -222,6 +222,7 @@
                     '&price=' + $(this).closest('tr').find('input[name=price]').val() +
                     '&date=' + $('input[name=current_date]').val() +
                     "&material_id="+$(this).closest('tr').find('input[name=material_id]').val();
+                var thisItem = $(this);
                 var $body = $(document.body),
                     params = {
                         type: 'POST',
@@ -231,7 +232,9 @@
                         beforeSend: function() {
                             // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
                         },
-                        success: function(cart) {
+                        success: function(data) {
+                            thisItem.closest('tr').find('span.amount_in').html(data.amount_in);
+                            thisItem.closest('tr').find('span.qty_out').html(data.qty_out);
                             // if ((typeof callback) === 'function') {
                             //     callback(cart);
                             // }
