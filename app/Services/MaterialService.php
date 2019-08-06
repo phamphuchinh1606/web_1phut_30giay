@@ -56,7 +56,10 @@ class MaterialService extends BaseService {
                 break;
         }
         dd('dung');
+    }
 
+    private function calculatorStock($branchId, $dailyDate,$materialId, $inputName){
+        $checkIn = $this->orderCheckInRepository->find();
     }
 
 }
