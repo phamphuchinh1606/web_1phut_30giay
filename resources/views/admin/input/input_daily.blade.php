@@ -149,13 +149,16 @@
                     <tbody>
                         @foreach($employees as $employee)
                             <tr>
+                                <td class="hide">
+                                    <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                                </td>
                                 <td class="text-center">{{$employee->id}}</td>
                                 <td>{{$employee->name}}</td>
                                 <td>
-                                    <input>
+                                    <input class="input-employee" name="first_hours" value="{{$employee->first_hour}}">
                                 </td>
                                 <td>
-                                    <input>
+                                    <input class="input-employee" name="last_hours" value="{{$employee->last_hour}}">
                                 </td>
                                 <td class="text-right">{{0}}</td>
                             </tr>
@@ -175,7 +178,7 @@
                     </tbody>
                 </table>
 
-                <table class="table table-striped table-bordered datatable dataTable no-footer" style="margin-left: 50px;float: left">
+                <table class="table table-striped table-bordered datatable dataTable no-footer" id="table-bill" style="margin-left: 50px;float: left">
                     <thead>
                     <tr role="row">
                         <th rowspan="2" class="text-center" width="150px">Sản Phẩm</th>
@@ -208,7 +211,7 @@
                         <tr>
                             <td colspan="3" class="text-center">Tiền Thực Thu</td>
                             <td class="text-right">
-                                <input value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
+                                <input class="input-bill" value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
                             </td>
                         </tr>
                         <tr>
@@ -232,6 +235,14 @@
 
             $('input.input-sale').on('change',function(){
                 InputDailyAPI.updateSaleDaily(this);
+            });
+
+            $('input.input-bill').on('change',function(){
+                InputDailyAPI.updateBillDaily(this);
+            });
+
+            $('input.input-employee').on('change',function(){
+                InputDailyAPI.updateEmployeeDaily(this);
             });
         });
     </script>

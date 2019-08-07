@@ -73,4 +73,14 @@ class InputDailyController extends Controller
         $resultQty = $this->materialService->updateSale($request->all());
         return response()->json($resultQty);
     }
+
+    public function updateBill(Request $request){
+        $resultQty = $this->materialService->updateBill($request->all());
+        return response()->json($resultQty);
+    }
+
+    public function updateEmployee(Request $request){
+        $resultQty = $this->materialService->updateBill($request->all());
+        return response()->json($resultQty);
+    }
 }

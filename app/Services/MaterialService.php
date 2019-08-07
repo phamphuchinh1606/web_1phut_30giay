@@ -85,6 +85,7 @@ class MaterialService extends BaseService {
         $orderCancel = $this->orderCancelRepository->findByKey($wheres);
         $stockDaily = $this->stockDailyRepository->findByKey($wheres);
         $stockDailyFirst = $this->stockDailyRepository->findByKey(array_merge($wheres,['stock_date' => $yesterday]));
+        $resultQty = array();
         if(!isset($checkOut)){
             $checkOut = new OrderCheckOut();
             $checkOut->branch_id = $branchId;
@@ -149,9 +150,23 @@ class MaterialService extends BaseService {
                 $qtyProduct = ($checkOut->qty / $product->part_num) - $productTheSameQty;
                 $valueUpdate = array('qty' => $qtyProduct, 'price' => $product->price, 'amount' => $qtyProduct * $product->price);
                 $this->saleRepository->updateOrCreate($valueUpdate,$whereValues);
+                $resultQty['product_id'] = $product->id;
+                $resultQty['product_qty'] = $qtyProduct;
+                $resultQty['product_amount'] = AppHelper::formatMoney($qtyProduct * $product->price);
+
+                //Update Bill Order
+                $totalAmount = $this->saleRepository->sumAmountSale(1,$dailyDate);
+                $orderBill = $this->orderBillRepository->findByKey(array('bill_date' => $dailyDate,'branch_id' => 1));
+                $realAmount = 0;
+                if(isset($orderBill)){
+                    $realAmount = $orderBill->real_amount;
+                }
+                $this->orderBillRepository->updateOrCreate(array('total_amount' => $totalAmount,'lack_amount' => $totalAmount - $realAmount),array('bill_date' => $dailyDate,'branch_id' => 1));
+                $resultQty['total_amount'] = AppHelper::formatMoney($totalAmount);
+                $resultQty['lack_amount'] = AppHelper::formatMoney($totalAmount - $realAmount);
             }
         }
-        $resultQty = array(
+        $resultQty = array_merge($resultQty,array(
             'qty_in' => isset($checkIn->qty) ? $checkIn->qty : 0,
             'amount_in' => isset($checkIn->amount) ? AppHelper::formatMoney($checkIn->amount) : 0,
             'qty_in_move' => isset($checkInMove->qty) ? $checkInMove->qty : 0,
@@ -161,7 +176,7 @@ class MaterialService extends BaseService {
             'qty_cancel' => isset($orderCancel->qty) ? $orderCancel->qty : 0,
             'qty_last' => isset($stockDaily->qty) ? $stockDaily->qty : 0,
             'qty_first' => isset($stockDailyFirst->qty) ? $stockDailyFirst->qty : 0
-        );
+        ));
         return $resultQty;
     }
 
@@ -226,4 +241,47 @@ class MaterialService extends BaseService {
         return $resultQty;
     }
 
+    public function updateBill($values){
+        $inputValue = $values['value'];
+        $dailyDate = $values['date'];
+        $resultQty = [];
+        try{
+            DB::beginTransaction();
+            $orderBill = $this->orderBillRepository->findByKey(array('bill_date' => $dailyDate,'branch_id' => 1));
+            if(isset($orderBill)){
+                $orderBill->real_amount = $inputValue;
+                $orderBill['lack_amount'] = ($orderBill->total_amount - $inputValue);
+                $this->orderBillRepository->updateModel($orderBill);
+                $resultQty['lack_amount'] = AppHelper::formatMoney($orderBill->lack_amount);
+            }else{
+                $this->orderBillRepository->create(array('bill_date' => $dailyDate,'branch_id' => 1,'total_amount' => 0,'real_amount' => $inputValue, 'lack_amount' => -1*$inputValue));
+                $resultQty['lack_amount'] = AppHelper::formatMoney(-1*$inputValue);
+            }
+            DB::commit();
+        }catch (\Exception $ex){
+            DB::rollBack();
+            dd($ex);
+        }
+        return $resultQty;
+    }
+
+    public function updateEmployee($values){
+        $inputValue = $values['value'];
+        $inputName = $values['name'];
+        $dailyDate = $values['date'];
+        $employeeId = $values['employee_id'];
+        $resultQty = [];
+        try{
+            DB::beginTransaction();
+            $whereValues = array('date_daily' => $dailyDate,'branch_id' => 1,'employee_id' => $employeeId);
+            $valueUpdate = array($inputName => $inputValue);
+            $employeeDaily = $this->employeeDailyRepository->updateOrCreate($valueUpdate,$whereValues);
+            $resultQty['total_hour'] = $employeeDaily->first_hours + $employeeDaily->last_hours;
+            DB::commit();
+        }catch (\Exception $ex){
+            DB::rollBack();
+            dd($ex);
+        }
+        return $resultQty;
+    }
 }

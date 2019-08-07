@@ -40,6 +40,10 @@ InputDailyAPI.updateInputDaily = function(note, callback) {
 InputDailyAPI.onInputUpdate = function(data, thisItem) {
     thisItem.closest('tr').find('span.amount_in').html(data.amount_in);
     thisItem.closest('tr').find('span.qty_out').html(data.qty_out);
+    $('#table-bill').find('tr#' + data.product_id+' span.product-amount').html(data.product_amount);
+    $('#table-bill').find('tr#' + data.product_id+' span.product-'+data.product_id).html(data.product_qty);
+    $('#table-bill').find('span.total-amount').html(data.total_amount);
+    $('#table-bill').find('span.lack-amount').html(data.lack_amount);
 };
 
 InputDailyAPI.updateSaleDaily = function(note ,callback){
@@ -83,4 +87,77 @@ InputDailyAPI.onSaleDailyUpdate = function(data, thisItem){
     thisItem.closest('table').find('.product-'+data.product_the_same_id).html(data.product_the_same_qty);
     thisItem.closest('table').find('span.total-amount').html(data.total_amount);
     thisItem.closest('table').find('span.lack-amount').html(data.lack_amount);
+}
+
+
+InputDailyAPI.updateBillDaily = function (note, callback){
+    var data = 'value='+$(note).val() +
+        '&date=' + $('input[name=current_date]').val();
+    var thisItem = $(note);
+    var $body = $(document.body),
+        params = {
+            type: 'POST',
+            url: 'input-daily/update-bill.js',
+            data: data,
+            dataType: 'json',
+            beforeSend: function() {
+                // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+            },
+            success: function(data) {
+                if ((typeof callback) === 'function') {
+                    callback(data);
+                }
+                else {
+                    InputDailyAPI.onBillUpdate(data,thisItem);
+                }
+                // $body.trigger('afterUpdateCartNote.ajaxCart', [note, cart]);
+            },
+            error: function(XMLHttpRequest, textStatus) {
+                // $body.trigger('errorUpdateCartNote.ajaxCart', [XMLHttpRequest, textStatus]);
+                // HaravanAPI.onError(XMLHttpRequest, textStatus);
+            },
+            complete: function(jqxhr, text) {
+                // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+            }
+        };
+    jQuery.ajax(params);
+}
+
+InputDailyAPI.onBillUpdate = function(data, thisItem){
+    thisItem.closest('table').find('span.lack-amount').html(data.lack_amount);
+}
+
+InputDailyAPI.updateEmployeeDaily = function(data, callback){
+    var data = 'value='+$(note).val() +
+        '&name=' + $(note).attr('name') +
+        '&employee_id=' + $(note).closest('tr').find('input[name=employee_id]').val() +
+        '&date=' + $('input[name=current_date]').val();
+    var thisItem = $(note);
+    var $body = $(document.body),
+        params = {
+            type: 'POST',
+            url: 'input-daily/update-employee.js',
+            data: data,
+            dataType: 'json',
+            beforeSend: function() {
+                // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+            },
+            success: function(data) {
+                if ((typeof callback) === 'function') {
+                    callback(data);
+                }
+                else {
+                    InputDailyAPI.onBillUpdate(data,thisItem);
+                }
+                // $body.trigger('afterUpdateCartNote.ajaxCart', [note, cart]);
+            },
+            error: function(XMLHttpRequest, textStatus) {
+                // $body.trigger('errorUpdateCartNote.ajaxCart', [XMLHttpRequest, textStatus]);
+                // HaravanAPI.onError(XMLHttpRequest, textStatus);
+            },
+            complete: function(jqxhr, text) {
+                // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+            }
+        };
+    jQuery.ajax(params);
 }

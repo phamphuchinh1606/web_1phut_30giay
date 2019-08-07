@@ -53,9 +53,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
                 $modelData[$key] = $value;
             }
             $modelData->save();
+            return $modelData;
         }else{
             $values = array_merge($values,$whereKeys);
-            $this->model->insert($values);
+            return $this->model->insert($values);
         }
     }
 
