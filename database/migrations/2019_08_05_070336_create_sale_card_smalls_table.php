@@ -15,6 +15,7 @@ class CreateSaleCardSmallsTable extends Migration
     {
         Schema::create('sale_card_smalls', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('branch_id');
             $table->date('sale_date');
             $table->integer('employee_id');
             $table->double('qty')->nullable();

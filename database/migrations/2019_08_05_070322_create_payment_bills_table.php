@@ -15,6 +15,7 @@ class CreatePaymentBillsTable extends Migration
     {
         Schema::create('payment_bills', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('branch_id');
             $table->date('bill_date');
             $table->string('note')->nullable();
             $table->double('qty')->nullable();

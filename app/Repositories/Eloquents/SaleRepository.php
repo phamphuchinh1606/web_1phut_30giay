@@ -17,4 +17,8 @@ class SaleRepository extends BaseRepository
         $this->model = $model;
     }
 
+    public function sumAmountSale($branchId,$date){
+        return $this->model::where('branch_id',$branchId)->where('sale_date',$date)->sum('amount');
+    }
+
 }

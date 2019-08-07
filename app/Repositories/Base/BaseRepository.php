@@ -61,7 +61,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     public function selectAll()
     {
-        return $this->model::all();
+        return $this->model::orderBy($this->model::getPrimaryKeyName())->get();
     }
 
     public function firstOrNew($input)

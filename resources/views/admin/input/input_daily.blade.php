@@ -186,73 +186,53 @@
                     </thead>
                     <tbody>
                         @foreach($products as $product)
-                            <tr>
+                            <tr id="{{$product->id}}">
                                 <td>{{$product->product_name}}</td>
                                 <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($product->price)}}</td>
-                                <td>
-                                    <input value="{{\App\Helpers\AppHelper::formatMoney($product->qty)}}">
+                                <td class="text-right">
+                                    @if($product->id > 4)
+                                        <input class="input-sale" name="product_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty)}}">
+                                        <input type="hidden" name="product_the_same_id" value="{{$product->product_the_same_id}}">
+                                        <input type="hidden" name="product_id" value="{{$product->id}}">
+                                    @else
+                                        <span class="product-{{$product->id}}">{{\App\Helpers\AppHelper::formatMoney($product->qty)}}</span>
+                                    @endif
                                 </td>
-                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($product->amount)}}</td>
+                                <td class="text-right"><span class="product-amount">{{\App\Helpers\AppHelper::formatMoney($product->amount)}}</span></td>
                             </tr>
                         @endforeach
                         <tr>
                             <td colspan="3" class="text-center">Doanh Thu</td>
-                            <td class="text-right">{{0}}</td>
+                            <td class="text-right"><span class="total-amount">{{\App\Helpers\AppHelper::formatMoney($orderBill->total_amount)}}</span></td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-center">Tiền Thực Thu</td>
                             <td class="text-right">
-                                <input>
+                                <input value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-center">Tiền Thiếu</td>
-                            <td class="text-right">{{0}}</td>
+                            <td class="text-right"><span class="lack-amount">{{\App\Helpers\AppHelper::formatMoney($orderBill->lack_amount)}}</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+@endsection
+
+@section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/input-daily.js')}}"></script>
     <script>
         $(document).ready(function(){
             $('input.input-daily').on('change',function(){
-                var data = 'name=' + $(this).attr('name') +
-                    '&value='+$(this).val() +
-                    '&price=' + $(this).closest('tr').find('input[name=price]').val() +
-                    '&date=' + $('input[name=current_date]').val() +
-                    "&material_id="+$(this).closest('tr').find('input[name=material_id]').val();
-                var thisItem = $(this);
-                var $body = $(document.body),
-                    params = {
-                        type: 'POST',
-                        url: 'input-daily/update-daily.js',
-                        data: data,
-                        dataType: 'json',
-                        beforeSend: function() {
-                            // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
-                        },
-                        success: function(data) {
-                            thisItem.closest('tr').find('span.amount_in').html(data.amount_in);
-                            thisItem.closest('tr').find('span.qty_out').html(data.qty_out);
-                            // if ((typeof callback) === 'function') {
-                            //     callback(cart);
-                            // }
-                            // else {
-                            //     HaravanAPI.onCartUpdate(cart);
-                            // }
-                            // $body.trigger('afterUpdateCartNote.ajaxCart', [note, cart]);
-                        },
-                        error: function(XMLHttpRequest, textStatus) {
-                            // $body.trigger('errorUpdateCartNote.ajaxCart', [XMLHttpRequest, textStatus]);
-                            // HaravanAPI.onError(XMLHttpRequest, textStatus);
-                        },
-                        complete: function(jqxhr, text) {
-                            // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
-                        }
-                    };
-                jQuery.ajax(params);
-            })
+                InputDailyAPI.updateInputDaily(this);
+            });
+
+            $('input.input-sale').on('change',function(){
+                InputDailyAPI.updateSaleDaily(this);
+            });
         });
     </script>
 @endsection

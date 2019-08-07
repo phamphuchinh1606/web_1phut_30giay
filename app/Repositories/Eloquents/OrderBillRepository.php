@@ -12,7 +12,7 @@ use App\Repositories\Base\BaseRepository;
  */
 class OrderBillRepository extends BaseRepository
 {
-    public function __construct(MaterialType $model)
+    public function __construct(OrderBill $model)
     {
         $this->model = $model;
     }

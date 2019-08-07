@@ -15,6 +15,7 @@ class CreateEmployeeDailiesTable extends Migration
     {
         Schema::create('employee_dailies', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('branch_id');
             $table->date('date_daily');
             $table->integer('employee_id');
             $table->double('first_hours')->nullable();

@@ -15,10 +15,11 @@ class CreateOrderBillsTable extends Migration
     {
         Schema::create('order_bills', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('branch_id');
             $table->date('bill_date');
-            $table->double('total_amount');
-            $table->double('real_amount');
-            $table->double('lack_amount');
+            $table->double('total_amount')->nullable();
+            $table->double('real_amount')->nullable();
+            $table->double('lack_amount')->nullable();
             $table->timestamps();
         });
     }

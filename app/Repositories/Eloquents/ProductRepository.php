@@ -24,7 +24,7 @@ class ProductRepository extends BaseRepository
         return $this->model::leftjoin($saleTableName,function ($join) use ($saleTableName, $productTableName, $date){
             $join->on("$saleTableName.product_id","$productTableName.id")
             ->where("$saleTableName.sale_date",$date->format('Y-m-d'));
-        })->select("$productTableName.*","$saleTableName.qty","$saleTableName.amount")->get();
+        })->select("$productTableName.*","$saleTableName.qty","$saleTableName.amount")->orderBy('id')->get();
     }
 
 }

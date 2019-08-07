@@ -139,8 +139,15 @@ class MaterialService extends BaseService {
         if($materialId < 5){
             $product = $this->productRepository->find($materialId);
             if(isset($product)){
-                $whereValues = array('sale_date' => $dailyDate, 'product_id' => $materialId);
-                $valueUpdate = array('qty' => $checkOut->qty / $product->part_num, 'price' => $product->price, 'amount' => ($checkOut->qty / $product->part_num)*$product->price);
+                $productTheSame = $this->productRepository->findByKey(array('product_the_same_id' => $product->id));
+                $productTheSameQty = 0;
+                if(isset($productTheSame)) {
+                    $saleTheSame = $this->saleRepository->findByKey(array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $productTheSame->id));
+                    if(isset($saleTheSame)) $productTheSameQty = $saleTheSame->qty;
+                }
+                $whereValues = array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $materialId);
+                $qtyProduct = ($checkOut->qty / $product->part_num) - $productTheSameQty;
+                $valueUpdate = array('qty' => $qtyProduct, 'price' => $product->price, 'amount' => $qtyProduct * $product->price);
                 $this->saleRepository->updateOrCreate($valueUpdate,$whereValues);
             }
         }
@@ -155,6 +162,67 @@ class MaterialService extends BaseService {
             'qty_last' => isset($stockDaily->qty) ? $stockDaily->qty : 0,
             'qty_first' => isset($stockDailyFirst->qty) ? $stockDailyFirst->qty : 0
         );
+        return $resultQty;
+    }
+
+    public function updateSale($values){
+        $inputValue = $values['value'];
+        $productId = $values['product_id'];
+        $dailyDate = $values['date'];
+        $productTheSameId = $values['product_the_same_id'];
+        $product = $this->productRepository->find($productId);
+        $resultQty = [];
+        if(isset($product)){
+            try{
+                DB::beginTransaction();
+                $whereValues = array('sale_date' => $dailyDate, 'product_id' => $productId);
+                $saleItem = $this->saleRepository->findByKey($whereValues);
+                if(!isset($saleItem)){
+                    $saleItem = new \StdClass();
+                    $saleItem->qty = 0;
+                }
+                $productTheSame = $this->productRepository->find($productTheSameId);
+                if(isset($productTheSame)){
+                    $whereValues = array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $productTheSameId);
+                    $saleTheSame = $this->saleRepository->findByKey($whereValues);
+                    if(isset($saleTheSame)){
+                        $saleTheSame->qty = $saleTheSame->qty + $saleItem->qty - $inputValue;
+                        $saleTheSame->amount = $saleTheSame->qty * $saleTheSame->price;
+                        $this->saleRepository->updateModel($saleTheSame);
+                        $resultQty['product_the_same_qty'] = $saleTheSame->qty;
+                        $resultQty['product_the_same_amount'] = AppHelper::formatMoney($saleTheSame->amount);
+                    }else{
+                        $valueUpdate = array('qty' => -1*$inputValue, 'price' => $productTheSame->price, 'amount' => -1*$inputValue*$productTheSame->price);
+                        $this->saleRepository->updateOrCreate($valueUpdate,$whereValues);
+                        $resultQty['product_the_same_qty'] = -1*$inputValue;
+                        $resultQty['product_the_same_amount'] = AppHelper::formatMoney(-1*$inputValue*$productTheSame->price);
+                    }
+                }
+
+                $whereValues = array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $productId);
+                $valueUpdate = array('qty' => $inputValue, 'price' => $product->price, 'amount' => $inputValue*$product->price);
+                $this->saleRepository->updateOrCreate($valueUpdate,$whereValues);
+
+                //Update bill order
+                $totalAmount = $this->saleRepository->sumAmountSale(1,$dailyDate);
+                $orderBill = $this->orderBillRepository->findByKey(array('bill_date' => $dailyDate,'branch_id' => 1));
+                $realAmount = 0;
+                if(isset($orderBill)){
+                    $realAmount = $orderBill->real_amount;
+                }
+                $this->orderBillRepository->updateOrCreate(array('total_amount' => $totalAmount,'lack_amount' => $totalAmount - $realAmount),array('bill_date' => $dailyDate,'branch_id' => 1));
+
+                $resultQty['total_amount'] = AppHelper::formatMoney($totalAmount);
+                $resultQty['lack_amount'] = AppHelper::formatMoney($totalAmount - $realAmount);
+
+                $resultQty['product_the_same_id'] = $productTheSameId;
+                $resultQty['product_amount'] = AppHelper::formatMoney($inputValue*$product->price);
+                DB::commit();
+            }catch (\Exception $ex){
+                DB::rollBack();
+                dd($ex);
+            }
+        }
         return $resultQty;
     }
 

@@ -15,6 +15,7 @@ class CreateFinancesTable extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('branch_id');
             $table->date('date_daily');
             $table->double('amount_in')->nullable();
             $table->double('amount_out')->nullable();
