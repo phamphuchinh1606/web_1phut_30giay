@@ -127,7 +127,7 @@ InputDailyAPI.onBillUpdate = function(data, thisItem){
     thisItem.closest('table').find('span.lack-amount').html(data.lack_amount);
 }
 
-InputDailyAPI.updateEmployeeDaily = function(data, callback){
+InputDailyAPI.updateEmployeeDaily = function(note, callback){
     var data = 'value='+$(note).val() +
         '&name=' + $(note).attr('name') +
         '&employee_id=' + $(note).closest('tr').find('input[name=employee_id]').val() +
@@ -143,6 +143,7 @@ InputDailyAPI.updateEmployeeDaily = function(data, callback){
                 // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
             },
             success: function(data) {
+                console.log(data);
                 if ((typeof callback) === 'function') {
                     callback(data);
                 }

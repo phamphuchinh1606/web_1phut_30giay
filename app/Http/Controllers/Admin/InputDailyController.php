@@ -52,7 +52,7 @@ class InputDailyController extends Controller
         $employees = $this->employeeRepository->getEmployeeByBranch(1);
         $products = $this->productRepository->selectProductMergeSales($currentDate);
         $sales = $this->saleRepository->findByKey(array('branch_id' => 1,'sale_date' => $currentDate->format('Y-m-d')));
-        $orderBill = $this->orderBillRepository->findByKey(array('branch_id' => 1,'bill_date' => $currentDate->format('Y-m-d')));
+        $orderBill = $this->orderBillRepository->findByKeyOrCreate(array('branch_id' => 1,'bill_date' => $currentDate->format('Y-m-d')));
         return $this->viewAdmin('input.input_daily',[
             'currentDate' => $currentDate,
             'materialTypes' => $materialTypes,
@@ -80,7 +80,7 @@ class InputDailyController extends Controller
     }
 
     public function updateEmployee(Request $request){
-        $resultQty = $this->materialService->updateBill($request->all());
+        $resultQty = $this->materialService->updateEmployee($request->all());
         return response()->json($resultQty);
     }
 }

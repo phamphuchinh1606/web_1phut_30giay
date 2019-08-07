@@ -273,10 +273,20 @@ class MaterialService extends BaseService {
         $resultQty = [];
         try{
             DB::beginTransaction();
-            $whereValues = array('date_daily' => $dailyDate,'branch_id' => 1,'employee_id' => $employeeId);
-            $valueUpdate = array($inputName => $inputValue);
-            $employeeDaily = $this->employeeDailyRepository->updateOrCreate($valueUpdate,$whereValues);
-            $resultQty['total_hour'] = $employeeDaily->first_hours + $employeeDaily->last_hours;
+            $employee = $this->employeeRepository->find($employeeId);
+            if(isset($employee)){
+                $whereValues = array('date_daily' => $dailyDate,'branch_id' => 1,'employee_id' => $employeeId);
+                $valueUpdate = array($inputName => $inputValue,'price_first_hour' => $employee->price_first_hour,'price_last_hour' => $employee->price_first_hour);
+                $this->employeeDailyRepository->updateOrCreate($valueUpdate,$whereValues);
+                $sumTotal = $this->employeeDailyRepository->sumTotalDaily(1,$dailyDate);
+                dd($sumTotal->first_hours_total);
+                $resultQty = array_merge($resultQty,array(
+                    'total_fist_hour' => $sumTotal->first_hours_total,
+                    'total_last_hour' => $sumTotal['last_hours_total'],
+                    'total_fist_amount' => $sumTotal['amount_first_hour_total'],
+                    'total_last_amount' => $sumTotal['amount_last_hour_total']
+                ));
+            }
             DB::commit();
         }catch (\Exception $ex){
             DB::rollBack();

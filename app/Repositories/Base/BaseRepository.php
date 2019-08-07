@@ -33,6 +33,20 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $query->first();
     }
 
+    public function findByKeyOrCreate($whereKeys){
+        $query = $this->model::whereRaw('1=1');
+        foreach ($whereKeys as $key => $value){
+            if(Schema::hasColumn($this->model::getTableName(),$key)){
+                $query->where($key, $value);
+            }
+        }
+        $model = $query->first();
+        if(!isset($model)){
+            $model = $this->model->create($whereKeys);
+        }
+        return $model;
+    }
+
     public function updateById($id, $input)
     {
         return $this->model->where('id', $id)
@@ -56,7 +70,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
             return $modelData;
         }else{
             $values = array_merge($values,$whereKeys);
-            return $this->model->insert($values);
+            $this->model->insert($values);
         }
     }
 
