@@ -40,6 +40,8 @@ InputDailyAPI.updateInputDaily = function(note, callback) {
 InputDailyAPI.onInputUpdate = function(data, thisItem) {
     thisItem.closest('tr').find('span.amount_in').html(data.amount_in);
     thisItem.closest('tr').find('span.qty_out').html(data.qty_out);
+    thisItem.closest('table').find('span.total-amount-check-in').html(data.total_amount_check_in);
+    thisItem.closest('table').find('span.total-amount-check-out').html(data.total_amount_check_out);
     $('#table-bill').find('tr#' + data.product_id+' span.product-amount').html(data.product_amount);
     $('#table-bill').find('tr#' + data.product_id+' span.product-'+data.product_id).html(data.product_qty);
     $('#table-bill').find('span.total-amount').html(data.total_amount);
@@ -148,7 +150,7 @@ InputDailyAPI.updateEmployeeDaily = function(note, callback){
                     callback(data);
                 }
                 else {
-                    InputDailyAPI.onBillUpdate(data,thisItem);
+                    InputDailyAPI.onEmployeeUpdate(data,thisItem);
                 }
                 // $body.trigger('afterUpdateCartNote.ajaxCart', [note, cart]);
             },
@@ -161,4 +163,14 @@ InputDailyAPI.updateEmployeeDaily = function(note, callback){
             }
         };
     jQuery.ajax(params);
+}
+
+InputDailyAPI.onEmployeeUpdate = function(data, thisItem){
+    thisItem.closest('tr').find('span.total-amount-employee').html(data.total_amount_employee);
+    thisItem.closest('table').find('span.total-first-hour').html(data.total_first_hour);
+    thisItem.closest('table').find('span.total-last-hour').html(data.total_last_hour);
+    thisItem.closest('table').find('span.total-first-amount').html(data.total_first_amount);
+    thisItem.closest('table').find('span.total-last-amount').html(data.total_last_amount);
+    thisItem.closest('table').find('span.total-amount').html(data.total_amount);
+    thisItem.closest('table').find('span.total-hour').html(data.total_hour);
 }

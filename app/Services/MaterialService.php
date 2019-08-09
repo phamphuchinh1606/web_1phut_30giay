@@ -30,7 +30,7 @@ class MaterialService extends BaseService {
         );
         try{
             DB::beginTransaction();
-            $resultQty = $this->calculatorStock(1,$dailyDate,$materialId,$inputName,$inputValue);
+            $resultQty = $this->calculatorStock(1,$dailyDate,$materialId,$inputName,$inputValue,$inputPrice);
             switch ($inputName){
                 case 'qty_in':
                     $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
@@ -58,7 +58,11 @@ class MaterialService extends BaseService {
                     $this->stockDailyRepository->updateOrCreate($valueUpdate,$wheres);
                     break;
             }
-            $resultQty = array_merge($resultQty,[$inputName => $inputValue]);
+            $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate(1,$dailyDate);
+            $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate(1,$dailyDate);
+            $resultQty = array_merge($resultQty,[$inputName => $inputValue,
+                'total_amount_check_in' => AppHelper::formatMoney($totalAmountCheckIn),
+                'total_amount_check_out' => AppHelper::formatMoney($totalAmountCheckOut)]);
             DB::commit();
             return $resultQty;
         }catch (\Exception $ex){
@@ -68,7 +72,7 @@ class MaterialService extends BaseService {
         return [];
     }
 
-    private function calculatorStock($branchId, $dailyDate,$materialId, $inputName, $inputValue){
+    private function calculatorStock($branchId, $dailyDate,$materialId, $inputName, $inputValue,$inputPrice){
         $wheres = array(
             'branch_id' => $branchId,
             'material_id' => $materialId,
@@ -93,7 +97,7 @@ class MaterialService extends BaseService {
             $checkOut->check_out_date = $dailyDate;
             $checkOut->order_check_out_type = OrderCheckOut::CHECK_OUT_TYPE;
             $checkOut->qty = 0;
-            $checkOut->price = 0;
+            $checkOut->price = $inputPrice;
         }
         if(!isset($checkIn)) {
             $checkIn = new OrderCheckIn();
@@ -279,12 +283,15 @@ class MaterialService extends BaseService {
                 $valueUpdate = array($inputName => $inputValue,'price_first_hour' => $employee->price_first_hour,'price_last_hour' => $employee->price_first_hour);
                 $this->employeeDailyRepository->updateOrCreate($valueUpdate,$whereValues);
                 $sumTotal = $this->employeeDailyRepository->sumTotalDaily(1,$dailyDate);
-                dd($sumTotal->first_hours_total);
+                $sumTotalEmployee = $this->employeeDailyRepository->sumTotalAmountEmployeeDaily(1,$dailyDate,$employeeId);
                 $resultQty = array_merge($resultQty,array(
-                    'total_fist_hour' => $sumTotal->first_hours_total,
-                    'total_last_hour' => $sumTotal['last_hours_total'],
-                    'total_fist_amount' => $sumTotal['amount_first_hour_total'],
-                    'total_last_amount' => $sumTotal['amount_last_hour_total']
+                    'total_first_hour' => $sumTotal->first_hours_total,
+                    'total_last_hour' => $sumTotal->last_hours_total,
+                    'total_first_amount' => AppHelper::formatMoney($sumTotal->amount_first_total),
+                    'total_last_amount' => AppHelper::formatMoney($sumTotal->amount_last_total),
+                    'total_hour' => AppHelper::formatMoney($sumTotal->first_hours_total + $sumTotal->last_hours_total),
+                    'total_amount' => AppHelper::formatMoney($sumTotal->amount_first_total + $sumTotal->amount_last_total),
+                    'total_amount_employee' => AppHelper::formatMoney($sumTotalEmployee->total_amount_employee)
                 ));
             }
             DB::commit();

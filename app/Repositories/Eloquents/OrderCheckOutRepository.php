@@ -17,4 +17,9 @@ class OrderCheckOutRepository extends BaseRepository
         $this->model = $model;
     }
 
+    public function getTotalAmountByDate($branchId,$date){
+        if(!is_string($date)) $date = $date->format('Y-m-d');
+        return $this->model::where('branch_id',$branchId)->where('check_out_date',$date)->sum('amount');
+    }
+
 }

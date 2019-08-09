@@ -33,16 +33,45 @@ class DateTimeHelper{
         return Carbon::parse($value,self::timezone())->addDay($day)->format($format);
     }
 
-    public static function startOfMonth($format = null){
+    public static function startOfMonth($date = null, $format = null){
+        if(!isset($date)) $date = self::now();
         if(isset($format)){
-            return self::now()->startOfMonth()->format($format);
+            return  Carbon::parse($date,self::timezone())->startOfMonth()->format($format);
         }
-        return self::now()->startOfMonth();
+        return Carbon::parse($date,self::timezone())->startOfMonth();
     }
 
-    public static function endOfMonth($format =null){
-        if(isset($format)) return self::now()->endOfMonth()->format($format);
-        return self::now()->endOfMonth();
+    public static function endOfMonth($date = null, $format =null){
+        if(!isset($date)) $date = self::now();
+        if(isset($format)) return Carbon::parse($date,self::timezone())->endOfMonth()->format($format);
+        return Carbon::parse($date,self::timezone())->endOfMonth();
+    }
+
+    public static function parseMonthToArrayDay($date){
+        $firstDay = Carbon::parse($date,self::timezone())->startOfMonth();
+        $lastDay = Carbon::parse($date,self::timezone())->endOfMonth();
+        $nextDay = $firstDay;
+        $arrayDay = [];
+        $weekMap = [
+            0 => 'Chủ Nhật',
+            1 => 'Thứ 2',
+            2 => 'Thứ 3',
+            3 => 'Thứ 4',
+            4 => 'Thứ 5',
+            5 => 'Thứ 6',
+            6 => 'Thứ 7',
+        ];
+        while($nextDay->format('Y-m-d') <= $lastDay->format('Y-m-d')){
+            $dayOfWeek = $nextDay->dayOfWeek;
+            $dayObject = new \StdClass();
+            $dayObject->date_str = $nextDay->format('Y-m-d');
+            $dayObject->date = $nextDay->clone();
+            $dayObject->week_day = $weekMap[$dayOfWeek];
+            $dayObject->week_no = $dayOfWeek;
+            $arrayDay[] = $dayObject;
+            $nextDay = $nextDay->addDay(1);
+        }
+        return $arrayDay;
     }
 
 }
