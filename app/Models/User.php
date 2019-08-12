@@ -36,4 +36,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
+    public static function getPrimaryKeyName()
+    {
+        return with(new static)->getKeyName();
+    }
+
+    public static function getFillableColumns()
+    {
+        return with(new static)->getFillable();
+    }
+
+    public function getFillable()
+    {
+        return $this->fillable;
+    }
 }

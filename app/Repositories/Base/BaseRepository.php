@@ -3,6 +3,7 @@ namespace App\Repositories\Base;
 
 use App\Models\Base\BaseModel;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
@@ -11,7 +12,13 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     public function create($attribute)
     {
-        return $this->model->create($attribute);
+        $modelObject = new $this->model();
+        foreach ($attribute as $key => $value){
+            if(Schema::hasColumn($this->model::getTableName(),$key)){
+                $modelObject[$key] = $value;
+            }
+        }
+        return $modelObject->save();
     }
 
     public function find($id, $relations = [])
@@ -53,6 +60,31 @@ abstract class BaseRepository implements BaseRepositoryInterface
             ->update($input);
     }
 
+    public function update($attribute){
+        $keys = $this->model::getPrimaryKeyName();
+        if(!is_array($keys)) $keys = [$keys];
+        $query = $this->model::whereRaw('1=1');
+        foreach ($keys as  $key){
+            if(isset($attribute[$key])){
+                $query->where($key, $attribute[$key]);
+            }
+        }
+        $modelData = $query->first();
+        dd($modelData);
+        if(isset($modelData)){
+            foreach ($attribute as $key => $value){
+                if(!array_search($key,$keys)){
+                    if(Schema::hasColumn($this->model::getTableName(),$key)){
+                        $modelData[$key] = $value;
+                    }
+                }
+            }
+            $modelData->save();
+            return $modelData;
+        }
+        return null;
+    }
+
     public function updateOrCreate($values, $whereKeys)
     {
         $query = $this->model::whereRaw('1=1');
@@ -64,12 +96,50 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $modelData = $query->first();
         if(isset($modelData)){
             foreach ($values as $key => $value){
-                $modelData[$key] = $value;
+                if(is_array($value)){
+                    $columnUpdate = '$values[$key]=';
+                    foreach ($value as $columnValue){
+                        if(Schema::hasColumn($this->model::getTableName(),$columnValue)){
+                            if(!Str::endsWith($columnUpdate,'=')){
+                                $columnUpdate = $columnUpdate . '+';
+                            }
+                            if(isset($values[$columnValue])){
+                                $columnUpdate = $columnUpdate . '$values[\''.$columnValue.'\']';
+                            }else{
+                                $valueDB = 0;
+                                eval('$valueDB = $modelData->'.$columnValue.';');
+                                $columnUpdate = $columnUpdate . $valueDB;
+                            }
+                        }
+                    }
+                    eval($columnUpdate.';');
+                    $modelData[$key] = $values[$key];
+                }else{
+                    $modelData[$key] = $value;
+                }
             }
             $modelData->save();
             return $modelData;
         }else{
             $values = array_merge($values,$whereKeys);
+            foreach ($values as $key => $value){
+                if(is_array($value)){
+                    $columnUpdate = '$values[$key]=';
+                    foreach ($value as $keyColumn => $columnValue){
+                        if(Schema::hasColumn($this->model::getTableName(),$columnValue)){
+                            if(!Str::endsWith($columnUpdate,'=')){
+                                $columnUpdate = $columnUpdate . '+';
+                            }
+                            if(isset($values[$columnValue])){
+                                $columnUpdate = $columnUpdate . '$values[\''.$columnValue.'\']';
+                            }else{
+                                $columnUpdate = $columnUpdate . '0';
+                            }
+                        }
+                    }
+                    eval($columnUpdate.';');
+                }
+            }
             $this->model->insert($values);
         }
     }
@@ -98,6 +168,19 @@ abstract class BaseRepository implements BaseRepositoryInterface
         if(isset($model)){
             $model->save();
         }
+    }
+
+    public function deleteLogic($whereKeys){
+        $keys = $this->model::getPrimaryKeyName();
+        if(!is_array($keys)) $keys = [$keys];
+        $query = $this->model;
+        foreach ($keys as $key => $value){
+            if(Schema::hasColumn($this->model::getTableName(),$key)){
+                $query->where($key, $value);
+            }
+        }
+        $modelData = $query->first();
+        if(isset($modelData)) $modelData->delete();
     }
 
 }

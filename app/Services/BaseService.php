@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\OrderCancel;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
+use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
 use App\Repositories\Eloquents\MaterialRepository;
 use App\Repositories\Eloquents\MaterialTypeRepository;
 use App\Repositories\Eloquents\OrderBillRepository;
@@ -29,12 +30,13 @@ class BaseService {
     protected $productRepository;
     protected $employeeRepository;
     protected $employeeDailyRepository;
+    protected $employeeTimeKeepingRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
                 OrderBillRepository $orderBillRepository,
                 StockDailyRepository $stockDailyRepository, SaleRepository $saleRepository, ProductRepository $productRepository,
-                EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository)
+                EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository, EmployeeTimeKeepingRepository $employeeTimeKeepingRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -48,6 +50,7 @@ class BaseService {
         $this->productRepository = $productRepository;
         $this->employeeRepository = $employeeRepository;
         $this->employeeDailyRepository = $employeeDailyRepository;
+        $this->employeeTimeKeepingRepository = $employeeTimeKeepingRepository;
     }
 
 

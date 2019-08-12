@@ -39,7 +39,7 @@
     <div class="card">
         <div class="card-header">
             <i class="fa fa-edit"></i> Bản Chấm Công Tháng : {{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'m/Y')}}
-            <input name="current_date" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m-d')}}">
+            <input name="current_month" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m')}}">
         </div>
         <div class="card-body">
             <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
@@ -108,7 +108,9 @@
                     <tr role="row">
                         <th colspan="2" class="text-center employee">NV</th>
                         @foreach($employees as $employee)
-                            <th class="text-center">{{$employee->name}}</th>
+                            <th class="text-center">
+                                {{$employee->name}}
+                            </th>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
                     </tr>
@@ -116,14 +118,22 @@
                         <td rowspan="2" class="text-center employee">Tổng Giờ</td>
                         <td>Giờ Đầu</td>
                         @foreach($employees as $employee)
-                            <td class="text-right">{{$employee->total_first_hour}}</td>
+                            <td class="text-right">
+                                {{$employee->total_first_hour}}
+                                <input type="hidden" name="total_first_hour" value="{{$employee->total_first_hour}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
                     </tr>
                     <tr>
                         <td>Giờ Sau</td>
                         @foreach($employees as $employee)
-                            <td class="text-right">{{$employee->total_last_hour}}</td>
+                            <td class="text-right">
+                                {{$employee->total_last_hour}}
+                                <input type="hidden" name="total_last_hour" value="{{$employee->total_last_hour}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
                     </tr>
@@ -131,21 +141,33 @@
                         <td rowspan="2" class="text-center employee">Tổng Tiền</td>
                         <td>Giờ Đầu</td>
                         @foreach($employees as $employee)
-                            <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($employee->total_first_amount)}}</td>
+                            <td class="text-right">
+                                {{\App\Helpers\AppHelper::formatMoney($employee->total_first_amount)}}
+                                <input type="hidden" name="total_first_amount" value="{{$employee->total_first_amount}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
                     </tr>
                     <tr>
                         <td>Giờ Sau</td>
                         @foreach($employees as $employee)
-                            <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($employee->total_last_amount)}}</td>
+                            <td class="text-right">
+                                {{\App\Helpers\AppHelper::formatMoney($employee->total_last_amount)}}
+                                <input type="hidden" name="total_last_amount" value="{{$employee->total_last_amount}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
                     </tr>
                     <tr>
                         <td colspan="2" class="text-center">Thành Tiền</td>
                         @foreach($employees as $employee)
-                            <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($employee->total_first_amount + $employee->total_last_amount)}}</td>
+                            <td class="text-right">
+                                {{\App\Helpers\AppHelper::formatMoney($employee->total_first_amount + $employee->total_last_amount)}}
+                                <input type="hidden" name="total_last_amount" value="{{$employee->total_first_amount + $employee->total_last_amount}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
                     </tr>
@@ -153,7 +175,8 @@
                         <td colspan="2" class="text-center">Chuyên Cần</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input>
+                                <input class="input-time-keeping" name="diligence_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->diligence_amount)}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
@@ -162,7 +185,8 @@
                         <td colspan="2" class="text-center">Phụ Cấp</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input>
+                                <input class="input-time-keeping" name="allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->allowance_amount)}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
@@ -171,7 +195,8 @@
                         <td colspan="2" class="text-center">Thưởng</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input>
+                                <input class="input-time-keeping" name="bonus_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->bonus_amount)}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
@@ -180,22 +205,39 @@
                         <td colspan="2" class="text-center">Phụ Cấp Thêm</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input>
+                                <input class="input-time-keeping" name="extra_allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->extra_allowance_amount)}}">
+                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
                     </tr>
-                    <tr>
+                    <tr style="color: red">
                         <td colspan="2" class="text-center">Lương Nhân Viên</td>
                         @foreach($employees as $employee)
-                            <td>
-
+                            <td class="text-right">
+                                <span class="salary-amount-{{$employee->id}}">
+                                    {{\App\Helpers\AppHelper::formatMoney($employee->salary_amount)}}
+                                </span>
                             </td>
                         @endforeach
-                        <th colspan="4" class="text-center"></th>
+                        <td colspan="4" class="text-center">
+                           <span class="total-salary-amount">{{\App\Helpers\AppHelper::formatMoney($totalSalaryAmount)}}</span>
+                            VNĐ
+                        </td>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
+@endsection
+
+@section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/time-keeping.js')}}"></script>
+    <script>
+        $(document).ready(function(){
+            $('input.input-time-keeping').on('change',function(){
+                TimeKeepingAPI.updateTimeKeeping(this);
+            });
+        });
+    </script>
 @endsection

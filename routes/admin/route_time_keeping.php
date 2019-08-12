@@ -12,3 +12,6 @@
 */
 
 Route::get('/time-keeping','TimeKeepingController@index')->name('time_keeping');
+Route::post('/time-keeping/update-time-keeping.js','TimeKeepingController@updateTimeKeeping')->name('time_keeping.update');
+
+

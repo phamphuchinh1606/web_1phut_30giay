@@ -4,19 +4,27 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DateTimeHelper;
 use App\Models\EmployeeDaily;
+use App\Models\EmployeeTimeKeeping;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
+use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
+use App\Services\TimeKeepingService;
 use Illuminate\Http\Request;
 
 class TimeKeepingController extends Controller
 {
     private $employeeRepository;
     private $employeeDailyRepository;
+    private $employeeTimeKeepingRepository;
+    private $timeKeepingService;
 
-    public function __construct(EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository)
+    public function __construct(EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository,
+                    EmployeeTimeKeepingRepository $employeeTimeKeepingRepository, TimeKeepingService $timeKeepingService)
     {
         $this->employeeRepository = $employeeRepository;
         $this->employeeDailyRepository = $employeeDailyRepository;
+        $this->employeeTimeKeepingRepository = $employeeTimeKeepingRepository;
+        $this->timeKeepingService = $timeKeepingService;
     }
 
     public function index(){
@@ -25,6 +33,8 @@ class TimeKeepingController extends Controller
         $employees = $this->employeeRepository->getEmployeeByBranch($branchId);
         $employeeDailies = $this->employeeDailyRepository->getEmployeeByMonth($branchId,$currentDate);
         $employeeSums = $this->employeeDailyRepository->getEmployeeTotalByMonth($branchId,$currentDate);
+        $employeeTimeKeepings = $this->employeeTimeKeepingRepository->getEmployeeTotalByMonth($branchId,$currentDate);
+        $totalSalaryAmount = 0;
         foreach ($employees as $employee){
             foreach ($employeeSums as $employeeSum){
                 if($employee->id == $employeeSum->employee_id){
@@ -34,6 +44,16 @@ class TimeKeepingController extends Controller
                     $employee->total_last_amount = $employeeSum->total_last_amount;
                 }
             }
+            foreach ($employeeTimeKeepings as $employeeTimeKeeping){
+                if($employee->id == $employeeTimeKeeping->employee_id){
+                    $employee->diligence_amount  = $employeeTimeKeeping->diligence_amount ;
+                    $employee->allowance_amount = $employeeTimeKeeping->allowance_amount;
+                    $employee->bonus_amount = $employeeTimeKeeping->bonus_amount;
+                    $employee->extra_allowance_amount  = $employeeTimeKeeping->extra_allowance_amount ;
+                    $employee->salary_amount = $employeeTimeKeeping->salary_amount;
+                }
+            }
+            $totalSalaryAmount+= $employee->salary_amount;
         }
 
         $arrayEmployeeDaily = [];
@@ -74,7 +94,13 @@ class TimeKeepingController extends Controller
             'branchId' => $branchId,
             'employees' => $employees,
             'infoDays' => $infoDays,
-            'arrayEmployeeDaily' => $arrayEmployeeDaily
+            'arrayEmployeeDaily' => $arrayEmployeeDaily,
+            'totalSalaryAmount' => $totalSalaryAmount
         ]);
+    }
+
+    public function updateTimeKeeping(Request $request){
+        $resultQty = $this->timeKeepingService->updateTimeKeeping($request->all());
+        return response()->json($resultQty);
     }
 }

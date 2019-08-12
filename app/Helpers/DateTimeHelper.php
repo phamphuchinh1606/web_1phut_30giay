@@ -25,6 +25,10 @@ class DateTimeHelper{
         return new \DateTime('now', static::timezone());
     }
 
+    public static function dateFromString($dateStr){
+        return new \DateTime($dateStr,static::timezone());
+    }
+
     public static function dateFormat($value, $format = "d-m-Y H:i"){
         return Carbon::parse($value,self::timezone())->format($format);
     }

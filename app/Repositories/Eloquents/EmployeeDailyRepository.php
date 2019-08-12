@@ -48,6 +48,7 @@ class EmployeeDailyRepository extends BaseRepository
     }
 
     public function getEmployeeTotalByMonth($branchId,$date){
+        if(is_string($date)) $date = DateTimeHelper::dateFromString($date);
         $firstDate = DateTimeHelper::startOfMonth($date,'Y-m-d');
         $lastDate = DateTimeHelper::endOfMonth($date,'Y-m-d');
         return $this->model::where('branch_id',$branchId)
@@ -56,6 +57,19 @@ class EmployeeDailyRepository extends BaseRepository
             ->groupBy('employee_id')
             ->selectRaw("employee_id,sum(first_hours) as total_first_hour, sum(last_hours) as total_last_hour, sum(first_hours * price_first_hour) as total_first_amount, sum(last_hours * price_last_hour) as total_last_amount")
             ->get();
+    }
+
+    public function getEmployeeOneTotalByMonth($branchId,$date, $employeeId){
+        if(is_string($date)) $date = DateTimeHelper::dateFromString($date);
+        $firstDate = DateTimeHelper::startOfMonth($date,'Y-m-d');
+        $lastDate = DateTimeHelper::endOfMonth($date,'Y-m-d');
+        return $this->model::where('branch_id',$branchId)
+            ->where('date_daily',">=",$firstDate)
+            ->where('date_daily',"<=",$lastDate)
+            ->where('employee_id', $employeeId)
+            ->groupBy('employee_id')
+            ->selectRaw("employee_id,sum(first_hours) as total_first_hour, sum(last_hours) as total_last_hour, sum(first_hours * price_first_hour) as total_first_amount, sum(last_hours * price_last_hour) as total_last_amount")
+            ->first();
     }
 
 }
