@@ -11,6 +11,7 @@ use App\Repositories\Eloquents\OrderBillRepository;
 use App\Repositories\Eloquents\OrderCancelRepository;
 use App\Repositories\Eloquents\OrderCheckInRepository;
 use App\Repositories\Eloquents\OrderCheckOutRepository;
+use App\Repositories\Eloquents\PaymentBillRepository;
 use App\Repositories\Eloquents\ProductRepository;
 use App\Repositories\Eloquents\SaleRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
@@ -31,12 +32,14 @@ class BaseService {
     protected $employeeRepository;
     protected $employeeDailyRepository;
     protected $employeeTimeKeepingRepository;
+    protected $paymentBillRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
                 OrderBillRepository $orderBillRepository,
                 StockDailyRepository $stockDailyRepository, SaleRepository $saleRepository, ProductRepository $productRepository,
-                EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository, EmployeeTimeKeepingRepository $employeeTimeKeepingRepository)
+                EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository, EmployeeTimeKeepingRepository $employeeTimeKeepingRepository,
+                PaymentBillRepository $paymentBillRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -51,6 +54,7 @@ class BaseService {
         $this->employeeRepository = $employeeRepository;
         $this->employeeDailyRepository = $employeeDailyRepository;
         $this->employeeTimeKeepingRepository = $employeeTimeKeepingRepository;
+        $this->paymentBillRepository = $paymentBillRepository;
     }
 
 

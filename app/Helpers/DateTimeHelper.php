@@ -54,7 +54,7 @@ class DateTimeHelper{
     public static function parseMonthToArrayDay($date){
         $firstDay = Carbon::parse($date,self::timezone())->startOfMonth();
         $lastDay = Carbon::parse($date,self::timezone())->endOfMonth();
-        $nextDay = $firstDay;
+        $nextDay = $firstDay->clone();
         $arrayDay = [];
         $weekMap = [
             0 => 'Chủ Nhật',
@@ -65,6 +65,7 @@ class DateTimeHelper{
             5 => 'Thứ 6',
             6 => 'Thứ 7',
         ];
+        $weekNo = 1;
         while($nextDay->format('Y-m-d') <= $lastDay->format('Y-m-d')){
             $dayOfWeek = $nextDay->dayOfWeek;
             $dayObject = new \StdClass();
@@ -72,10 +73,58 @@ class DateTimeHelper{
             $dayObject->date = $nextDay->clone();
             $dayObject->week_day = $weekMap[$dayOfWeek];
             $dayObject->week_no = $dayOfWeek;
+            $dayObject->week_of_thing = $weekNo;
             $arrayDay[] = $dayObject;
             $nextDay = $nextDay->addDay(1);
+            if($dayOfWeek == 0){
+                $weekNo++;
+            }
         }
         return $arrayDay;
+    }
+
+    public static function dateToWeek($date){
+        $weekMap = [
+            0 => 'Chủ Nhật',
+            1 => 'Thứ 2',
+            2 => 'Thứ 3',
+            3 => 'Thứ 4',
+            4 => 'Thứ 5',
+            5 => 'Thứ 6',
+            6 => 'Thứ 7',
+        ];
+        if(isset($date)){
+            return $weekMap[Carbon::parse($date,self::timezone())->dayOfWeek];
+        }
+        return null;
+    }
+
+    public static function parseWeekToArray($date){
+        $firstDay = Carbon::parse($date,self::timezone())->startOfMonth();
+        $lastDay = Carbon::parse($date,self::timezone())->endOfMonth();
+        $nextDay = $firstDay->clone();
+        $arrayWeek = [];
+        $weekObject = new \StdClass();
+        $weekNo = 1;
+        while($nextDay->format('Y-m-d') <= $lastDay->format('Y-m-d')){
+            $dayOfWeek = $nextDay->dayOfWeek;
+            if($dayOfWeek == 1 || $nextDay->format('Y-m-d') == $firstDay->format('Y-m-d')){
+                $weekObject = new \StdClass();
+                $weekObject->start_date = $nextDay->clone();
+                $weekObject->start_date_str = $weekObject->start_date->format('Y-m-d');
+                $weekObject->week_of_thing = $weekNo;
+                $weekObject->date_array = [];
+                $weekNo++;
+            }
+            if($dayOfWeek == 0 || $nextDay->format('Y-m-d') == $lastDay->format('Y-m-d')){
+                $weekObject->end_date = $nextDay->clone();
+                $weekObject->end_date_str = $weekObject->end_date->format('Y-m-d');
+                $arrayWeek[] = $weekObject;
+            }
+            $weekObject->date_array[] = $nextDay->clone();
+            $nextDay = $nextDay->addDay(1);
+        }
+        return $arrayWeek;
     }
 
 }

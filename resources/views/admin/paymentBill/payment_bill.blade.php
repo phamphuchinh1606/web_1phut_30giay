@@ -2,6 +2,11 @@
 
 @section('head.css')
     <link href="{{asset('/css/admin/plugins/daterangepicker.css')}}" rel="stylesheet">
+    <style>
+        table.dataTable{
+            width: auto;
+        }
+    </style>
 @endsection
 
 @section('body.js')
@@ -86,19 +91,22 @@
                    role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
                 <thead>
                 <tr role="row">
-                    <th class="text-center date">Ngày Chi</th>
-                    <th class="text-center">Lý Do Chi</th>
-                    <th class="text-center">Số Lượng</th>
-                    <th class="text-center">Đơn Giá(đ)</th>
-                    <th class="text-center">Thành Tiền(đ)</th>
-                    <th class="text-center">Người Chi</th>
+                    <th class="text-center date" width="100">Ngày Chi</th>
+                    <th class="text-center" width="300">Lý Do Chi</th>
+                    <th class="text-center" width="100">Số Lượng</th>
+                    <th class="text-center" width="100">Đơn Giá(đ)</th>
+                    <th class="text-center" width="120">Thành Tiền(đ)</th>
+                    <th class="text-center" width="150">Người Chi</th>
                     <th class="text-center"></th>
                 </tr>
                 </thead>
                 <tbody>
                     @foreach($paymentBills as $paymentBill)
                         <tr>
-                            <td class="text-center">{{\App\Helpers\DateTimeHelper::dateFormat($paymentBill->bill_date,'Y/m/d')}}</td>
+                            <td class="text-center">
+                                {{\App\Helpers\DateTimeHelper::dateFormat($paymentBill->bill_date,'Y/m/d')}}<br/>
+                                <span>{{\App\Helpers\DateTimeHelper::dateToWeek($paymentBill->bill_date)}}</span>
+                            </td>
                             <td>{{$paymentBill->note}}</td>
                             <td class="text-right">{{$paymentBill->qty}}</td>
                             <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->price)}}</td>

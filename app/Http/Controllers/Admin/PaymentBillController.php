@@ -55,7 +55,7 @@ class PaymentBillController extends Controller
     }
 
     public function delete($id){
-        $this->paymentBillRepository->update($inputs);
+        $this->paymentBillRepository->deleteLogic(array('id' => $id));
         return redirect()->route('admin.payment_bill')->with('message','Xóa Thành Công');
     }
 }

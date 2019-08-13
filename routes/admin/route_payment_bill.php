@@ -14,7 +14,7 @@ Route::get('/payment-bill','PaymentBillController@index')->name('payment_bill');
 Route::post('/payment-bill/create','PaymentBillController@create')->name('payment_bill.create');
 Route::get('/payment-bill/update/{id}','PaymentBillController@index')->name('payment_bill.update');
 Route::post('/payment-bill/update/{id}','PaymentBillController@update')->name('payment_bill.update');
-Route::get('/payment-bill/delete/{id}','PaymentBillController@delete')->name('payment_bill.delete');
+Route::delete('/payment-bill/delete/{id}','PaymentBillController@delete')->name('payment_bill.delete');
 
 
 
