@@ -186,8 +186,9 @@ class MaterialSeeder extends Seeder
             [
                 'name' => 'Nước đá',
                 'unit' => 'Kg',
-                'price' => 18000,
-                'material_type_id' => 2
+                'price' => 20000,
+                'material_type_id' => 2,
+                'supplier_id' => 2
             ],
             //Bao Bi
             [
@@ -307,7 +308,8 @@ class MaterialSeeder extends Seeder
                 'material_name' => $material['name'],
                 'material_type_id' => $material['material_type_id'],
                 'price' => $material['price'],
-                'unit_id' => $unitId
+                'unit_id' => $unitId,
+                'supplier_id' => isset($material['supplier_id']) ? $material['supplier_id'] : 1
             ]);
         }
     }

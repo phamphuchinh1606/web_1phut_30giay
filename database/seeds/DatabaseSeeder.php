@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             MaterialSeeder::class,
             EmployeeSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            SupplierSeeder::class
         ]);
     }
 }

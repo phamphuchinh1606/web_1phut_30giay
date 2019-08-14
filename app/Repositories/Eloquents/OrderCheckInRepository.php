@@ -3,7 +3,9 @@
 namespace App\Repositories\Eloquents;
 
 use App\Helpers\DateTimeHelper;
+use App\Models\Material;
 use App\Models\OrderCheckIn;
+use App\Models\Supplier;
 use App\Repositories\Base\BaseRepository;
 
 /**
@@ -36,6 +38,24 @@ class OrderCheckInRepository extends BaseRepository
             ->where('check_in_date','<=', $lastDate)
             ->groupBy('check_in_date')
             ->selectRaw('check_in_date,sum(amount) as total_amount')
+            ->get();
+    }
+
+    public function getCheckInByMonth($branchId, $date){
+        if(is_string($date)) $date = DateTimeHelper::dateFromString($date);
+        $firstDate = DateTimeHelper::startOfMonth($date,'Y-m-d');
+        $lastDate = DateTimeHelper::endOfMonth($date,'Y-m-d');
+
+        $tableCheckInName = OrderCheckIn::getTableName();
+        $tableMaterialName = Material::getTableName();
+        $tableSupplierName = Supplier::getTableName();
+        return $this->model::join($tableMaterialName,"$tableCheckInName.material_id","$tableMaterialName.id")
+            ->join($tableSupplierName,"$tableMaterialName.supplier_id","$tableSupplierName.id")
+            ->where("$tableCheckInName.branch_id",$branchId)
+            ->where('check_in_date','>=', $firstDate)
+            ->where('check_in_date','<=', $lastDate)
+            ->groupBy("$tableMaterialName.supplier_id","check_in_date")
+            ->selectRaw("$tableMaterialName.supplier_id,check_in_date,sum(amount) as total_amount")
             ->get();
     }
 
