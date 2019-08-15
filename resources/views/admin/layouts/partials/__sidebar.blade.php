@@ -36,6 +36,12 @@
                     Phiếu Chi
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('admin.setting.setting_of_day')}}">
+                    <i class="nav-icon icon-layers"></i>
+                    Thiết lặp ngày nhĩ
+                </a>
+            </li>
         </ul>
         <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
             <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
