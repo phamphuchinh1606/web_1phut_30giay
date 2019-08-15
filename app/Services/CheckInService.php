@@ -16,19 +16,46 @@ class CheckInService extends BaseService {
 
         $arrayCheckInDaily = ArrayHelper::parseListObjectToArrayKey($checkInAmountMonth, array('supplier_id','check_in_date'));
 
+        foreach ($weeks as $week){
+            $sumTotalAmount = 0;
+            foreach ($suppliers as $supplier){
+                $totalAmount = 0;
+                $totalQty = 0;
+                foreach ($week->date_array as $dateWeek) {
+                    $keyDate = $dateWeek->format('Y-m-d');
+                    $key = $supplier->id.'_'.$keyDate;
+                    if(isset($arrayCheckInDaily[$key])){
+                        $totalAmount+= $arrayCheckInDaily[$key]->total_amount;
+                        $totalQty+= $arrayCheckInDaily[$key]->total_qty;
+                    }
+                }
+                eval('$week->total_amount_'.$supplier->id.'=$totalAmount;');
+                eval('$week->total_qty_'.$supplier->id.'=$totalQty;');
+                $sumTotalAmount+= $totalAmount;
+            }
+            $week->sum_total_amount = $sumTotalAmount;
+        }
+
         foreach ($infoDays as $day) {
             $keyDate = $day->date->format('Y-m-d');
             foreach ($suppliers as $supplier){
                 $key = $supplier->id.'_'.$keyDate;
-                $supplier = new \StdClass();
-                $supplier->total_amount = 0;
+                $supplierItem = new \StdClass();
+                $supplierItem->total_amount = 0;
+                $supplierItem->total_qty = 0;
                 if(isset($arrayCheckInDaily[$key])){
-                    $supplier = $arrayCheckInDaily[$key];
+                    $supplierItem = $arrayCheckInDaily[$key];
                 }
-                $day->suppliers[] = $supplier;
+                $supplierItem->supplier_id = $supplier->id;
+                $day->suppliers[] = $supplierItem;
+            }
+            foreach ($weeks as $week){
+                if($week->week_of_thing == $day->week_of_thing){
+                    $day->week = $week;
+                }
             }
         }
-        $result['infoDay'] = $infoDays;
+        $result['infoDays'] = $infoDays;
         $result['suppliers'] = $suppliers;
         return $result;
     }

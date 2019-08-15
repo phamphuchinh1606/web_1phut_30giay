@@ -53,19 +53,24 @@ class InputDailyController extends Controller
         $this->orderBillRepository = $orderBillRepository;
     }
 
-    public function index(){
-        $currentDate = DateTimeHelper::now();
+    public function index($date = null, Request $request){
+        if(isset($date)) $currentDate = DateTimeHelper::dateFromString($date);
+        else $currentDate = DateTimeHelper::now();
+        $branchId = 1;
+        $infoDays = DateTimeHelper::getArrayDateByCurrentDate(DateTimeHelper::now());
         $materialTypes = $this->materialTypeRepository->selectAll();
         $materials = $this->materialRepository->getAllByFormInput($currentDate);
-        $employees = $this->employeeRepository->getEmployeeDaily(1,$currentDate);
-        $sumEmployeeTotal = $this->employeeDailyRepository->sumTotalDaily(1,$currentDate);
+        $employees = $this->employeeRepository->getEmployeeDaily($branchId,$currentDate);
+        $sumEmployeeTotal = $this->employeeDailyRepository->sumTotalDaily($branchId,$currentDate);
         $products = $this->productRepository->selectProductMergeSales($currentDate);
-        $sales = $this->saleRepository->findByKey(array('branch_id' => 1,'sale_date' => $currentDate->format('Y-m-d')));
-        $orderBill = $this->orderBillRepository->findByKeyOrCreate(array('branch_id' => 1,'bill_date' => $currentDate->format('Y-m-d')));
-        $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate(1,$currentDate);
-        $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate(1,$currentDate);
+        $sales = $this->saleRepository->findByKey(array('branch_id' => $branchId,'sale_date' => $currentDate->format('Y-m-d')));
+        $orderBill = $this->orderBillRepository->findByKeyOrCreate(array('branch_id' => $branchId,'bill_date' => $currentDate->format('Y-m-d')));
+        $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$currentDate);
+        $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate($branchId,$currentDate);
         return $this->viewAdmin('input.input_daily',[
             'currentDate' => $currentDate,
+            'branchId' => $branchId,
+            'infoDays' => $infoDays,
             'materialTypes' => $materialTypes,
             'materials' => $materials,
             'employees' => $employees,

@@ -58,6 +58,21 @@
         <div class="card-header">
             <i class="fa fa-edit"></i> Số Lượng Bán Ngày : {{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y/m/d')}}
             <input name="current_date" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m-d')}}">
+            <hr>
+            <nav class="nav nav-pills flex-column flex-sm-row">
+                @foreach($infoDays as $day)
+                    <?php $isCurrent = \App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m-d') == $day->date_str; ?>
+                    @if($isCurrent)
+                        <a class="flex-sm-fill text-sm-center nav-link active" href="#">
+                            {{$day->date_str}} <span style="color: red">({{$day->week_day}})</span>
+                        </a>
+                    @else
+                        <a class="flex-sm-fill text-sm-center nav-link" href="{{route('admin.input_daily',['date' => $day->date_str])}}">
+                            {{$day->date_str}} <span style="color: red">({{$day->week_day}})</span>
+                        </a>
+                    @endif
+                @endforeach
+            </nav>
         </div>
         <div class="card-body">
             <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"

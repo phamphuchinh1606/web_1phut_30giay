@@ -11,7 +11,7 @@ InputDailyAPI.updateInputDaily = function(note, callback) {
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: 'input-daily/update-daily.js',
+            url: '/admin/input-daily/update-daily.js',
             data: data,
             dataType: 'json',
             beforeSend: function() {
@@ -57,7 +57,7 @@ InputDailyAPI.updateSaleDaily = function(note ,callback){
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: 'input-daily/update-sale.js',
+            url: '/admin/input-daily/update-sale.js',
             data: data,
             dataType: 'json',
             beforeSend: function() {
@@ -99,7 +99,7 @@ InputDailyAPI.updateBillDaily = function (note, callback){
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: 'input-daily/update-bill.js',
+            url: '/admin/input-daily/update-bill.js',
             data: data,
             dataType: 'json',
             beforeSend: function() {
@@ -138,7 +138,7 @@ InputDailyAPI.updateEmployeeDaily = function(note, callback){
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: 'input-daily/update-employee.js',
+            url: '/admin/input-daily/update-employee.js',
             data: data,
             dataType: 'json',
             beforeSend: function() {

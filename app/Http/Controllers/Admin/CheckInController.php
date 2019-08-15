@@ -22,7 +22,7 @@ class CheckInController extends Controller
         return $this->viewAdmin('checkin.check_in_daily',[
             'currentDate' => $currentDate,
             'branchId' => $branchId,
-            'infoDay' => $result['infoDay'],
+            'infoDays' => $result['infoDays'],
             'suppliers' => $result['suppliers']
         ]);
     }

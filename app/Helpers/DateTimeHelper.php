@@ -83,6 +83,33 @@ class DateTimeHelper{
         return $arrayDay;
     }
 
+    public static function getArrayDateByCurrentDate($date, $firstDayNum = -4, $lastDayNum = 4){
+        $firstDay = Carbon::parse($date,self::timezone())->addDay($firstDayNum);
+        $lastDay = Carbon::parse($date,self::timezone())->addDay($lastDayNum);
+        $nextDay = $firstDay->clone();
+        $arrayDay = [];
+        $weekMap = [
+            0 => 'Chủ Nhật',
+            1 => 'Thứ 2',
+            2 => 'Thứ 3',
+            3 => 'Thứ 4',
+            4 => 'Thứ 5',
+            5 => 'Thứ 6',
+            6 => 'Thứ 7',
+        ];
+        while($nextDay->format('Y-m-d') <= $lastDay->format('Y-m-d')){
+            $dayOfWeek = $nextDay->dayOfWeek;
+            $dayObject = new \StdClass();
+            $dayObject->date_str = $nextDay->format('Y-m-d');
+            $dayObject->date = $nextDay->clone();
+            $dayObject->week_day = $weekMap[$dayOfWeek];
+            $dayObject->week_no = $dayOfWeek;
+            $arrayDay[] = $dayObject;
+            $nextDay = $nextDay->addDay(1);
+        }
+        return $arrayDay;
+    }
+
     public static function dateToWeek($date){
         $weekMap = [
             0 => 'Chủ Nhật',

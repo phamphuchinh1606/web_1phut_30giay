@@ -55,7 +55,7 @@ class OrderCheckInRepository extends BaseRepository
             ->where('check_in_date','>=', $firstDate)
             ->where('check_in_date','<=', $lastDate)
             ->groupBy("$tableMaterialName.supplier_id","check_in_date")
-            ->selectRaw("$tableMaterialName.supplier_id,check_in_date,sum(amount) as total_amount")
+            ->selectRaw("$tableMaterialName.supplier_id,check_in_date,sum(amount) as total_amount, sum(qty) as total_qty")
             ->get();
     }
 
