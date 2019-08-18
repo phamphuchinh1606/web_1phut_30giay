@@ -19,6 +19,7 @@ class CreateSettingOfDaysTable extends Migration
             $table->integer('type_day')->default(1);
             $table->integer('week_no')->nullable();
             $table->date('date_off')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

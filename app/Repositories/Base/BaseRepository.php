@@ -40,6 +40,16 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $query->first();
     }
 
+    public function getByKey($whereKeys){
+        $query = $this->model::whereRaw('1=1');
+        foreach ($whereKeys as $key => $value){
+            if(Schema::hasColumn($this->model::getTableName(),$key)){
+                $query->where($key, $value);
+            }
+        }
+        return $query->get();
+    }
+
     public function findByKeyOrCreate($whereKeys){
         $query = $this->model::whereRaw('1=1');
         foreach ($whereKeys as $key => $value){
@@ -113,7 +123,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                     }
                     eval($columnUpdate.';');
                     $modelData[$key] = $values[$key];
-                }else{
+                }else  if(Schema::hasColumn($this->model::getTableName(),$key)){
                     $modelData[$key] = $value;
                 }
             }
@@ -121,25 +131,33 @@ abstract class BaseRepository implements BaseRepositoryInterface
             return $modelData;
         }else{
             $values = array_merge($values,$whereKeys);
+            $valueInsertDbs = [];
             foreach ($values as $key => $value){
-                if(is_array($value)){
-                    $columnUpdate = '$values[$key]=';
-                    foreach ($value as $keyColumn => $columnValue){
-                        if(Schema::hasColumn($this->model::getTableName(),$columnValue)){
-                            if(!Str::endsWith($columnUpdate,'=')){
-                                $columnUpdate = $columnUpdate . '+';
-                            }
-                            if(isset($values[$columnValue])){
-                                $columnUpdate = $columnUpdate . '$values[\''.$columnValue.'\']';
-                            }else{
-                                $columnUpdate = $columnUpdate . '0';
-                            }
-                        }
-                    }
-                    eval($columnUpdate.';');
+                if(Schema::hasColumn($this->model::getTableName(),$key)){
+                    $valueInsertDbs[$key] = $values[$key];
                 }
             }
-            $this->model->insert($values);
+            foreach ($valueInsertDbs as $key => $value){
+                if(Schema::hasColumn($this->model::getTableName(),$key)){
+                    if(is_array($value)){
+                        $columnUpdate = '$valueInsertDbs[$key]=';
+                        foreach ($value as $keyColumn => $columnValue){
+                            if(Schema::hasColumn($this->model::getTableName(),$columnValue)){
+                                if(!Str::endsWith($columnUpdate,'=')){
+                                    $columnUpdate = $columnUpdate . '+';
+                                }
+                                if(isset($valueInsertDbs[$columnValue])){
+                                    $columnUpdate = $columnUpdate . '$valueInsertDbs[\''.$columnValue.'\']';
+                                }else{
+                                    $columnUpdate = $columnUpdate . '0';
+                                }
+                            }
+                        }
+                        eval($columnUpdate.';');
+                    }
+                }
+            }
+            $this->model->insert($valueInsertDbs);
         }
     }
 
@@ -172,14 +190,16 @@ abstract class BaseRepository implements BaseRepositoryInterface
     public function deleteLogic($whereKeys){
         $keys = $this->model::getPrimaryKeyName();
         if(!is_array($keys)) $keys = [$keys];
-        $query = $this->model;
-        foreach ($keys as $key => $value){
-            if(Schema::hasColumn($this->model::getTableName(),$key)){
-                $query->where($key, $value);
+        $query = $this->model->whereRaw('1=1');
+        foreach ($keys as $key){
+            if(isset($whereKeys[$key])){
+                $query->where($key, $whereKeys[$key]);
             }
         }
-        $modelData = $query->first();
-        if(isset($modelData)) $modelData->delete();
+        $listModel = $query->get();
+        foreach ($listModel as $modelData){
+            $modelData->delete();
+        }
     }
 
 }

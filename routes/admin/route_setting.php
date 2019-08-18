@@ -14,6 +14,8 @@
 Route::get('/admin','HomeController@index')->name('home');
 
 Route::get('/setting/setting-of-day','SettingOfDayController@index')->name('setting.setting_of_day');
+Route::post('/setting/setting-of-day/save','SettingOfDayController@saveSettingDay')->name('setting.setting_of_day.save');
+Route::delete('/setting/setting-of-day/delete/{id}','SettingOfDayController@deleteSettingDay')->name('setting.setting_of_day.delete');
 
 
 
