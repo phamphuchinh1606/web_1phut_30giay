@@ -19,6 +19,7 @@ class CreateSaleCardSmallsTable extends Migration
             $table->date('sale_date');
             $table->integer('employee_id');
             $table->double('qty')->nullable();
+            $table->double('qty_target')->nullable();
             $table->double('bonus_amount')->nullable();
             $table->timestamps();
         });

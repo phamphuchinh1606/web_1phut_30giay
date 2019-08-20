@@ -187,6 +187,18 @@ abstract class BaseRepository implements BaseRepositoryInterface
         }
     }
 
+    public function delete($id){
+        if(Schema::hasColumn($this->model::getTableName(),'id')){
+            $itemModel = $this->model->find($id);
+            if(isset($itemModel)){
+                if(Schema::hasColumn($this->model::getTableName(),'delete_flg')){
+                    $itemModel->delete_flg = 1;
+                    $itemModel->save();
+                }
+            }
+        }
+    }
+
     public function deleteLogic($whereKeys){
         $keys = $this->model::getPrimaryKeyName();
         if(!is_array($keys)) $keys = [$keys];

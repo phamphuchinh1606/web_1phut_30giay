@@ -3,8 +3,8 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
-        <img class="navbar-brand-full" src="{{ \App\Helpers\AppHelper::assetPublic('images/admin/logo_admin.png')}}" width="89" height="25" alt="Admin Logo">
-        <img class="navbar-brand-minimized" src="{{\App\Helpers\AppHelper::assetPublic('images/admin/logo_admin.png')}}" width="30" height="30" alt="Admin Logo">
+        <img class="navbar-brand-full" src="{{ \App\Helpers\AppHelper::assetPublic('images/logo.jpg')}}" height="50" alt="Admin Logo">
+        <img class="navbar-brand-minimized" src="{{\App\Helpers\AppHelper::assetPublic('images/logo.jpg')}}" width="30" height="30" alt="Admin Logo">
     </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>

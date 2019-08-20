@@ -8,7 +8,10 @@ class AppHelper{
         return asset("$publicPath/$file");
     }
 
-    public static function formatMoney($value){
+    public static function formatMoney($value, $nullShowZero = false){
+        if(!isset($value) && !$nullShowZero){
+            return '';
+        }
         return number_format($value);
     }
 }

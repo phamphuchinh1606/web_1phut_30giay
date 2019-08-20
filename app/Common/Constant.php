@@ -3,8 +3,10 @@
 namespace App\Common;
 
 class Constant{
-    public static $DELETE_FLG_ON = 1;
-    public static $DELETE_FLG_OFF = 0;
+    public const DELETE_FLG_ON = 1;
+    public const DELETE_FLG_OFF = 0;
+
+    public const EMPLOYEE_SALE_CARD_SMALL = 1;
 
     public static $PUBLIC_PRODUCT_SERVICE = 1;
     public static $PUBLIC_PRODUCT = 0;

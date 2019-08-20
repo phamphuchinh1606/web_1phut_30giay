@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquents;
 
+use App\Common\Constant;
 use App\Models\EmployeeDaily;
 use App\Repositories\Base\BaseRepository;
 use App\Models\Employee;
@@ -19,13 +20,21 @@ class EmployeeRepository extends BaseRepository
     }
 
     public function getEmployeeByBranch($branchId){
-        return $this->model->where('branch_id',$branchId)->get();
+        return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)->where('branch_id',$branchId)->get();
+    }
+
+    public function getEmployeeSaleSmall($branchId){
+        return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
+            ->where('branch_id',$branchId)
+            ->where('employee_sale_card_small',Constant::EMPLOYEE_SALE_CARD_SMALL)
+            ->get();
     }
 
     public function getEmployeeDaily($branchId, $date){
         $employeeDailyTable = EmployeeDaily::getTableName();
         $employeeTable = $this->model::getTableName();
-        return $this->model->where("$employeeTable.branch_id",$branchId)
+        return $this->model->where("$employeeTable.delete_flg",Constant::DELETE_FLG_OFF)
+            ->where("$employeeTable.branch_id",$branchId)
             ->leftjoin($employeeDailyTable,function($join) use ($branchId,$date, $employeeTable,$employeeDailyTable){
                 $join->on("$employeeTable.id","$employeeDailyTable.employee_id")
                     ->where("$employeeDailyTable.branch_id",$branchId)

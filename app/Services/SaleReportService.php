@@ -6,6 +6,7 @@ use App\Helpers\ArrayHelper;
 use App\Helpers\DateTimeHelper;
 use App\Models\OrderBill;
 use App\Models\Sale;
+use App\Models\SaleCardSmall;
 use Illuminate\Support\Facades\DB;
 
 class SaleReportService extends BaseService {
@@ -101,6 +102,81 @@ class SaleReportService extends BaseService {
         }
         $result['products'] = $products;
         $result['infoDays'] = $infoDays;
+        return $result;
+    }
+
+    public function getSaleCartSmall($branchId, $date){
+        $infoDays = DateTimeHelper::parseMonthToArrayDay($date);
+        $employees = $this->employeeRepository->getEmployeeSaleSmall($branchId);
+        $saleCartSmalls = $this->saleCartSmallRepository->getSaleSmallByMonth($branchId,$date);
+        $sumSaleCartSmall = $this->saleCartSmallRepository->getSumSaleSmallByMonth($branchId,$date);
+
+        $arraySaleCardSmall = ArrayHelper::parseListObjectToArrayKey($saleCartSmalls,array('employee_id','sale_date'));
+        $arraySumSaleCardSmall = ArrayHelper::parseListObjectToArrayKey($sumSaleCartSmall,array('employee_id','sale_date'));
+
+        foreach ($infoDays as $day) {
+            $keyDate = $day->date->format('Y-m-d');
+            foreach ($employees as $employee){
+                $key = $employee->id.'_'.$keyDate;
+                $saleCardSmall = new SaleCardSmall();
+                $saleCardSmall->employee_id = $employee->id;
+                if(isset($arraySaleCardSmall[$key])){
+                    $saleCardSmall = $arraySaleCardSmall[$key];
+                }
+                if(isset($arraySumSaleCardSmall[$key])){
+                    $saleCardSmall->sum_qty = $arraySumSaleCardSmall[$key]->sum_qty;
+                    $saleCardSmall->sum_qty_target = $arraySumSaleCardSmall[$key]->sum_qty_target;
+                    $saleCardSmall->sum_bonus_amount = $arraySumSaleCardSmall[$key]->sum_bonus_amount;
+                }else{
+                    $saleCardSmall->sum_qty = 0;
+                    $saleCardSmall->sum_qty_target = 0;
+                    $saleCardSmall->sum_bonus_amount = 0;
+                }
+                $day->employee_sale_card_smalls[] = $saleCardSmall;
+            }
+        }
+
+
+        $result['employees'] = $employees;
+        $result['infoDays'] = $infoDays;
+        return $result;
+    }
+
+    public function updateSaleCartSmall($values){
+        $inputName = $values['name'];
+        $inputValue = $values['value'];
+        $dailyDate = $values['date'];
+        $employeeId = $values['employee_id'];
+        $branchId = 1;
+
+        $target = 20;
+        $step = 5;
+        $stepAmount = [1000,2000,2000,2000,2000,2000,2000,2000,2000,2000];
+        $qtyTarget = $inputValue - $target;
+        $bonusAmount = 0;
+        for ($i = 1; $i <= ($qtyTarget/$step) + 1 ; $i++){
+            $qtyStep = $step;
+            if($qtyTarget < $step * $i){
+                $qtyStep = $qtyTarget -  $step * ($i-1);
+            }
+            $bonusAmount+= $stepAmount[$i-1]  * $qtyStep;
+        }
+        $qtyTarget = $qtyTarget < 0 ? 0 : $qtyTarget;
+        $updateValues = array(
+            'qty' => $inputValue,
+            'qty_target' => $qtyTarget,
+            'bonus_amount' => $bonusAmount
+        );
+        $whereValues = array(
+            'branch_id' => $branchId,
+            'sale_date' => $dailyDate,
+            'employee_id' => $employeeId
+        );
+
+        $saleCartSmall = $this->saleCartSmallRepository->updateOrCreate($updateValues, $whereValues);
+        $result['qty_target'] = AppHelper::formatMoney($qtyTarget);
+        $result['bonus_amount'] = AppHelper::formatMoney($bonusAmount);
+        $result['employee_id'] = $employeeId;
         return $result;
     }
 

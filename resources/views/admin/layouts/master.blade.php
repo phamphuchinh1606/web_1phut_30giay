@@ -7,10 +7,10 @@
     <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
     <meta name="author" content="Łukasz Holeczek">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-    <link id="favicon" rel="shortcut icon" href="{{\App\Helpers\ImageHelper::showImage($appInfo->app_src_icon)}}" type="image/x-icon" />
+    <link id="favicon" rel="shortcut icon" href="{{\App\Helpers\AppHelper::assetPublic('favicon.ico')}}" type="image/x-icon" />
     <!-- CSRF Token -->
     <meta name="_token" content="{{ csrf_token() }}">
-    <title>@yield('head.title','Quan ly thang may')</title>
+    <title>@yield('head.title','Quan Ly - 1 Phut 30 Giay')</title>
 
     <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/coreui-icons.min.css')}}" rel="stylesheet">
     <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/flag-icon.min.css')}}" rel="stylesheet">

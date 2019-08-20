@@ -7,9 +7,56 @@ use App\Models\OrderCancel;
 use App\Models\OrderCheckIn;
 use App\Models\OrderCheckOut;
 use App\Models\StockDaily;
+use App\Repositories\Eloquents\EmployeeDailyRepository;
+use App\Repositories\Eloquents\EmployeeRepository;
+use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
+use App\Repositories\Eloquents\MaterialRepository;
+use App\Repositories\Eloquents\MaterialTypeRepository;
+use App\Repositories\Eloquents\OrderBillRepository;
+use App\Repositories\Eloquents\OrderCancelRepository;
+use App\Repositories\Eloquents\OrderCheckInRepository;
+use App\Repositories\Eloquents\OrderCheckOutRepository;
+use App\Repositories\Eloquents\PaymentBillRepository;
+use App\Repositories\Eloquents\ProductRepository;
+use App\Repositories\Eloquents\SaleCartSmallRepository;
+use App\Repositories\Eloquents\SaleRepository;
+use App\Repositories\Eloquents\SettingOfDayRepository;
+use App\Repositories\Eloquents\StockDailyRepository;
+use App\Repositories\Eloquents\SupplierRepository;
+use App\Repositories\Eloquents\UnitRepository;
 use Illuminate\Support\Facades\DB;
 
 class MaterialService extends BaseService {
+
+    private $timeKeepingService;
+
+    public function __construct(
+        MaterialRepository $materialRepository,
+        MaterialTypeRepository $materialTypeRepository,
+        UnitRepository $unitRepository,
+        OrderCheckInRepository $orderCheckInRepository,
+        OrderCheckOutRepository $orderCheckOutRepository,
+        OrderCancelRepository $orderCancelRepository,
+        OrderBillRepository $orderBillRepository,
+        StockDailyRepository $stockDailyRepository,
+        SaleRepository $saleRepository,
+        ProductRepository $productRepository,
+        EmployeeRepository $employeeRepository,
+        EmployeeDailyRepository $employeeDailyRepository,
+        EmployeeTimeKeepingRepository $employeeTimeKeepingRepository,
+        PaymentBillRepository $paymentBillRepository,
+        SupplierRepository $supplierRepository,
+        SettingOfDayRepository $settingOfDayRepository,
+        TimeKeepingService $timeKeepingService,
+        SaleCartSmallRepository $saleCartSmallRepository
+    ) {
+        parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
+            $orderCheckOutRepository, $orderCancelRepository, $orderBillRepository, $stockDailyRepository,
+            $saleRepository, $productRepository, $employeeRepository, $employeeDailyRepository,
+            $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
+            $saleCartSmallRepository);
+        $this->timeKeepingService = $timeKeepingService;
+    }
 
     public function loadDataFormInput(){
         $materialTypes = $this->materialTypeRepository->selectAll();
@@ -17,20 +64,22 @@ class MaterialService extends BaseService {
         dd($materials);
     }
 
-    public function updateInputDaily($values){
+    public function updateInputDaily($values, $isTransaction = true){
         $inputName = $values['name'];
         $inputValue = $values['value'];
         $inputPrice = $values['price'];
         $dailyDate = $values['date'];
         $materialId = $values['material_id'];
+        $lastDay = DateTimeHelper::addDay($dailyDate,1,'Y-m-d');
+        $branchId = 1;
         $valueUpdate = array('qty' => $inputValue, 'price' => $inputPrice, 'amount' => $inputValue*$inputPrice);
         $wheres = array(
             'material_id' => $materialId,
-            'branch_id' => 1
+            'branch_id' => $branchId
         );
         try{
-            DB::beginTransaction();
-            $resultQty = $this->calculatorStock(1,$dailyDate,$materialId,$inputName,$inputValue,$inputPrice);
+            if($isTransaction) DB::beginTransaction();
+            $resultQty = $this->calculatorStock($branchId,$dailyDate,$materialId,$inputName,$inputValue,$inputPrice);
             switch ($inputName){
                 case 'qty_in':
                     $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
@@ -53,7 +102,27 @@ class MaterialService extends BaseService {
                     $wheres = array_merge($wheres,['cancel_date' => $dailyDate]);
                     $this->orderCancelRepository->updateOrCreate($valueUpdate,$wheres);
                     break;
+                case 'qty_first':
+                    if($this->checkDateIsOfDay($branchId,$dailyDate)){
+                        if($this->checkDateIsOfDay($branchId,$lastDay)){
+                            $arrayValue = array_merge($values,[
+                                'date' => $lastDay,
+                                'name' => 'qty_last',
+                            ]);
+                            $this->updateInputDaily($arrayValue, false);
+                        }else{
+                            $wheres = array_merge($wheres,['stock_date' => $dailyDate]);
+                            $this->stockDailyRepository->updateOrCreate($valueUpdate,$wheres);
+                        }
+                    }
+                    break;
                 case 'qty_last':
+                    $arrayValue = array_merge($values,[
+                        'date' => $lastDay,
+                        'name' => 'qty_first',
+                    ]);
+                    $this->updateInputDaily($arrayValue, false);
+
                     $wheres = array_merge($wheres,['stock_date' => $dailyDate]);
                     $this->stockDailyRepository->updateOrCreate($valueUpdate,$wheres);
                     break;
@@ -63,11 +132,12 @@ class MaterialService extends BaseService {
             $resultQty = array_merge($resultQty,[$inputName => $inputValue,
                 'total_amount_check_in' => AppHelper::formatMoney($totalAmountCheckIn),
                 'total_amount_check_out' => AppHelper::formatMoney($totalAmountCheckOut)]);
-            DB::commit();
+            if($isTransaction) DB::commit();
             return $resultQty;
         }catch (\Exception $ex){
-            DB::rollBack();
-            dd($ex);
+            if($isTransaction) DB::rollBack();
+            if($isTransaction) dd($ex);
+            else throw $ex;
         }
         return [];
     }
@@ -89,6 +159,10 @@ class MaterialService extends BaseService {
         $orderCancel = $this->orderCancelRepository->findByKey($wheres);
         $stockDaily = $this->stockDailyRepository->findByKey($wheres);
         $stockDailyFirst = $this->stockDailyRepository->findByKey(array_merge($wheres,['stock_date' => $yesterday]));
+        if(!isset($stockDailyFirst)) {
+            $stockDailyFirst = new StockDaily();
+            $stockDailyFirst->qty = 0;
+        }
         $resultQty = array();
         if(!isset($checkOut)){
             $checkOut = new OrderCheckOut();
@@ -96,7 +170,7 @@ class MaterialService extends BaseService {
             $checkOut->material_id = $materialId;
             $checkOut->check_out_date = $dailyDate;
             $checkOut->order_check_out_type = OrderCheckOut::CHECK_OUT_TYPE;
-            $checkOut->qty = 0;
+            $checkOut->qty = $stockDailyFirst->qty;
             $checkOut->price = $inputPrice;
         }
         if(!isset($checkIn)) {
@@ -134,53 +208,60 @@ class MaterialService extends BaseService {
             case 'qty_cancel':
                 $checkOut['qty'] = $checkOut->qty + $orderCancel->qty - $inputValue;
                 break;
+            case 'qty_first':
+                if(isset($stockDaily->id)){
+                    $checkOut['qty'] = $checkOut->qty - $stockDailyFirst->qty + $inputValue;
+                }
+                break;
             case 'qty_last':
                 $checkOut['qty'] = $checkOut->qty + $stockDaily->qty - $inputValue;
                 break;
         }
-        $checkOut->amount = $checkOut->qty * $checkOut->price;
-        $this->orderCheckOutRepository->updateModel($checkOut);
-        //update Sale
-        if($materialId < 5){
-            $product = $this->productRepository->find($materialId);
-            if(isset($product)){
-                $productTheSame = $this->productRepository->findByKey(array('product_the_same_id' => $product->id));
-                $productTheSameQty = 0;
-                if(isset($productTheSame)) {
-                    $saleTheSame = $this->saleRepository->findByKey(array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $productTheSame->id));
-                    if(isset($saleTheSame)) $productTheSameQty = $saleTheSame->qty;
-                }
-                $whereValues = array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $materialId);
-                $qtyProduct = ($checkOut->qty / $product->part_num) - $productTheSameQty;
-                $valueUpdate = array('qty' => $qtyProduct, 'price' => $product->price, 'amount' => $qtyProduct * $product->price);
-                $this->saleRepository->updateOrCreate($valueUpdate,$whereValues);
-                $resultQty['product_id'] = $product->id;
-                $resultQty['product_qty'] = $qtyProduct;
-                $resultQty['product_amount'] = AppHelper::formatMoney($qtyProduct * $product->price);
+        if($inputName != 'qty_first' ||  isset($stockDaily->id)){
+            $checkOut->amount = $checkOut->qty * $checkOut->price;
+            $this->orderCheckOutRepository->updateModel($checkOut);
+            //update Sale
+            if($materialId < 5){
+                $product = $this->productRepository->find($materialId);
+                if(isset($product)){
+                    $productTheSame = $this->productRepository->findByKey(array('product_the_same_id' => $product->id));
+                    $productTheSameQty = 0;
+                    if(isset($productTheSame)) {
+                        $saleTheSame = $this->saleRepository->findByKey(array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $productTheSame->id));
+                        if(isset($saleTheSame)) $productTheSameQty = $saleTheSame->qty;
+                    }
+                    $whereValues = array('branch_id' => 1,'sale_date' => $dailyDate, 'product_id' => $materialId);
+                    $qtyProduct = ($checkOut->qty / $product->part_num) - $productTheSameQty;
+                    $valueUpdate = array('qty' => $qtyProduct, 'price' => $product->price, 'amount' => $qtyProduct * $product->price);
+                    $this->saleRepository->updateOrCreate($valueUpdate,$whereValues);
+                    $resultQty['product_id'] = $product->id;
+                    $resultQty['product_qty'] = $qtyProduct;
+                    $resultQty['product_amount'] = AppHelper::formatMoney($qtyProduct * $product->price);
 
-                //Update Bill Order
-                $totalAmount = $this->saleRepository->sumAmountSale(1,$dailyDate);
-                $orderBill = $this->orderBillRepository->findByKey(array('bill_date' => $dailyDate,'branch_id' => 1));
-                $realAmount = 0;
-                if(isset($orderBill)){
-                    $realAmount = $orderBill->real_amount;
+                    //Update Bill Order
+                    $totalAmount = $this->saleRepository->sumAmountSale(1,$dailyDate);
+                    $orderBill = $this->orderBillRepository->findByKey(array('bill_date' => $dailyDate,'branch_id' => 1));
+                    $realAmount = 0;
+                    if(isset($orderBill)){
+                        $realAmount = $orderBill->real_amount;
+                    }
+                    $this->orderBillRepository->updateOrCreate(array('total_amount' => $totalAmount,'lack_amount' => $totalAmount - $realAmount),array('bill_date' => $dailyDate,'branch_id' => 1));
+                    $resultQty['total_amount'] = AppHelper::formatMoney($totalAmount);
+                    $resultQty['lack_amount'] = AppHelper::formatMoney($totalAmount - $realAmount);
                 }
-                $this->orderBillRepository->updateOrCreate(array('total_amount' => $totalAmount,'lack_amount' => $totalAmount - $realAmount),array('bill_date' => $dailyDate,'branch_id' => 1));
-                $resultQty['total_amount'] = AppHelper::formatMoney($totalAmount);
-                $resultQty['lack_amount'] = AppHelper::formatMoney($totalAmount - $realAmount);
             }
+            $resultQty = array_merge($resultQty,array(
+                'qty_in' => isset($checkIn->qty) ? $checkIn->qty : 0,
+                'amount_in' => isset($checkIn->amount) ? AppHelper::formatMoney($checkIn->amount) : 0,
+                'qty_in_move' => isset($checkInMove->qty) ? $checkInMove->qty : 0,
+                'qty_out' => isset($checkOut->qty) ? $checkOut->qty : 0,
+                'amount_out' => isset($checkOut->amount) ? $checkOut->amount : 0,
+                'qty_out_move' => isset($checkOutMove->qty) ? $checkOutMove->qty : 0,
+                'qty_cancel' => isset($orderCancel->qty) ? $orderCancel->qty : 0,
+                'qty_last' => isset($stockDaily->qty) ? $stockDaily->qty : 0,
+                'qty_first' => isset($stockDailyFirst->qty) ? $stockDailyFirst->qty : 0
+            ));
         }
-        $resultQty = array_merge($resultQty,array(
-            'qty_in' => isset($checkIn->qty) ? $checkIn->qty : 0,
-            'amount_in' => isset($checkIn->amount) ? AppHelper::formatMoney($checkIn->amount) : 0,
-            'qty_in_move' => isset($checkInMove->qty) ? $checkInMove->qty : 0,
-            'qty_out' => isset($checkOut->qty) ? $checkOut->qty : 0,
-            'amount_out' => isset($checkOut->amount) ? $checkOut->amount : 0,
-            'qty_out_move' => isset($checkOutMove->qty) ? $checkOutMove->qty : 0,
-            'qty_cancel' => isset($orderCancel->qty) ? $orderCancel->qty : 0,
-            'qty_last' => isset($stockDaily->qty) ? $stockDaily->qty : 0,
-            'qty_first' => isset($stockDailyFirst->qty) ? $stockDailyFirst->qty : 0
-        ));
         return $resultQty;
     }
 
@@ -293,6 +374,10 @@ class MaterialService extends BaseService {
                     'total_amount' => AppHelper::formatMoney($sumTotal->amount_first_total + $sumTotal->amount_last_total),
                     'total_amount_employee' => AppHelper::formatMoney($sumTotalEmployee->total_amount_employee)
                 ));
+                $values = [];
+                $values['month'] = DateTimeHelper::dateFormat($dailyDate,'Y-m');
+                $values['employee_id'] = $employeeId;
+                $this->timeKeepingService->updateTimeKeeping($values, false);
             }
             DB::commit();
         }catch (\Exception $ex){

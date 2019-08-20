@@ -57,6 +57,7 @@ class EmployeeSeeder extends Seeder
                 'name' => $material['name'],
                 'price_first_hour' => $material['price_first_hour'],
                 'price_last_hour' => $material['price_last_hour'],
+                'employee_sale_card_small' => 1
             ]);
         }
     }

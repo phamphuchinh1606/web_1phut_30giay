@@ -126,6 +126,10 @@ class DateTimeHelper{
         return null;
     }
 
+    public static function dateToWeekNo($date){
+        return Carbon::parse($date,self::timezone())->dayOfWeek;
+    }
+
     public static function parseWeekToArray($date){
         $firstDay = Carbon::parse($date,self::timezone())->startOfMonth();
         $lastDay = Carbon::parse($date,self::timezone())->endOfMonth();
