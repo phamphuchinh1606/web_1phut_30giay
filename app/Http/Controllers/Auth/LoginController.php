@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Http\Controllers\Controller;
+use App\Repositories\Eloquents\BranchRepository;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,8 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    protected $branchRepository;
+
     /**
      * Where to redirect users after login.
      *
@@ -37,9 +40,10 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(BranchRepository $branchRepository)
     {
         $this->middleware('guest')->except('logout');
+        $this->branchRepository = $branchRepository;
     }
 
     public function showLoginForm()
@@ -56,7 +60,11 @@ class LoginController extends Controller
 
         if (Auth::attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_is' => 0], $remember)) {
             if(Auth::check()){
-                SessionHelper::setSelectedBranchId(1);
+                $branch = $this->branchRepository->find(1);
+                if(isset($branch)){
+                    SessionHelper::setSelectedBranchId($branch->id);
+                    SessionHelper::setSelectedBranchName($branch->branch_name);
+                }
                 SessionHelper::setSelectedMonth(DateTimeHelper::now());
             }
             return redirect()->route('admin.home');

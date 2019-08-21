@@ -2,7 +2,7 @@
 <script>
     $(document).ready(function(){
         $('input[name=selected_branch]').on('change',function(){
-            SelectedBranchMonth.updateSelectedBranch($(this).val(),callBackUpdate);
+            SelectedBranchMonth.updateSelectedBranch($(this).val(),$(this).closest('div').find('input[name=branch_name]').val(),callBackUpdate);
         });
 
         $('input[name=selected_month]').on('change',function(){
@@ -46,6 +46,7 @@
                         <div class="p-2">
                             <input class="form-check-input" @if(\App\Helpers\SessionHelper::getSelectedBranchId() == $branch->id) checked @endif id="selected_branch_{{$branch->id}}" type="radio" value="{{$branch->id}}" name="selected_branch" >
                             <label for="selected_branch_{{$branch->id}}">{{$branch->branch_name }}</label>
+                            <input type="hidden" name="branch_name" value="{{$branch->branch_name }}">
                         </div>
                     </div>
                 @endforeach

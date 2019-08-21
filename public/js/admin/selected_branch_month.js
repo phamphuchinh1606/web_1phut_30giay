@@ -1,8 +1,8 @@
 /*==============================================================================*/
 if ((typeof SelectedBranchMonth) === 'undefined') { SelectedBranchMonth = {}; }
 
-SelectedBranchMonth.updateSelectedBranch = function(branchId, callback){
-    let data = 'branch_id=' + branchId;
+SelectedBranchMonth.updateSelectedBranch = function(branchId, branchName, callback){
+    let data = 'branch_id=' + branchId + '&branch_name=' + branchName;
     let $body = $(document.body),
         params = {
             type: 'POST',

@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquents;
 
 use App\Common\Constant;
+use App\Models\EmployeeBranch;
 use App\Models\EmployeeDaily;
 use App\Repositories\Base\BaseRepository;
 use App\Models\Employee;
@@ -28,13 +29,25 @@ class EmployeeRepository extends BaseRepository
         }
     }
 
+    public function getEmployeeAll(){
+        $tableEmployeeName = Employee::getTableName();
+        return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)->get();
+    }
+
     public function getEmployeeByBranch($branchId){
-        return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)->where('branch_id',$branchId)->get();
+        $tableEmployeeName = Employee::getTableName();
+        $tableEmployeeBranchName = EmployeeBranch::getTableName();
+        return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
+            ->join($tableEmployeeBranchName,"$tableEmployeeBranchName.employee_id","$tableEmployeeName.id")
+            ->where("$tableEmployeeBranchName.branch_id",$branchId)->get();
     }
 
     public function getEmployeeSaleSmall($branchId){
+        $tableEmployeeName = Employee::getTableName();
+        $tableEmployeeBranchName = EmployeeBranch::getTableName();
         return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
-            ->where('branch_id',$branchId)
+            ->join($tableEmployeeBranchName,"$tableEmployeeBranchName.employee_id","$tableEmployeeName.id")
+            ->where("$tableEmployeeBranchName.branch_id",$branchId)
             ->where('employee_sale_card_small',Constant::EMPLOYEE_SALE_CARD_SMALL)
             ->get();
     }
@@ -42,8 +55,10 @@ class EmployeeRepository extends BaseRepository
     public function getEmployeeDaily($branchId, $date){
         $employeeDailyTable = EmployeeDaily::getTableName();
         $employeeTable = $this->model::getTableName();
+        $tableEmployeeBranchName = EmployeeBranch::getTableName();
         return $this->model->where("$employeeTable.delete_flg",Constant::DELETE_FLG_OFF)
-            ->where("$employeeTable.branch_id",$branchId)
+            ->where("$tableEmployeeBranchName.branch_id",$branchId)
+            ->join($tableEmployeeBranchName,"$tableEmployeeBranchName.employee_id","$employeeTable.id")
             ->leftjoin($employeeDailyTable,function($join) use ($branchId,$date, $employeeTable,$employeeDailyTable){
                 $join->on("$employeeTable.id","$employeeDailyTable.employee_id")
                     ->where("$employeeDailyTable.branch_id",$branchId)

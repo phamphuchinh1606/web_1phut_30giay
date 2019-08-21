@@ -19,7 +19,7 @@ class EmployeeController extends Controller
 
     public function index(){
         $branchId = 1;
-        $employees = $this->employeeRepository->getEmployeeByBranch($branchId);
+        $employees = $this->employeeRepository->getEmployeeAll();
         return $this->viewAdmin('employee.index',[
             'branchId' => $branchId,
             'employees' => $employees

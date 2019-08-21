@@ -10,8 +10,10 @@ class SettingController extends Controller
 {
     public function updateSelectedBranch(Request $request){
         $branchId = $request->branch_id;
+        $branchName = $request->branch_name;
         if(isset($branchId)){
             SessionHelper::setSelectedBranchId($branchId);
+            SessionHelper::setSelectedBranchName($branchName);
             return $this->jsonSuccess();
         }
         return $this->jsonError();
