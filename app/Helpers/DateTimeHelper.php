@@ -16,17 +16,18 @@ class DateTimeHelper{
     }
 
     /**
-     * Get Current DateTime
-     *
-     * @return \DateTime
+     * Get Current Date
+     * @return Carbon
      */
     public static function now()
     {
-        return new \DateTime('now', static::timezone());
+        return Carbon::now(static::timezone());
+//        return new \DateTime('now', static::timezone());
     }
 
     public static function dateFromString($dateStr){
-        return new \DateTime($dateStr,static::timezone());
+//        return new \DateTime($dateStr,static::timezone());
+        return Carbon::parse($dateStr,self::timezone());
     }
 
     public static function dateFormat($value, $format = "d-m-Y H:i"){
@@ -169,6 +170,24 @@ class DateTimeHelper{
             6 => 'Thứ 7',
         ];
         return $weekMap;
+    }
+
+    public static function getArrayMonthByYearCurrent(){
+        $date = self::now();
+        $year = $date->year;
+        $month = $date->month;
+        $day = $date->day;
+        $arrayMonth = [];
+        for($i = 1; $i <= $month ; $i ++){
+            $dateMonth = Carbon::createFromDate($year,$i,$day, self::timezone());
+            $monthItem = new \StdClass();
+            $monthItem->date = $dateMonth;
+            $monthItem->month = $i;
+            $monthItem->month_str = "Tháng $i";
+            $monthItem->date_str = $dateMonth->format('Y/m');
+            $arrayMonth[] = $monthItem;
+        }
+        return array_reverse($arrayMonth);
     }
 
 }

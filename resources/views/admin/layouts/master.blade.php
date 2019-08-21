@@ -91,6 +91,13 @@
         // $(document).ajaxComplete(function() {
         //     Pace.restart()
         // });
+        $(document).ready(function(){
+            $('.sidebar-minimizer').click();
+            $('.sidebar-minimizer').on('click',function(){
+                // alert('vao');
+            });
+        });
+
     </script>
     @include('admin.common.__popup_confirm_delete')
     @yield('body.popup')

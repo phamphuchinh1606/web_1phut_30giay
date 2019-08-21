@@ -3,7 +3,7 @@ if ((typeof InputSaleCartSmallAPI) === 'undefined') { InputSaleCartSmallAPI = {}
 
 InputSaleCartSmallAPI.updateInputDaily = function(note, callback) {
     var data = 'name=' + $(note).attr('name') +
-        '&value='+$(note).val() +
+        '&value='+InputFortmat.originalNumber($(note).val()) +
         '&date=' + $(note).closest('tr').find('input[name=sale_date]').val() +
         "&employee_id="+$(note).closest('td').find('input[name=employee_id]').val();
     var thisItem = $(note);
@@ -39,4 +39,7 @@ InputSaleCartSmallAPI.updateInputDaily = function(note, callback) {
 InputSaleCartSmallAPI.onInputUpdate = function(data, thisItem) {
     thisItem.closest('tr').find('span.qty-target-'+ data.employee_id).html(data.qty_target);
     thisItem.closest('tr').find('span.bonus-amount-' + data.employee_id).html(data.bonus_amount);
+    thisItem.closest('table').find('tfoot span.sum-qty-' + data.employee_id).html(data.sum_qty);
+    thisItem.closest('table').find('tfoot span.sum-qty-target-' + data.employee_id).html(data.sum_qty_target);
+    thisItem.closest('table').find('tfoot span.sum-bonus-amount-' + data.employee_id).html(data.sum_bonus_amount);
 };

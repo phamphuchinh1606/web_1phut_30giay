@@ -7,6 +7,7 @@ use App\Models\OrderCancel;
 use App\Models\OrderCheckIn;
 use App\Models\OrderCheckOut;
 use App\Models\StockDaily;
+use App\Repositories\Eloquents\EmployeeBranchRepository;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
 use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
@@ -47,14 +48,15 @@ class MaterialService extends BaseService {
         PaymentBillRepository $paymentBillRepository,
         SupplierRepository $supplierRepository,
         SettingOfDayRepository $settingOfDayRepository,
-        TimeKeepingService $timeKeepingService,
-        SaleCartSmallRepository $saleCartSmallRepository
+        SaleCartSmallRepository $saleCartSmallRepository,
+        EmployeeBranchRepository $employeeBranchRepository,
+        TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
             $orderCheckOutRepository, $orderCancelRepository, $orderBillRepository, $stockDailyRepository,
             $saleRepository, $productRepository, $employeeRepository, $employeeDailyRepository,
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
-            $saleCartSmallRepository);
+            $saleCartSmallRepository, $employeeBranchRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 

@@ -118,21 +118,21 @@
                                     </td>
                                     <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($material->qty_first)}}</td>
                                     <td>
-                                        <input class="input-daily" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
+                                        <input class="input-daily double" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
                                     </td>
                                     <td class="text-right"><span class="amount_in">{{\App\Helpers\AppHelper::formatMoney($material->amount_in)}}</span></td>
                                     <td>
-                                        <input class="input-daily" name="qty_in_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in_move)}}">
+                                        <input class="input-daily double" name="qty_in_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in_move)}}">
                                     </td>
                                     <td>
-                                        <input class="input-daily" name="qty_out_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_out_move)}}">
+                                        <input class="input-daily double" name="qty_out_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_out_move)}}">
                                     </td>
                                     <td class="text-right"><span class="qty_out">{{\App\Helpers\AppHelper::formatMoney($material->qty_out)}}</span></td>
                                     <td>
-                                        <input class="input-daily" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
+                                        <input class="input-daily double" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
                                     </td>
                                     <td>
-                                        <input class="input-daily" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
+                                        <input class="input-daily double" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
                                     </td>
                                 </tr>
                             @endif
@@ -170,10 +170,10 @@
                                 <td class="text-center">{{$employee->id}}</td>
                                 <td>{{$employee->name}}</td>
                                 <td>
-                                    <input class="input-employee" name="first_hours" value="{{$employee->first_hours}}">
+                                    <input class="input-employee double" name="first_hours" value="{{$employee->first_hours}}">
                                 </td>
                                 <td>
-                                    <input class="input-employee" name="last_hours" value="{{$employee->last_hours}}">
+                                    <input class="input-employee double" name="last_hours" value="{{$employee->last_hours}}">
                                 </td>
                                 <td class="text-right"><span class="total-amount-employee">{{\App\Helpers\AppHelper::formatMoney($employee->total_amount_employee)}}</span></td>
                             </tr>
@@ -209,7 +209,7 @@
                                 <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($product->price)}}</td>
                                 <td class="text-right">
                                     @if($product->id > 4)
-                                        <input class="input-sale" name="product_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty)}}">
+                                        <input class="input-sale double" name="product_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty)}}">
                                         <input type="hidden" name="product_the_same_id" value="{{$product->product_the_same_id}}">
                                         <input type="hidden" name="product_id" value="{{$product->id}}">
                                     @else
@@ -226,7 +226,7 @@
                         <tr>
                             <td colspan="3" class="text-center">Tiền Thực Thu</td>
                             <td class="text-right">
-                                <input class="input-bill" value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
+                                <input class="input-bill double" value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
                             </td>
                         </tr>
                         <tr>
@@ -241,6 +241,7 @@
 @endsection
 
 @section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/input-daily.js')}}"></script>
     <script>
         $(document).ready(function(){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DateTimeHelper;
+use App\Helpers\SessionHelper;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
 use App\Repositories\Eloquents\MaterialRepository;
@@ -14,6 +15,8 @@ use App\Repositories\Eloquents\ProductRepository;
 use App\Repositories\Eloquents\SaleRepository;
 use App\Services\MaterialService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class InputDailyController extends Controller
 {
@@ -54,10 +57,15 @@ class InputDailyController extends Controller
     }
 
     public function index($date = null, Request $request){
-        if(isset($date)) $currentDate = DateTimeHelper::dateFromString($date);
-        else $currentDate = DateTimeHelper::now();
-        $branchId = 1;
-        $infoDays = DateTimeHelper::getArrayDateByCurrentDate(DateTimeHelper::now());
+        $currentDate = SessionHelper::getSelectedMonth();
+        if(isset($date)){
+            if(DateTimeHelper::dateFormat($currentDate,'Y-m') != DateTimeHelper::dateFormat(DateTimeHelper::dateFromString($date),'Y-m')){
+                return redirect()->route('admin.input_daily');
+            }
+            $currentDate = DateTimeHelper::dateFromString($date);
+        }
+        $branchId = SessionHelper::getSelectedBranchId();
+        $infoDays = DateTimeHelper::getArrayDateByCurrentDate(SessionHelper::getSelectedMonth());
         $materialTypes = $this->materialTypeRepository->selectAll();
         $materials = $this->materialRepository->getAllByFormInput($currentDate);
         $employees = $this->employeeRepository->getEmployeeDaily($branchId,$currentDate);

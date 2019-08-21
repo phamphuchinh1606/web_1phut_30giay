@@ -18,7 +18,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
                 $modelObject[$key] = $value;
             }
         }
-        return $modelObject->save();
+        $modelObject->save();
+        return $modelObject;
     }
 
     public function find($id, $relations = [])
@@ -203,9 +204,9 @@ abstract class BaseRepository implements BaseRepositoryInterface
         $keys = $this->model::getPrimaryKeyName();
         if(!is_array($keys)) $keys = [$keys];
         $query = $this->model->whereRaw('1=1');
-        foreach ($keys as $key){
-            if(isset($whereKeys[$key])){
-                $query->where($key, $whereKeys[$key]);
+        foreach ($whereKeys as $key => $value){
+            if(Schema::hasColumn($this->model::getTableName(),$key)){
+                $query->where($key, $value);
             }
         }
         $listModel = $query->get();

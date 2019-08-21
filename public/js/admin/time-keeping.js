@@ -4,7 +4,7 @@ if ((typeof TimeKeepingAPI) === 'undefined') { TimeKeepingAPI = {}; }
 TimeKeepingAPI.updateTimeKeeping = function(note, callback) {
     employeeId = $(note).closest('td').find('input[name=employee_id]').val();
     var data = 'name=' + $(note).attr('name') +
-        '&value='+$(note).val() +
+        '&value='+InputFortmat.originalNumber($(note).val()) +
         '&month=' + $('input[name=current_month]').val() +
         '&employee_id=' + employeeId;
     var thisItem = $(note);

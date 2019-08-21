@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DateTimeHelper;
+use App\Helpers\SessionHelper;
 use App\Models\PaymentBill;
 use App\Repositories\Eloquents\PaymentBillRepository;
 use App\Repositories\Eloquents\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentBillController extends Controller
 {
@@ -20,8 +22,8 @@ class PaymentBillController extends Controller
     }
 
     public function index($id = null,Request $request){
-        $currentDate = DateTimeHelper::now();
-        $branchId = 1;
+        $currentDate = SessionHelper::getSelectedMonth();
+        $branchId = SessionHelper::getSelectedBranchId();
         $paymentBills = $this->paymentBillRepository->getList($branchId,$currentDate);
         $users = $this->userRepository->selectAll();
         if(isset($id)){

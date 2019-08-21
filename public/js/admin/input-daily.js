@@ -3,7 +3,7 @@ if ((typeof InputDailyAPI) === 'undefined') { InputDailyAPI = {}; }
 
 InputDailyAPI.updateInputDaily = function(note, callback) {
     var data = 'name=' + $(note).attr('name') +
-        '&value='+$(note).val() +
+        '&value='+InputFortmat.originalDouble($(note).val()) +
         '&price=' + $(note).closest('tr').find('input[name=price]').val() +
         '&date=' + $('input[name=current_date]').val() +
         "&material_id="+$(note).closest('tr').find('input[name=material_id]').val();
@@ -49,7 +49,7 @@ InputDailyAPI.onInputUpdate = function(data, thisItem) {
 };
 
 InputDailyAPI.updateSaleDaily = function(note ,callback){
-    var data = 'value='+$(note).val() +
+    var data = 'value='+InputFortmat.originalDouble($(note).val()) +
         '&product_id=' + $(note).closest('td').find('input[name=product_id]').val() +
         '&date=' + $('input[name=current_date]').val() +
         "&product_the_same_id="+$(note).closest('td').find('input[name=product_the_same_id]').val();
@@ -93,7 +93,7 @@ InputDailyAPI.onSaleDailyUpdate = function(data, thisItem){
 
 
 InputDailyAPI.updateBillDaily = function (note, callback){
-    var data = 'value='+$(note).val() +
+    var data = 'value='+InputFortmat.originalDouble($(note).val()) +
         '&date=' + $('input[name=current_date]').val();
     var thisItem = $(note);
     var $body = $(document.body),
@@ -130,7 +130,7 @@ InputDailyAPI.onBillUpdate = function(data, thisItem){
 }
 
 InputDailyAPI.updateEmployeeDaily = function(note, callback){
-    var data = 'value='+$(note).val() +
+    var data = 'value='+InputFortmat.originalDouble($(note).val()) +
         '&name=' + $(note).attr('name') +
         '&employee_id=' + $(note).closest('tr').find('input[name=employee_id]').val() +
         '&date=' + $('input[name=current_date]').val();

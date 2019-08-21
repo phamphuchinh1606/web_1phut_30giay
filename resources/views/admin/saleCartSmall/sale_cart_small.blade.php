@@ -11,6 +11,10 @@
         padding: 5px;
         vertical-align: middle !important;
     }
+    table.dataTable th.border-right-solid,
+    table.dataTable td.border-right-solid{
+        border-right: solid 2px;
+    }
 </style>
 
 @section('body.content')
@@ -26,19 +30,19 @@
                 <tr role="row">
                     <th rowspan="2" class="text-center">Ngày</th>
                     <th rowspan="2" class="text-center">Thứ</th>
-                    <th colspan="{{count($employees)}}" class="text-center">Doanh Số (Phần)</th>
-                    <th colspan="{{count($employees)}}" class="text-center">Dư Chỉ Tiêu (Phần)</th>
-                    <th colspan="{{count($employees)}}" class="text-center">Thành Tiền</th>
+                    <th colspan="{{count($employees)}}" class="text-center border-right-solid">Doanh Số (Phần)</th>
+                    <th colspan="{{count($employees)}}" class="text-center border-right-solid">Dư Chỉ Tiêu (Phần)</th>
+                    <th colspan="{{count($employees)}}" class="text-center border-right-solid">Thành Tiền</th>
                 </tr>
                 <tr>
-                    @foreach($employees as $employee)
-                        <th class="text-center" width="80">{{$employee->name}}</th>
+                    @foreach($employees as $key => $employee)
+                        <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
                     @endforeach
-                    @foreach($employees as $employee)
-                        <th class="text-center" width="80">{{$employee->name}}</th>
+                    @foreach($employees as $key => $employee)
+                        <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
                     @endforeach
-                    @foreach($employees as $employee)
-                        <th class="text-center" width="80">{{$employee->name}}</th>
+                    @foreach($employees as $key => $employee)
+                        <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
                     @endforeach
                 </tr>
                 </thead>
@@ -61,21 +65,21 @@
                         <td class="text-center">
                             {{$day->week_day}}
                         </td>
-                        @foreach($day->employee_sale_card_smalls as $saleCardSmall)
-                            <td class="text-right">
-                                <input class="input-sale-card-small" name="qty" value="{{\App\Helpers\AppHelper::formatMoney($saleCardSmall->qty)}}">
+                        @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
+                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
+                                <input class="input-sale-card-small number" name="qty" value="{{\App\Helpers\AppHelper::formatMoney($saleCardSmall->qty)}}">
                                 <input type="hidden" name="employee_id" value="{{$saleCardSmall->employee_id}}">
                             </td>
                         @endforeach
-                        @foreach($day->employee_sale_card_smalls as $saleCardSmall)
-                            <td class="text-right">
+                        @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
+                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
                                 <span class="qty-target-{{$saleCardSmall->employee_id}}">
                                     {{\App\Helpers\AppHelper::formatMoney($saleCardSmall->qty_target)}}
                                 </span>
                             </td>
                         @endforeach
-                        @foreach($day->employee_sale_card_smalls as $saleCardSmall)
-                            <td class="text-right">
+                        @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
+                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
                                 <span class="bonus-amount-{{$saleCardSmall->employee_id}}">
                                     {{\App\Helpers\AppHelper::formatMoney($saleCardSmall->bonus_amount)}}
                                 </span>
@@ -85,8 +89,48 @@
                 @endforeach
                 </tbody>
                 <tfoot>
+                    <tr style="color: red">
+                        <td colspan="2" class="text-center">Tổng</td>
+                        @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
+                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
+                                <span class="sum-qty-{{$saleCardSmall->employee_id}}">
+                                    {{\App\Helpers\AppHelper::formatMoney($saleCardSmall->sum_qty)}}
+                                </span>
+                            </td>
+                        @endforeach
+                        @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
+                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
+                                <span class="sum-qty-target-{{$saleCardSmall->employee_id}}">
+                                    {{\App\Helpers\AppHelper::formatMoney($saleCardSmall->sum_qty_target)}}
+                                </span>
+                            </td>
+                        @endforeach
+                        @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
+                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
+                                <span class="sum-bonus-amount-{{$saleCardSmall->employee_id}}">
+                                    {{\App\Helpers\AppHelper::formatMoney($saleCardSmall->sum_bonus_amount)}}
+                                </span>
+                            </td>
+                        @endforeach
+                    </tr>
+
                     <tr>
-                        <td colspan="2">Tổng</td>
+                        <th rowspan="2" class="text-center">Ngày</th>
+                        <th rowspan="2" class="text-center">Thứ</th>
+                        @foreach($employees as $key => $employee)
+                            <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
+                        @endforeach
+                        @foreach($employees as $key => $employee)
+                            <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
+                        @endforeach
+                        @foreach($employees as $key => $employee)
+                            <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
+                        @endforeach
+                    </tr>
+                    <tr role="row">
+                        <th colspan="{{count($employees)}}" class="text-center border-right-solid">Doanh Số (Phần)</th>
+                        <th colspan="{{count($employees)}}" class="text-center border-right-solid">Dư Chỉ Tiêu (Phần)</th>
+                        <th colspan="{{count($employees)}}" class="text-center border-right-solid">Thành Tiền</th>
                     </tr>
                 </tfoot>
             </table>
@@ -95,6 +139,7 @@
 @endsection
 
 @section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/input-sale-cart-small.js')}}"></script>
     <script>
         $(document).ready(function(){

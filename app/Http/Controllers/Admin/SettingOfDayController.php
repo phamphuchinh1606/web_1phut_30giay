@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DateTimeHelper;
+use App\Helpers\SessionHelper;
 use App\Models\SettingOfDay;
 use App\Repositories\Eloquents\SettingOfDayRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SettingOfDayController extends Controller
 {
@@ -17,7 +19,7 @@ class SettingOfDayController extends Controller
     }
 
     public function index(){
-        $branchId = 1;
+        $branchId = SessionHelper::getSelectedBranchId();
         $weekMap = DateTimeHelper::getWeekArray();
         $listOfDay = $this->settingOfDayRepository->getByKey(array('branch_id' => $branchId));
         $settingWeekOfDays = [];
@@ -38,7 +40,7 @@ class SettingOfDayController extends Controller
     }
 
     public function saveSettingDay(Request $request){
-        $branchId = 1;
+        $branchId = SessionHelper::getSelectedBranchId();
         $typeDay = $request->type_day;
         if(SettingOfDay::TYPE_OFF_WEEK == $typeDay){
             $this->settingOfDayRepository->deleteLogic(array(

@@ -19,6 +19,15 @@ class EmployeeRepository extends BaseRepository
         $this->model = $model;
     }
 
+    public function delete($id){
+        $itemModel = $this->model->find($id);
+        if(isset($itemModel)){
+            $itemModel->deleteRelation();
+            $itemModel->delete_flg = 1;
+            $itemModel->save();
+        }
+    }
+
     public function getEmployeeByBranch($branchId){
         return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)->where('branch_id',$branchId)->get();
     }

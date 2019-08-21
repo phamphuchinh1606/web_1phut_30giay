@@ -10,15 +10,16 @@
 @endsection
 
 @section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
     <script src="{{asset('js/admin/plugins/moment.min.js') }}" type='text/javascript'></script>
     <script src="{{asset('js/admin/plugins/daterangepicker.min.js') }}" type='text/javascript'></script>
     <script src="{{asset('js/admin/date-picker.js') }}" type='text/javascript'></script>
     <script>
         $(document).ready(function(){
             $('.input-qty-price').on('change',function(){
-                var qty = $('input[name=qty]').val();
-                var price = $('input[name=price]').val();
-                $('input[name=amount]').val(qty * price);
+                var qty = InputFortmat.originalDouble($('input[name=qty]').val());
+                var price = InputFortmat.originalNumber($('input[name=price]').val());
+                $('input[name=amount]').val((qty * price).toLocaleString( "en-US" ));
             });
         });
     </script>
@@ -46,19 +47,19 @@
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label for="qty">Số Lượng</label>
-                            <input class="form-control text-right input-qty-price" value="{{$paymentBill->qty}}" id="qty" type="number" name="qty" placeholder="Nhập số lượng" required>
+                            <input class="form-control text-right input-qty-price double" value="{{$paymentBill->qty}}" id="qty" type="text" name="qty" placeholder="Nhập số lượng" required>
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label for="price">Đơn Giá</label>
-                            <input class="form-control text-right input-qty-price" value="{{$paymentBill->price}}" id="price" type="text" name="price" required placeholder="Đơn giá">
+                            <input class="form-control text-right input-qty-price number" value="{{$paymentBill->price}}" id="price" type="text" name="price" required placeholder="Đơn giá" required>
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label for="amount">Thành Tiền</label>
-                            <input class="form-control text-right" id="amount" value="{{$paymentBill->amount}}" name="amount" type="text" placeholder="Thành tiền" readonly>
+                            <input class="form-control text-right number" id="amount" value="{{$paymentBill->amount}}" name="amount" type="text" placeholder="Thành tiền" required>
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -108,7 +109,7 @@
                                 <span>{{\App\Helpers\DateTimeHelper::dateToWeek($paymentBill->bill_date)}}</span>
                             </td>
                             <td>{{$paymentBill->note}}</td>
-                            <td class="text-right">{{$paymentBill->qty}}</td>
+                            <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->qty)}}</td>
                             <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->price)}}</td>
                             <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->amount)}}</td>
                             <td>@if(isset($paymentBill->user)){{$paymentBill->user->name}}@endif</td>

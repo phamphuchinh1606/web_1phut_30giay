@@ -2,6 +2,7 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Repositories\Eloquents\BranchRepository;
 use App\Repositories\Eloquents\SettingRepository;
 use Illuminate\View\View;
 
@@ -14,7 +15,11 @@ class AppInfoComposer
      */
     protected $settingService;
 
+    protected $branchRepository;
+
     private static $appInfo;
+
+    private static $branches;
 
     /**
      * Create a new profile composer.
@@ -22,10 +27,11 @@ class AppInfoComposer
      * @param  UserRepository  $users
      * @return void
      */
-    public function __construct(SettingRepository $settingService)
+    public function __construct(SettingRepository $settingService, BranchRepository $branchRepository)
     {
         // Dependencies automatically resolved by service container...
         $this->settingService = $settingService;
+        $this->branchRepository = $branchRepository;
     }
 
     /**
@@ -39,6 +45,10 @@ class AppInfoComposer
         if(!isset(self::$appInfo)){
             self::$appInfo = $this->settingService->firstOrNew(['id' => 1]);
         }
-        $view->with('appInfo', self::$appInfo);
+        if(!isset(self::$branches)){
+            self::$branches = $this->branchRepository->selectAll();
+        }
+        $view->with('appInfo', self::$appInfo)
+            ->with('branches',self::$branches);
     }
 }

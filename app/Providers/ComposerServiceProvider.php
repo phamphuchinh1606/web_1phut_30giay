@@ -15,7 +15,7 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         //Build data app info
-        View::composer(['admin.layouts.*'],
+        View::composer(['admin.*'],
             'App\Http\ViewComposers\AppInfoComposer');
     }
 

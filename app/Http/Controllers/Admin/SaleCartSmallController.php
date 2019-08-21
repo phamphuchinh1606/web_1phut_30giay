@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DateTimeHelper;
+use App\Helpers\SessionHelper;
 use App\Services\SaleReportService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SaleCartSmallController extends Controller
 {
@@ -16,8 +18,8 @@ class SaleCartSmallController extends Controller
     }
 
     public function index(){
-        $branchId = 1;
-        $currentDate = DateTimeHelper::now();
+        $currentDate = SessionHelper::getSelectedMonth();
+        $branchId = SessionHelper::getSelectedBranchId();
         $result = $this->saleReportService->getSaleCartSmall($branchId,$currentDate);
         return $this->viewAdmin('saleCartSmall.sale_cart_small',[
             'branchId' => $branchId,

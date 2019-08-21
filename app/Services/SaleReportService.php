@@ -112,10 +112,11 @@ class SaleReportService extends BaseService {
         $sumSaleCartSmall = $this->saleCartSmallRepository->getSumSaleSmallByMonth($branchId,$date);
 
         $arraySaleCardSmall = ArrayHelper::parseListObjectToArrayKey($saleCartSmalls,array('employee_id','sale_date'));
-        $arraySumSaleCardSmall = ArrayHelper::parseListObjectToArrayKey($sumSaleCartSmall,array('employee_id','sale_date'));
+        $arraySumSaleCardSmall = ArrayHelper::parseListObjectToArrayKey($sumSaleCartSmall,'employee_id');
 
         foreach ($infoDays as $day) {
             $keyDate = $day->date->format('Y-m-d');
+            $day->employee_sale_card_smalls = [];
             foreach ($employees as $employee){
                 $key = $employee->id.'_'.$keyDate;
                 $saleCardSmall = new SaleCardSmall();
@@ -123,10 +124,10 @@ class SaleReportService extends BaseService {
                 if(isset($arraySaleCardSmall[$key])){
                     $saleCardSmall = $arraySaleCardSmall[$key];
                 }
-                if(isset($arraySumSaleCardSmall[$key])){
-                    $saleCardSmall->sum_qty = $arraySumSaleCardSmall[$key]->sum_qty;
-                    $saleCardSmall->sum_qty_target = $arraySumSaleCardSmall[$key]->sum_qty_target;
-                    $saleCardSmall->sum_bonus_amount = $arraySumSaleCardSmall[$key]->sum_bonus_amount;
+                if(isset($arraySumSaleCardSmall[$employee->id])){
+                    $saleCardSmall->sum_qty = $arraySumSaleCardSmall[$employee->id]->sum_qty;
+                    $saleCardSmall->sum_qty_target = $arraySumSaleCardSmall[$employee->id]->sum_qty_target;
+                    $saleCardSmall->sum_bonus_amount = $arraySumSaleCardSmall[$employee->id]->sum_bonus_amount;
                 }else{
                     $saleCardSmall->sum_qty = 0;
                     $saleCardSmall->sum_qty_target = 0;
@@ -159,7 +160,11 @@ class SaleReportService extends BaseService {
             if($qtyTarget < $step * $i){
                 $qtyStep = $qtyTarget -  $step * ($i-1);
             }
-            $bonusAmount+= $stepAmount[$i-1]  * $qtyStep;
+            if(count($stepAmount) > $i-1){
+                $bonusAmount+= $stepAmount[$i-1]  * $qtyStep;
+            }else{
+                $bonusAmount+= $stepAmount[count($stepAmount)-1]  * $qtyStep;
+            }
         }
         $qtyTarget = $qtyTarget < 0 ? 0 : $qtyTarget;
         $updateValues = array(
@@ -174,9 +179,13 @@ class SaleReportService extends BaseService {
         );
 
         $saleCartSmall = $this->saleCartSmallRepository->updateOrCreate($updateValues, $whereValues);
+        $sumSaleCartSmall = $this->saleCartSmallRepository->getSumSaleSmallByMonth($branchId,$dailyDate, $employeeId);
         $result['qty_target'] = AppHelper::formatMoney($qtyTarget);
         $result['bonus_amount'] = AppHelper::formatMoney($bonusAmount);
         $result['employee_id'] = $employeeId;
+        $result['sum_qty'] = AppHelper::formatMoney($sumSaleCartSmall->sum_qty);
+        $result['sum_qty_target'] = AppHelper::formatMoney($sumSaleCartSmall->sum_qty_target);
+        $result['sum_bonus_amount'] = AppHelper::formatMoney($sumSaleCartSmall->sum_bonus_amount);
         return $result;
     }
 

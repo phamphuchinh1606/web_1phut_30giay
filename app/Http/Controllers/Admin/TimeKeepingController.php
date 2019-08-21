@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DateTimeHelper;
+use App\Helpers\SessionHelper;
 use App\Models\EmployeeDaily;
 use App\Models\EmployeeTimeKeeping;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
@@ -10,6 +11,7 @@ use App\Repositories\Eloquents\EmployeeRepository;
 use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
 use App\Services\TimeKeepingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TimeKeepingController extends Controller
 {
@@ -21,8 +23,8 @@ class TimeKeepingController extends Controller
     }
 
     public function index(){
-        $currentDate = DateTimeHelper::now();
-        $branchId = 1;
+        $currentDate = SessionHelper::getSelectedMonth();
+        $branchId = SessionHelper::getSelectedBranchId();
         $result = $this->timeKeepingService->getTimeKeeping($branchId, $currentDate);
         return $this->viewAdmin('timekeeping.time_keeping',[
             'currentDate' => $currentDate,

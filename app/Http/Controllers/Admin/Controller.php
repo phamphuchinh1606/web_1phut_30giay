@@ -82,4 +82,15 @@ class Controller extends BaseController
         }
         return response()->json($dataJson);
     }
+
+    public function jsonSuccess(){
+        $result['status'] = 0;
+        return response()->json($result);
+    }
+
+    public function jsonError($message = "Error"){
+        $result['status'] = 1;
+        $result['message'] = $message;
+        return response()->json($result);
+    }
 }

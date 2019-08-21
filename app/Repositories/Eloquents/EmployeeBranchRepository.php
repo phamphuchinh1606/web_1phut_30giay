@@ -1,20 +1,20 @@
 <?php
 
+
 namespace App\Repositories\Eloquents;
 
-use App\User;
 use App\Repositories\Base\BaseRepository;
+use App\Models\EmployeeBranch;
 
 /**
  * Class ChannelBotRepository
  *
  * @package App\Repositories\Eloquents
  */
-class UserRepository extends BaseRepository
+class EmployeeBranchRepository extends BaseRepository
 {
-    public function __construct(User $model)
+    public function __construct(EmployeeBranch $model)
     {
         $this->model = $model;
     }
-
 }

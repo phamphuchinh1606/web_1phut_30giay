@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Helpers\DateTimeHelper;
 use App\Models\OrderCancel;
 use App\Models\SettingOfDay;
+use App\Repositories\Eloquents\EmployeeBranchRepository;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
 use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
@@ -36,6 +37,7 @@ class BaseService {
     protected $saleRepository;
     protected $productRepository;
     protected $employeeRepository;
+    protected $employeeBranchRepository;
     protected $employeeDailyRepository;
     protected $employeeTimeKeepingRepository;
     protected $paymentBillRepository;
@@ -49,7 +51,7 @@ class BaseService {
                 StockDailyRepository $stockDailyRepository, SaleRepository $saleRepository, ProductRepository $productRepository,
                 EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository, EmployeeTimeKeepingRepository $employeeTimeKeepingRepository,
                 PaymentBillRepository $paymentBillRepository, SupplierRepository $supplierRepository, SettingOfDayRepository $settingOfDayRepository,
-                SaleCartSmallRepository $saleCartSmallRepository)
+                SaleCartSmallRepository $saleCartSmallRepository, EmployeeBranchRepository $employeeBranchRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -62,6 +64,7 @@ class BaseService {
         $this->saleRepository = $saleRepository;
         $this->productRepository = $productRepository;
         $this->employeeRepository = $employeeRepository;
+        $this->employeeBranchRepository = $employeeBranchRepository;
         $this->employeeDailyRepository = $employeeDailyRepository;
         $this->employeeTimeKeepingRepository = $employeeTimeKeepingRepository;
         $this->paymentBillRepository = $paymentBillRepository;

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Repositories\Eloquents\EmployeeRepository;
+use App\Services\EmployeeService;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     private $employeeRepository;
+    private $employeeService;
 
-    public function __construct(EmployeeRepository $employeeRepository)
+    public function __construct(EmployeeRepository $employeeRepository, EmployeeService $employeeService)
     {
         $this->employeeRepository = $employeeRepository;
+        $this->employeeService = $employeeService;
     }
 
     public function index(){
@@ -32,7 +35,7 @@ class EmployeeController extends Controller
 
     public function create(Request $request){
         $values = $request->all();
-        $this->employeeRepository->create($values);
+        $this->employeeService->createEmployee($values);
         return redirect()->route('admin.employee')->with('message','Cập Nhật Thành Công');
     }
 
@@ -46,7 +49,7 @@ class EmployeeController extends Controller
     public function update($id, Request $request){
         $values = $request->all();
         $values['id'] = $id;
-        $this->employeeRepository->update($values);
+        $this->employeeService->updateEmployee($values);
         return redirect()->route('admin.employee')->with('message','Cập Nhật Thành Công');
     }
 

@@ -175,7 +175,7 @@
                         <td colspan="2" class="text-center">Chuyên Cần</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input class="input-time-keeping" name="diligence_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->diligence_amount)}}">
+                                <input class="input-time-keeping number" name="diligence_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->diligence_amount)}}">
                                 <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
@@ -185,7 +185,7 @@
                         <td colspan="2" class="text-center">Phụ Cấp</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input class="input-time-keeping" name="allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->allowance_amount)}}">
+                                <input class="input-time-keeping number" name="allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->allowance_amount)}}">
                                 <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
@@ -195,7 +195,7 @@
                         <td colspan="2" class="text-center">Thưởng</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input class="input-time-keeping" name="bonus_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->bonus_amount)}}">
+                                <input class="input-time-keeping number" name="bonus_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->bonus_amount)}}">
                                 <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
@@ -205,7 +205,7 @@
                         <td colspan="2" class="text-center">Phụ Cấp Thêm</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input class="input-time-keeping" name="extra_allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->extra_allowance_amount)}}">
+                                <input class="input-time-keeping number" name="extra_allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->extra_allowance_amount)}}">
                                 <input type="hidden" name="employee_id" value="{{$employee->id}}">
                             </td>
                         @endforeach
@@ -232,6 +232,7 @@
 @endsection
 
 @section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/time-keeping.js')}}"></script>
     <script>
         $(document).ready(function(){

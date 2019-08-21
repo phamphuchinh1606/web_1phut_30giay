@@ -50,6 +50,13 @@ class TimeKeepingService extends BaseService {
                 $daySumWeek = $day;
                 $totalWeekAmount = 0;
             }
+            $day->total_first_hour = 0;
+            $day->total_last_hour = 0;
+            $day->total_first_amount = 0;
+            $day->total_last_amount = 0;
+            $day->total_amount = 0;
+            $day->employeeDailies = [];
+
             foreach ($employees as $index => $employee){
                 $key = $employee->id.'_'.$day->date->format('Y-m-d');
                 $employeeDaily = new EmployeeDaily();
