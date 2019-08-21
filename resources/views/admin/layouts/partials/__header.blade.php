@@ -9,17 +9,23 @@
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>
     </button>
-    {{--<ul class="nav navbar-nav d-md-down-none">--}}
-        {{--<li class="nav-item px-3">--}}
-            {{--<a class="nav-link" href="#">Dashboard</a>--}}
-        {{--</li>--}}
-        {{--<li class="nav-item px-3">--}}
-            {{--<a class="nav-link" href="#">Users</a>--}}
-        {{--</li>--}}
-        {{--<li class="nav-item px-3">--}}
-            {{--<a class="nav-link" href="#">Settings</a>--}}
-        {{--</li>--}}
-    {{--</ul>--}}
+{{--    <span>{{\App\Helpers\SessionHelper::getSelectedBranchName()}}</span>--}}
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item px-3">
+            <span class="font-weight-bold">{{\App\Helpers\SessionHelper::getSelectedBranchName()}}</span>
+        </li>
+    </ul>
+            {{--    <ul class="nav navbar-nav d-md-down-none">--}}
+{{--        <li class="nav-item px-3">--}}
+{{--            <a class="nav-link" href="#">Dashboard</a>--}}
+{{--        </li>--}}
+{{--        <li class="nav-item px-3">--}}
+{{--            <a class="nav-link" href="#">Users</a>--}}
+{{--        </li>--}}
+{{--        <li class="nav-item px-3">--}}
+{{--            <a class="nav-link" href="#">Settings</a>--}}
+{{--        </li>--}}
+{{--    </ul>--}}
     <ul class="nav navbar-nav ml-auto">
         {{--<li class="nav-item dropdown d-md-down-none">--}}
             {{--<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">--}}

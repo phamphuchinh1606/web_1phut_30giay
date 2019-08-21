@@ -74,9 +74,10 @@
                 @endforeach
             </nav>
         </div>
-        <div class="card-body">
+        <div class="card-body p-1">
+
             <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
-                   role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
+                   role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important;width: 100%;overflow-x: auto;display: block;">
                 <thead>
                 <tr role="row">
                     <th rowspan="2" class="text-center no">MSP</th>
@@ -149,6 +150,7 @@
                     </tr>
                 </tfoot>
             </table>
+
             <div>
                 <h2>Bản Chấm Công</h2>
                 <table class="table table-striped table-bordered datatable dataTable no-footer" style="float:left">
