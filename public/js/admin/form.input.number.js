@@ -6,10 +6,13 @@ InputFortmat.formatNumber = function (inputs) {
         // Get the value.
         var input = $this.val();
         var input = input.replace(/[\D\s\._\-]+/g, "");
-        input = input ? parseInt( input, 10 ) : 0;
-        $this.val( function() {
-            return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
-        } );
+        if(input){
+            input = input ? parseInt( input, 10 ) : 0;
+            $this.val( function() {
+                // return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+                return input.toLocaleString( "en-US" );
+            } );
+        }
     });
     inputs.on( "keyup", function( event ) {
         // When user select text in the document, also abort.
@@ -27,7 +30,8 @@ InputFortmat.formatNumber = function (inputs) {
         var input = input.replace(/[\D\s\._\-]+/g, "");
         input = input ? parseInt( input, 10 ) : 0;
         $this.val( function() {
-            return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+            // return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+            return input.toLocaleString( "en-US" );
         } );
     } );
 };
@@ -42,12 +46,15 @@ InputFortmat.formatDouble = function (inputs){
         // Get the value.
         var input = $this.val();
         var input = input.replace(/[^\d\.]+/g, "");
-        if(!input.endsWith('.') || input.match(/\./g).length > 1){
-            input = input ? parseFloat( input ) : 0;
+        if(input){
+            if(!input.endsWith('.') || input.match(/\./g).length > 1){
+                input = input ? parseFloat( input ) : 0;
+            }
+            $this.val( function() {
+                // return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+                return input.toLocaleString( "en-US" );
+            } );
         }
-        $this.val( function() {
-            return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
-        } );
     });
     inputs.on( "keyup", function( event ) {
         // When user select text in the document, also abort.
@@ -67,7 +74,8 @@ InputFortmat.formatDouble = function (inputs){
             input = input ? parseFloat( input ) : 0;
         }
         $this.val( function() {
-            return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+            // return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+            return input.toLocaleString( "en-US" );
         } );
     } );
 };

@@ -24,9 +24,13 @@ class OrderCheckInRepository extends BaseRepository
         return $this->model::where('check_in_date',$date->format('Y-d-m'))->get();
     }
 
-    public function getTotalAmountByDate($branchId,$date){
+    public function getTotalAmountByDate($branchId,$date, $orderCheckInType = null){
         if(!is_string($date)) $date = $date->format('Y-m-d');
-        return $this->model::where('branch_id',$branchId)->where('check_in_date',$date)->sum('amount');
+        $query = $this->model::where('branch_id',$branchId)->where('check_in_date',$date);
+        if(isset($orderCheckInType)){
+            $query->where('order_check_in_type',$orderCheckInType);
+        }
+        return $query->sum('amount');
     }
 
     public function getTotalAmountByMonth($branchId, $date){

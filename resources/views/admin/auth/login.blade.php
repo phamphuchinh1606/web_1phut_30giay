@@ -10,7 +10,7 @@
     <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
     <meta name="author" content="Łukasz Holeczek">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-    <title>CoreUI Pro Bootstrap Admin Template</title>
+    <title>Quan Ly - 1 Phut 30 Giay</title>
 
     <link href="{{asset('css/admin/plugins/coreui-icons.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/admin/plugins/flag-icon.min.css')}}" rel="stylesheet">

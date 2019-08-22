@@ -39,7 +39,7 @@
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label for="bill_date">Ngày Chi</label>
-                            <div class="col-md-10">
+                            <div class="">
                                 <input class="form-control date-picker" id="bill_date" type="text" name="bill_date" required>
                             </div>
                         </div>
@@ -93,10 +93,10 @@
                 <thead>
                 <tr role="row">
                     <th class="text-center date" width="100">Ngày Chi</th>
-                    <th class="text-center" width="300">Lý Do Chi</th>
                     <th class="text-center" width="100">Số Lượng</th>
                     <th class="text-center" width="100">Đơn Giá(đ)</th>
                     <th class="text-center" width="120">Thành Tiền(đ)</th>
+                    <th class="text-center" width="300">Lý Do Chi</th>
                     <th class="text-center" width="150">Người Chi</th>
                     <th class="text-center"></th>
                 </tr>
@@ -108,10 +108,10 @@
                                 {{\App\Helpers\DateTimeHelper::dateFormat($paymentBill->bill_date,'Y/m/d')}}<br/>
                                 <span>{{\App\Helpers\DateTimeHelper::dateToWeek($paymentBill->bill_date)}}</span>
                             </td>
-                            <td>{{$paymentBill->note}}</td>
                             <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->qty)}}</td>
                             <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->price)}}</td>
                             <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->amount)}}</td>
+                            <td>{{$paymentBill->note}}</td>
                             <td>@if(isset($paymentBill->user)){{$paymentBill->user->name}}@endif</td>
                             <td class="text-center">
                                 <a class="btn btn-info" href="{{route('admin.payment_bill.update',['id' => $paymentBill->id])}}">

@@ -42,6 +42,12 @@
                     Phiếu Chi
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('admin.finance')}}">
+                    <i class="nav-icon icon-fire"></i>
+                    Tài Chính
+                </a>
+            </li>
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#">
                     <i class="nav-icon icon-settings"></i> Cài Đặt</a>

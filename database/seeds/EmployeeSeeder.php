@@ -16,31 +16,37 @@ class EmployeeSeeder extends Seeder
         $arrayMaterial = [
             [
                 'branch_id' => 1,
-                'name' => 'Phạm Ly',
+                'name' => 'Ly',
                 'price_first_hour' => 25000,
                 'price_last_hour' => 25000,
             ],
             [
                 'branch_id' => 1,
-                'name' => 'Đang Thùy',
+                'name' => 'Thùy',
                 'price_first_hour' => 20000,
                 'price_last_hour' => 20000,
             ],
             [
                 'branch_id' => 1,
-                'name' => 'Phú Chinh',
+                'name' => 'Chinh',
                 'price_first_hour' => 20000,
                 'price_last_hour' => 20000,
             ],
             [
                 'branch_id' => 1,
-                'name' => 'Hoàng',
+                'name' => 'Lực',
                 'price_first_hour' => 20000,
                 'price_last_hour' => 20000,
             ],
             [
                 'branch_id' => 1,
-                'name' => 'Khang',
+                'name' => 'Linh',
+                'price_first_hour' => 20000,
+                'price_last_hour' => 20000,
+            ],
+            [
+                'branch_id' => 1,
+                'name' => 'Định',
                 'price_first_hour' => 20000,
                 'price_last_hour' => 20000,
             ],

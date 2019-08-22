@@ -17,17 +17,17 @@ class UserSeeder extends Seeder
         $arrayUsers = [
             [
                 'name' => 'Phạm Ly',
-                'email' => 'phamly@gmail.com',
+                'email' => 'phamly',
                 'password' => '123456',
             ],
             [
                 'name' => 'Đang Thùy',
-                'email' => 'dangthuy@gmail.com',
+                'email' => 'phamthuy',
                 'password' => '123456',
             ],
             [
                 'name' => 'Phú Chinh',
-                'email' => 'phuchinh@gmail.com',
+                'email' => 'phamphuchinh',
                 'password' => '123456',
             ]
         ];

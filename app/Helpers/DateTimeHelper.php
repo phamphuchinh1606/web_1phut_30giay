@@ -25,6 +25,16 @@ class DateTimeHelper{
 //        return new \DateTime('now', static::timezone());
     }
 
+    public static function truncateTime(Carbon $date){
+        if(isset($date)){
+            $date->setHour(0);
+            $date->setMinute(0);
+            $date->setSecond(0);
+            $date->setMicrosecond(0);
+        }
+        return $date;
+    }
+
     public static function dateFromString($dateStr){
 //        return new \DateTime($dateStr,static::timezone());
         return Carbon::parse($dateStr,self::timezone());

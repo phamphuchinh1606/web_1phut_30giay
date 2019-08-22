@@ -20,7 +20,7 @@
             <input name="current_month" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m')}}">
         </div>
         <div class="card-body">
-            <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
+            <table class="table table-striped table-bordered datatable dataTable no-footer table-overflow-x" id="DataTables_Table_0"
                    role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
                 <thead>
                 <tr role="row">

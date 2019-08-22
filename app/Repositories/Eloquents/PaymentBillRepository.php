@@ -40,4 +40,14 @@ class PaymentBillRepository extends BaseRepository
             ->get();
     }
 
+    public function getTotalAmountByMonth($branchId, $date){
+        if(is_string($date)) $date = DateTimeHelper::dateFromString($date);
+        $firstDate = DateTimeHelper::startOfMonth($date,'Y-m-d');
+        $lastDate = DateTimeHelper::endOfMonth($date,'Y-m-d');
+        return $this->model::where('branch_id',$branchId)
+            ->where('bill_date', '>=' , $firstDate)
+            ->where('bill_date', '<=', $lastDate)
+            ->sum('amount');
+    }
+
 }

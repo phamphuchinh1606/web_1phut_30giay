@@ -94,7 +94,7 @@ class MaterialRepository extends BaseRepository
                 "$orderCheckOutTableName.qty as qty_out",
                 "$orderCheckOutMoveTableName.qty as qty_out_move",
                 "$orderCancelTableName.qty as qty_cancel",
-                "$stockFirstDailyTableName.qty as qty_first",
+                \DB::raw("IFNULL($stockFirstDailyTableName.qty,0) as qty_first"),
                 "$stockDailyTableName.qty as qty_last")
             ->get();
     }

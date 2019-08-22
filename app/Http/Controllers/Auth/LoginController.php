@@ -72,4 +72,13 @@ class LoginController extends Controller
             return redirect()->route('admin.login')->withErrors('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại!');
         }
     }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/admin');
+    }
 }

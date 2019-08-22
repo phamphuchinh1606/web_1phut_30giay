@@ -24,14 +24,14 @@
             <input name="current_month" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m')}}">
         </div>
         <div class="card-body">
-            <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
+            <table class="table table-striped table-bordered datatable dataTable no-footer table-input-sm table-overflow-x" id="DataTables_Table_0"
                    role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
                 <thead>
                 <tr role="row">
                     <th rowspan="2" class="text-center">Ngày</th>
                     <th rowspan="2" class="text-center">Thứ</th>
                     <th colspan="{{count($employees)}}" class="text-center border-right-solid">Doanh Số (Phần)</th>
-                    <th colspan="{{count($employees)}}" class="text-center border-right-solid">Dư Chỉ Tiêu (Phần)</th>
+                    <th colspan="{{count($employees)}}" class="text-center border-right-solid hide-item-sm">Dư Chỉ Tiêu (Phần)</th>
                     <th colspan="{{count($employees)}}" class="text-center border-right-solid">Thành Tiền</th>
                 </tr>
                 <tr>
@@ -39,7 +39,7 @@
                         <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
                     @endforeach
                     @foreach($employees as $key => $employee)
-                        <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
+                        <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif hide-item-sm" width="80">{{$employee->name}}</th>
                     @endforeach
                     @foreach($employees as $key => $employee)
                         <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
@@ -67,12 +67,12 @@
                         </td>
                         @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
                             <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
-                                <input class="input-sale-card-small number" name="qty" value="{{\App\Helpers\AppHelper::formatMoney($saleCardSmall->qty)}}">
+                                <input class="form-control input-sale-card-small number" name="qty" value="{{\App\Helpers\AppHelper::formatMoney($saleCardSmall->qty)}}">
                                 <input type="hidden" name="employee_id" value="{{$saleCardSmall->employee_id}}">
                             </td>
                         @endforeach
                         @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
-                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
+                            <td class="text-right hide-item-sm @if($key == count($employees) -1 ) border-right-solid @endif">
                                 <span class="qty-target-{{$saleCardSmall->employee_id}}">
                                     {{\App\Helpers\AppHelper::formatMoney($saleCardSmall->qty_target)}}
                                 </span>
@@ -99,7 +99,7 @@
                             </td>
                         @endforeach
                         @foreach($day->employee_sale_card_smalls as $key => $saleCardSmall)
-                            <td class="text-right @if($key == count($employees) -1 ) border-right-solid @endif">
+                            <td class="text-right hide-item-sm @if($key == count($employees) -1 ) border-right-solid @endif">
                                 <span class="sum-qty-target-{{$saleCardSmall->employee_id}}">
                                     {{\App\Helpers\AppHelper::formatMoney($saleCardSmall->sum_qty_target)}}
                                 </span>
@@ -121,7 +121,7 @@
                             <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
                         @endforeach
                         @foreach($employees as $key => $employee)
-                            <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
+                            <th class="text-center hide-item-sm @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
                         @endforeach
                         @foreach($employees as $key => $employee)
                             <th class="text-center @if($key == count($employees) -1 ) border-right-solid @endif" width="80">{{$employee->name}}</th>
@@ -129,7 +129,7 @@
                     </tr>
                     <tr role="row">
                         <th colspan="{{count($employees)}}" class="text-center border-right-solid">Doanh Số (Phần)</th>
-                        <th colspan="{{count($employees)}}" class="text-center border-right-solid">Dư Chỉ Tiêu (Phần)</th>
+                        <th colspan="{{count($employees)}}" class="text-center border-right-solid hide-item-sm">Dư Chỉ Tiêu (Phần)</th>
                         <th colspan="{{count($employees)}}" class="text-center border-right-solid">Thành Tiền</th>
                     </tr>
                 </tfoot>

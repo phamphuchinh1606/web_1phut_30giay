@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\AppHelper;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
@@ -87,7 +88,8 @@ class InputDailyController extends Controller
             'sales' => $sales,
             'orderBill' => $orderBill,
             'totalAmountCheckIn' => $totalAmountCheckIn,
-            'totalAmountCheckOut' => $totalAmountCheckOut
+            'totalAmountCheckOut' => $totalAmountCheckOut,
+            'editForm' => $this->checkEditFormByDate($branchId,$currentDate) ? 1 : 0
         ]);
     }
 
@@ -109,5 +111,16 @@ class InputDailyController extends Controller
     public function updateEmployee(Request $request){
         $resultQty = $this->materialService->updateEmployee($request->all());
         return response()->json($resultQty);
+    }
+
+    private function checkEditFormByDate($branchId,$date){
+        $currentDate = DateTimeHelper::now();
+        for($i = 1 ; $i < 10 ; $i ++){
+            if(!$this->materialService->checkDateIsOfDay($branchId,$currentDate)){
+                return (DateTimeHelper::truncateTime($currentDate->addDay(-1)) <=  DateTimeHelper::truncateTime($date));
+            }
+            $currentDate = $currentDate->addDay(-1);
+        }
+        return false;
     }
 }

@@ -24,17 +24,17 @@
                 <thead>
                 <tr role="row">
                     <th width="80" rowspan="2">Ngày</th>
-                    <th width="80" rowspan="2">Thứ</th>
-                    <th colspan="{{count($products)}}" class="text-center sale-num">Số Lượng Bán</th>
+                    <th width="80" rowspan="2" class="hide-item-sm">Thứ</th>
+                    <th colspan="{{count($products)}}" class="text-center sale-num hide-item-sm">Số Lượng Bán</th>
                     <th rowspan="2" class="text-center" width="80">Tổng Phần</th>
-                    <th rowspan="2" class="text-center" width="80">Tổng Tiền</th>
-                    <th rowspan="2" class="text-center" width="80">Tiền Thu Thực Tế</th>
-                    <th rowspan="2" class="text-center" width="80">Tiền Thiếu</th>
+                    <th rowspan="2" class="text-center hide-item-sm" width="80">Tổng Tiền</th>
+                    <th rowspan="2" class="text-center" width="80">Tiền Thực Tế</th>
+                    <th rowspan="2" class="text-center hide-item-sm" width="80">Tiền Thiếu</th>
                     <th rowspan="2" colspan="2"></th>
                 </tr>
                 <tr>
                     @foreach($products as $product)
-                        <th class="text-center" width="120">{{$product->product_name}}</th>
+                        <th class="text-center hide-item-sm" width="120">{{$product->product_name}}</th>
                     @endforeach
                 </tr>
                 </thead>
@@ -51,24 +51,24 @@
                             <td class="text-center">
                                 {{$day->date_str}}
                             </td>
-                            <td class="text-center">
+                            <td class="text-center hide-item-sm">
                                 {{$day->week_day}}
                             </td>
                             @foreach($day->sale_products as $saleProduct)
-                                <td class="text-right">
+                                <td class="text-right hide-item-sm">
                                     {{\App\Helpers\AppHelper::formatMoney($saleProduct->qty)}}
                                 </td>
                             @endforeach
                             <td class="text-right">
                                 {{\App\Helpers\AppHelper::formatMoney($day->sum_qty)}}
                             </td>
-                            <td class="text-right">
+                            <td class="text-right hide-item-sm">
                                 {{\App\Helpers\AppHelper::formatMoney($day->sum_amount)}}
                             </td>
                             <td  class="text-right">
                                 {{\App\Helpers\AppHelper::formatMoney($day->real_amount)}}
                             </td>
-                            <td  class="text-right">
+                            <td  class="text-right hide-item-sm">
                                 {{\App\Helpers\AppHelper::formatMoney($day->lack_amount)}}
                             </td>
                             @if($day->week_no == 1 || $index == 0)

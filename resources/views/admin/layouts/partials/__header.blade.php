@@ -229,7 +229,7 @@
         {{--</li>--}}
         <li class="nav-item dropdown">
             <a class="nav-link nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <img class="img-avatar" src="{{\App\Helpers\AppHelper::assetPublic('images/admin/no_image_available.jpg')}}" alt="admin@phuchinh.com">
+                <img class="img-avatar" src="{{\App\Helpers\AppHelper::assetPublic('images/no_image_available.jpg')}}" alt="admin@phuchinh.com">
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-header text-center">

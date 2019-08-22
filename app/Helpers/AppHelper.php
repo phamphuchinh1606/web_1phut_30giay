@@ -12,6 +12,12 @@ class AppHelper{
         if(!isset($value) && !$nullShowZero){
             return '';
         }
+        if(is_double($value)){
+            if(preg_match_all('/[\d]+/',doubleval($value), $arrayData) > 1){
+                $countDecimal = strlen($arrayData[0][1]);
+                return number_format($value,$countDecimal > 2 ? 2 : $countDecimal);
+            }
+        }
         return number_format($value);
     }
 }
