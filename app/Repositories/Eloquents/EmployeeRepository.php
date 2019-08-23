@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquents;
 
 use App\Common\Constant;
+use App\Models\AssignEmployeeSaleCartSmall;
 use App\Models\EmployeeBranch;
 use App\Models\EmployeeDaily;
 use App\Repositories\Base\BaseRepository;
@@ -45,8 +46,10 @@ class EmployeeRepository extends BaseRepository
     public function getEmployeeSaleSmall($branchId){
         $tableEmployeeName = Employee::getTableName();
         $tableEmployeeBranchName = EmployeeBranch::getTableName();
+        $tableAssignEmployeeSaleCartSmallName = AssignEmployeeSaleCartSmall::getTableName();
         return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
             ->join($tableEmployeeBranchName,"$tableEmployeeBranchName.employee_id","$tableEmployeeName.id")
+            ->join($tableAssignEmployeeSaleCartSmallName,"$tableAssignEmployeeSaleCartSmallName.employee_id","$tableEmployeeName.id")
             ->where("$tableEmployeeBranchName.branch_id",$branchId)
             ->where('employee_sale_card_small',Constant::EMPLOYEE_SALE_CARD_SMALL)
             ->get();

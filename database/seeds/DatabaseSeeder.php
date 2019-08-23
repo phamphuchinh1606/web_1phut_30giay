@@ -19,7 +19,11 @@ class DatabaseSeeder extends Seeder
             MaterialSeeder::class,
             EmployeeSeeder::class,
             UserSeeder::class,
-            SupplierSeeder::class
+            SupplierSeeder::class,
+            MenuSeeder::class,
+            RoleTypeSeeder::class,
+            RoleSeeder::class,
+            ScreenSeeder::class
         ]);
     }
 }

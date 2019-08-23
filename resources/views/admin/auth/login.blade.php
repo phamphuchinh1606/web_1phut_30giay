@@ -12,13 +12,13 @@
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
     <title>Quan Ly - 1 Phut 30 Giay</title>
 
-    <link href="{{asset('css/admin/plugins/coreui-icons.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/admin/plugins/flag-icon.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/admin/plugins/font-awesome.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/admin/plugins/simple-line-icons.css')}}" rel="stylesheet">
+    <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/coreui-icons.min.css')}}" rel="stylesheet">
+    <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/flag-icon.min.css')}}" rel="stylesheet">
+    <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/simple-line-icons.css')}}" rel="stylesheet">
 
-    <link href="{{asset('css/admin/plugins/style.css')}}" rel="stylesheet">
-    <link href="{{asset('css/admin/plugins/pace.min.css')}}" rel="stylesheet">
+    <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/style.css')}}" rel="stylesheet">
+    <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/pace.min.css')}}" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
@@ -58,7 +58,7 @@
                                         <i class="icon-user"></i>
                                     </span>
                                 </div>
-                                <input name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" placeholder="Tên tài khoản" value="{{ old('email') }}" required autofocus>
+                                <input name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="text" placeholder="Tên tài khoản" value="{{ old('email') }}" required autofocus>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>

@@ -162,6 +162,10 @@ Popup confirm
     display: none;
 }
 
+.table-striped tfoot tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, .05)
+}
+
 div.card-body{
     padding: .25rem !important;
 }

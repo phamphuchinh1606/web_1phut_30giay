@@ -32,6 +32,8 @@
             <input name="current_month" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m')}}">
         </div>
         <div class="card-body">
+            @can('payment_bill.create')
+
             <form method="post" action="@if(isset($paymentBill->id)) {{route('admin.payment_bill.update',['id' => $paymentBill->id]) }} @else {{route('admin.payment_bill.create')}} @endif">
                 @csrf
                 <input type="hidden" name="branch_id" value="{{$branchId}}">
@@ -88,6 +90,7 @@
                     </div>
                 </div>
             </form>
+            @endcan
             <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
                    role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
                 <thead>

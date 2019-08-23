@@ -8,6 +8,9 @@ class Constant{
 
     public const EMPLOYEE_SALE_CARD_SMALL = 1;
 
+    public const SWITCH_FLG_ON = "on";
+    public const SWITCH_FLG_OFF = "off";
+
     public static $PUBLIC_PRODUCT_SERVICE = 1;
     public static $PUBLIC_PRODUCT = 0;
 

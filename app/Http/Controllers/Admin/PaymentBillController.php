@@ -22,6 +22,7 @@ class PaymentBillController extends Controller
     }
 
     public function index($id = null,Request $request){
+
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
         $paymentBills = $this->paymentBillRepository->getList($branchId,$currentDate);

@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Common\Constant;
 use App\Helpers\AppHelper;
 use App\Helpers\ArrayHelper;
 use App\Helpers\DateTimeHelper;
@@ -12,11 +13,18 @@ class EmployeeService extends BaseService {
         try{
             DB::beginTransaction();
             $employee = $this->employeeRepository->create($values);
-            $branchIds = $values['selected_branch'];
-            if(isset($branchIds)){
-                foreach ($branchIds as $branchId){
-                    $this->employeeBranchRepository->create(array('employee_id' => $employee->id, 'branch_id' => $branchId));
+            if(isset($values['selected_branch'])){
+                $branchIds = $values['selected_branch'];
+                if(isset($branchIds)){
+                    foreach ($branchIds as $branchId){
+                        $this->employeeBranchRepository->create(array('employee_id' => $employee->id, 'branch_id' => $branchId));
+                    }
                 }
+            }
+
+            $assignEmployee = $values['assign_employee'];
+            if(isset($assignEmployee) && $assignEmployee == Constant::SWITCH_FLG_ON){
+                $this->assignEmployeeSaleCartSmallRepository->create(array('employee_id' => $employee->id, 'branch_id' => $values['branch_id']));
             }
             DB::commit();
         }catch (\Exception $ex){
@@ -31,10 +39,18 @@ class EmployeeService extends BaseService {
             $employee = $this->employeeRepository->update($values);
             if(isset($employee)){
                 $employee->deleteRelation();
-                $branchIds = $values['selected_branch'];
-                if(isset($branchIds)){
-                    foreach ($branchIds as $branchId){
-                        $this->employeeBranchRepository->create(array('employee_id' => $employee->id, 'branch_id' => $branchId));
+                if(isset($values['selected_branch'])){
+                    $branchIds = $values['selected_branch'];
+                    if(isset($branchIds)){
+                        foreach ($branchIds as $branchId){
+                            $this->employeeBranchRepository->create(array('employee_id' => $employee->id, 'branch_id' => $branchId));
+                        }
+                    }
+                }
+                if(isset($values['assign_employee'])){
+                    $assignEmployee = $values['assign_employee'];
+                    if(isset($assignEmployee) && $assignEmployee == Constant::SWITCH_FLG_ON){
+                        $this->assignEmployeeSaleCartSmallRepository->create(array('employee_id' => $employee->id, 'branch_id' => $values['branch_id']));
                     }
                 }
             }
