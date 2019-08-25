@@ -4,6 +4,7 @@ namespace App\Repositories\Base;
 use App\Models\Base\BaseModel;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use CompositeKeyModelHelper;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
@@ -201,14 +202,16 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     public function deleteLogic($whereKeys){
-        $keys = $this->model::getPrimaryKeyName();
-        if(!is_array($keys)) $keys = [$keys];
-        $query = $this->model->whereRaw('1=1');
+        $query = $this->model::whereRaw('1=1');
         foreach ($whereKeys as $key => $value){
             if(Schema::hasColumn($this->model::getTableName(),$key)){
                 $query->where($key, $value);
             }
         }
+//        \DB::listen(function($query){
+//            dd($query);
+//        });
+        $this->model::getPrimaryKeyName();
         $listModel = $query->get();
         foreach ($listModel as $modelData){
             $modelData->delete();

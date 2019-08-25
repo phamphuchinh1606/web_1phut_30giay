@@ -14,7 +14,11 @@ class CreateScreensTable extends Migration
     public function up()
     {
         Schema::create('screens', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->string('screen_id',50)->primary();
+            $table->string('screen_name');
+            $table->string('screen_parent_id')->nullable();
+            $table->string('screen_url');
+            $table->integer('screen_type')->default(1);
             $table->timestamps();
         });
     }

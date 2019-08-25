@@ -18,8 +18,11 @@ use App\Repositories\Eloquents\OrderCheckInRepository;
 use App\Repositories\Eloquents\OrderCheckOutRepository;
 use App\Repositories\Eloquents\PaymentBillRepository;
 use App\Repositories\Eloquents\ProductRepository;
+use App\Repositories\Eloquents\RolePermissionScreenRepository;
+use App\Repositories\Eloquents\RoleRepository;
 use App\Repositories\Eloquents\SaleCartSmallRepository;
 use App\Repositories\Eloquents\SaleRepository;
+use App\Repositories\Eloquents\ScreenRepository;
 use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
@@ -47,6 +50,9 @@ class BaseService {
     protected $settingOfDayRepository;
     protected $saleCartSmallRepository;
     protected $assignEmployeeSaleCartSmallRepository;
+    protected $roleRepository;
+    protected $screenRepository;
+    protected $rolePermissionScreenRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
@@ -55,7 +61,8 @@ class BaseService {
                 EmployeeRepository $employeeRepository, EmployeeDailyRepository $employeeDailyRepository, EmployeeTimeKeepingRepository $employeeTimeKeepingRepository,
                 PaymentBillRepository $paymentBillRepository, SupplierRepository $supplierRepository, SettingOfDayRepository $settingOfDayRepository,
                 SaleCartSmallRepository $saleCartSmallRepository, EmployeeBranchRepository $employeeBranchRepository,
-                AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository)
+                AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository, RoleRepository $roleRepository ,ScreenRepository $screenRepository,
+                RolePermissionScreenRepository $rolePermissionScreenRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -76,6 +83,9 @@ class BaseService {
         $this->settingOfDayRepository = $settingOfDayRepository;
         $this->saleCartSmallRepository = $saleCartSmallRepository;
         $this->assignEmployeeSaleCartSmallRepository = $assignEmployeeSaleCartSmallRepository;
+        $this->roleRepository = $roleRepository;
+        $this->screenRepository = $screenRepository;
+        $this->rolePermissionScreenRepository = $rolePermissionScreenRepository;
     }
 
     public function checkDateIsOfDay($branchId, $date){

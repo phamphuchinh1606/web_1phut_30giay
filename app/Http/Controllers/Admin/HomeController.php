@@ -19,9 +19,6 @@ class HomeController extends Controller
     }
 
     public function index(){
-        if(!\Illuminate\Support\Facades\Gate::allows('subs-only', Auth::user())){
-            return "Ban khong co quyen";
-        }
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
         $dashboard = $this->dashboardService->monthDashboard($branchId,$currentDate);

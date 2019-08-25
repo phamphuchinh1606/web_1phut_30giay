@@ -82,7 +82,21 @@ class ScreenSeeder extends Seeder
                 'screen_id' => 'employee',
                 'screen_name' => 'Nhân Viên',
                 'screen_url' => '/admin/setting/employee',
-                'parent_screen_id' => 'setting',
+                'parent_screen_id' => null,
+                'screen_type' => 1//Admin
+            ],
+            [
+                'screen_id' => 'employee.create',
+                'screen_name' => 'Tạo Mới Nhân Viên',
+                'screen_url' => '/admin/setting/employee/create',
+                'parent_screen_id' => 'employee',
+                'screen_type' => 1//Admin
+            ],
+            [
+                'screen_id' => 'employee.update',
+                'screen_name' => 'Cập Nhật Nhân Viên',
+                'screen_url' => '/admin/setting/employee/update',
+                'parent_screen_id' => 'employee',
                 'screen_type' => 1//Admin
             ],
             [
@@ -98,8 +112,7 @@ class ScreenSeeder extends Seeder
                 'screen_id' => $supplier['screen_id'],
                 'screen_name' => $supplier['screen_name'],
                 'screen_url' => $supplier['screen_url'],
-                'parent_screen_id' => $supplier['parent_screen_id'],
-                'is_show' => $supplier['is_show'],
+                'screen_parent_id' => $supplier['parent_screen_id'],
                 'screen_type' => $supplier['screen_type'],
             ]);
         }

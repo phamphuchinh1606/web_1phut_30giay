@@ -64,7 +64,12 @@
                             Thiết lặp ngày nhĩ
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.setting.role')}}">
+                            <i class="nav-icon icon-directions"></i>
+                            Thiết lặp quyền
+                        </a>
+                    </li>
                 </ul>
             </li>
 

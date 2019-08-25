@@ -48,17 +48,17 @@ class RoleSeeder extends Seeder
             [
                 'role_id' => 7,
                 'role_name' => 'Nhân Viên Bán Hàng',
-                'role_type_id' => 1, //Type Screen Admin
+                'role_type_id' => 2, //Type Screen Admin
             ],
             [
                 'role_id' => 8,
                 'role_name' => 'Quản Lý Bán Hàng',
-                'role_type_id' => 1, //Type Screen Admin
+                'role_type_id' => 2, //Type Screen Admin
             ],
             [
                 'role_id' => 9,
                 'role_name' => 'Quản Lý Nhân Viên',
-                'role_type_id' => 1, //Type Screen Admin
+                'role_type_id' => 2, //Type Screen Admin
             ]
         ];
         foreach ($arrayRoleTypes as $roleType){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Common\Constant;
 use App\Helpers\SessionHelper;
 use App\Repositories\Eloquents\EmployeeRepository;
+use App\Repositories\Eloquents\UserRoleRepository;
 use App\Services\EmployeeService;
 use Illuminate\Http\Request;
 
@@ -12,11 +13,13 @@ class EmployeeController extends Controller
 {
     private $employeeRepository;
     private $employeeService;
+    private $userRoleRepository;
 
-    public function __construct(EmployeeRepository $employeeRepository, EmployeeService $employeeService)
+    public function __construct(EmployeeRepository $employeeRepository, EmployeeService $employeeService, UserRoleRepository $userRoleRepository)
     {
         $this->employeeRepository = $employeeRepository;
         $this->employeeService = $employeeService;
+        $this->userRoleRepository = $userRoleRepository;
     }
 
     public function index(){
@@ -58,6 +61,13 @@ class EmployeeController extends Controller
         $values['branch_id'] = SessionHelper::getSelectedBranchId();
         $this->employeeService->updateEmployee($values);
         return redirect()->route('admin.employee')->with('message','Cập Nhật Thành Công');
+    }
+
+    public function addRoleEmployee($id, Request $request){
+        $values = $request->all();
+        $values['employee_id'] = $id;
+        $this->userRoleRepository->create($values);
+        $values['employee_id'] = $id;
     }
 
     public function delete($id){

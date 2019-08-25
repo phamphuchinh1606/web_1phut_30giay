@@ -69,4 +69,22 @@
             </div>
         </form>
     </div>
+    <div class="card">
+        <div class="card-header">
+            <strong>Quyền Nhân Viên</strong>
+        </div>
+        <div class="card-body">
+            <form action="{{route('admin.employee.update',['id' => $employee->id])}}" method="post">
+                <div class="form-group row p-2">
+                    <label class="col-md-3 col-4 col-form-label" for="text-input">Bật Phụ Trách</label>
+                    <div class="col-md-9 col-8">
+                        <label class="switch switch-label switch-outline-primary-alt">
+                            <input class="switch-input" type="checkbox" {{$employee->is_check_assign}} name="assign_employee">
+                            <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection

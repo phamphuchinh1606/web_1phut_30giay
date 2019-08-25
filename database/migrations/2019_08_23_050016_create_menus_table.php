@@ -14,7 +14,7 @@ class CreateMenusTable extends Migration
     public function up()
     {
         Schema::create('menus', function (Blueprint $table) {
-            $table->string('menu_id');
+            $table->string('menu_id',50);
             $table->string('menu_name')->nullable();
             $table->string('menu_url')->nullable();
             $table->string('parent_menu_id')->nullable();
