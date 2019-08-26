@@ -6,12 +6,14 @@
                     <i class="nav-icon icon-home"></i> Trang chủ
                 </a>
             </li>
+            @can('menu.view')
             <li class="nav-item">
                 <a class="nav-link" href="{{route('admin.input_daily')}}">
                     <i class="nav-icon icon-calendar"></i>
                     Hàng Ngày
                 </a>
             </li>
+            @endcan
             <li class="nav-item">
                 <a class="nav-link" href="{{route('admin.sale_card_small')}}">
                     <i class="nav-icon icon-trophy"></i>

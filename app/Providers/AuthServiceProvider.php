@@ -18,7 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
-        Menu::class => MenuPolicy::class,
+        'App\Models\Menu' => MenuPolicy::class,
         'App\Models\PaymentBill' => PaymentBillPolicy::class,
     ];
 
@@ -32,5 +32,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::resource('payment_bill', 'App\Policies\PaymentBillPolicy');
+        Gate::resource('menu', 'App\Policies\MenuPolicy');
     }
 }

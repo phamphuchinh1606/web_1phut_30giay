@@ -23,10 +23,6 @@
                             <input class="form-control" id="email" name="email" type="text" placeholder="Địa chỉ email" value="{{$user->email}}">
                         </div>
                         <div class="form-group">
-                            <label for="password">Mật Khẩu</label>
-                            <input class="form-control" id="password" name="password" type="text" placeholder="Mật khẩu" value="{{$user->password}}">
-                        </div>
-                        <div class="form-group">
                             <label for="identity_card">Số Chứng Minh Nhân Dân</label>
                             <input class="form-control" id="identity_card" name="identity_card" type="text" placeholder="Số CMND" value="{{$user->identity_card}}">
                         </div>
@@ -40,27 +36,10 @@
                                 <div class="">
                                     @foreach($branches as $branch)
                                         <div class="form-check checkbox">
-                                            <input name="selected_branch[]" @if($employee->checkAssetBranch($branch->id)) checked @endif class="form-check-input" id="branch_id_{{$branch->id}}" type="checkbox" value="{{$branch->id}}">
+                                            <input name="selected_branch[]" @if($user->checkAssetBranch($branch->id)) checked @endif class="form-check-input" id="branch_id_{{$branch->id}}" type="checkbox" value="{{$branch->id}}">
                                             <label class="form-check-label" for="branch_id_{{$branch->id}}">{{$branch->branch_name}}</label>
                                         </div>
                                     @endforeach
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <strong>Phụ Trách Xe Nhỏ</strong>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group row p-2">
-                                    <label class="col-md-3 col-4 col-form-label" for="text-input">Bật Phụ Trách</label>
-                                    <div class="col-md-9 col-8">
-                                        <label class="switch switch-label switch-outline-primary-alt">
-                                            <input class="switch-input" type="checkbox" {{$employee->is_check_assign}} name="assign_employee">
-                                            <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +59,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <form action="{{route('admin.employee.add_role',['id' => $employee->id])}}" method="post">
+                    <form action="{{route('admin.user.add_role',['id' => $user->id])}}" method="post">
                         @csrf
                         <div class="form-group">
                             <label for="role_id">Quyền</label>
@@ -106,16 +85,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @foreach($employeeRoles as $key => $employeeRole)
+                            @foreach($userRoles as $key => $userRole)
                                 <tr>
                                     <td>
                                         {{$key + 1}}
                                     </td>
-                                    <td>{{$employeeRole->role->role_name}}</td>
+                                    <td>{{$userRole->role->role_name}}</td>
                                     <td>
                                         <a data-toggle="modal" class="btn btn-danger anchorClick"
-                                           data-url="{{route('admin.employee.delete_role',['id' => $employee->id, 'employee_role_id' => $employeeRole->id]) }}"
-                                           data-name="{{$employeeRole->role->role_name}}" href="#deleteModal">
+                                           data-url="{{route('admin.user.delete_role',['id' => $user->id, 'user_role_id' => $userRole->id]) }}"
+                                           data-name="{{$userRole->role->role_name}}" href="#deleteModal">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </td>

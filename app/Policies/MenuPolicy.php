@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\User;
-use App\Menu;
+use App\Models\Menu;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MenuPolicy
@@ -44,6 +44,7 @@ class MenuPolicy
      */
     public function view(User $user, Menu $menu)
     {
+        dd($user);
         return true;
     }
 
@@ -56,6 +57,8 @@ class MenuPolicy
     public function create(User $user)
     {
         //
+        dd('vao');
+        return true;
     }
 
     /**

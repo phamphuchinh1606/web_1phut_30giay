@@ -42,6 +42,7 @@ class PaymentBillPolicy
      */
     public function create(User $user)
     {
+        dd('vao');
         return true;
 
     }

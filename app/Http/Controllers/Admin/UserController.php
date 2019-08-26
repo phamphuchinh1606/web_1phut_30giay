@@ -54,29 +54,28 @@ class UserController extends Controller
             'userRoles' => $userRoles
         ]);
     }
-//
-//    public function update($id, Request $request){
-//        $values = $request->all();
-//        $values['id'] = $id;
-//        $values['branch_id'] = SessionHelper::getSelectedBranchId();
-//        $this->employeeService->updateEmployee($values);
-//        return redirect()->route('admin.employee')->with('message','Cập Nhật Thành Công');
-//    }
-//
-//    public function addRoleEmployee($id, Request $request){
-//        $values = $request->all();
-//        $values['employee_id'] = $id;
-//        $this->employeeRoleRepository->create($values);
-//        return redirect()->route('admin.employee.update',['id' => $id])->with('message','Thêm Quyền Thành Công');
-//    }
-//
+
+    public function update($id, Request $request){
+        $values = $request->all();
+        $values['id'] = $id;
+        $this->userService->updateUser($values);
+        return redirect()->route('admin.user')->with('message','Cập Nhật Thành Công');
+    }
+
+    public function addRoleUser($id, Request $request){
+        $values = $request->all();
+        $values['user_id'] = $id;
+        $this->userRoleRepository->create($values);
+        return redirect()->route('admin.user.update',['id' => $id])->with('message','Thêm Quyền Thành Công');
+    }
+
     public function delete($id){
         $this->userRepository->delete($id);
         return redirect()->route('admin.user')->with('message','Xóa Thành Công');
     }
-//
-//    public function deleteRoleEmployee($id, $employeeRoleId){
-//        $this->employeeRoleRepository->deleteLogic(['id'=>$employeeRoleId]);
-//        return redirect()->route('admin.employee.update',['id' => $id])->with('message','Xóa Quyền Thành Công');
-//    }
+
+    public function deleteRoleUser($id, $userRoleId){
+        $this->userRoleRepository->deleteLogic(['id'=>$userRoleId]);
+        return redirect()->route('admin.user.update',['id' => $id])->with('message','Xóa Quyền Thành Công');
+    }
 }

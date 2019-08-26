@@ -58,7 +58,7 @@ class LoginController extends Controller
         $password = $request->password;
         $remember = false;
 
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_is' => 0], $remember)) {
+        if (Auth::attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_flg' => 0], $remember)) {
             if(Auth::check()){
                 $branch = $this->branchRepository->find(1);
                 if(isset($branch)){

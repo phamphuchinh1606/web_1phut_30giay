@@ -32,7 +32,7 @@
             <input name="current_month" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m')}}">
         </div>
         <div class="card-body">
-            @can('payment_bill.create')
+            @can('payment_bill.view')
 
             <form method="post" action="@if(isset($paymentBill->id)) {{route('admin.payment_bill.update',['id' => $paymentBill->id]) }} @else {{route('admin.payment_bill.create')}} @endif">
                 @csrf

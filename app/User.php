@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\UserBranch;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -55,5 +56,22 @@ class User extends Authenticatable
     public function getFillable()
     {
         return $this->fillable;
+    }
+
+    public function user_branches(){
+        return $this->hasMany(UserBranch::class,'user_id');
+    }
+
+    public function checkAssetBranch($branchId){
+        foreach ($this->user_branches as $userBranch){
+            if($branchId == $userBranch->branch_id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function deleteRelation(){
+        $this->user_branches()->delete();
     }
 }
