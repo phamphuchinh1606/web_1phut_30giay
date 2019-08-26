@@ -20,8 +20,11 @@ use App\Repositories\Eloquents\OrderCheckInRepository;
 use App\Repositories\Eloquents\OrderCheckOutRepository;
 use App\Repositories\Eloquents\PaymentBillRepository;
 use App\Repositories\Eloquents\ProductRepository;
+use App\Repositories\Eloquents\RolePermissionScreenRepository;
+use App\Repositories\Eloquents\RoleRepository;
 use App\Repositories\Eloquents\SaleCartSmallRepository;
 use App\Repositories\Eloquents\SaleRepository;
+use App\Repositories\Eloquents\ScreenRepository;
 use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
@@ -52,13 +55,17 @@ class MaterialService extends BaseService {
         SaleCartSmallRepository $saleCartSmallRepository,
         EmployeeBranchRepository $employeeBranchRepository,
         AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository,
+        RoleRepository $roleRepository,
+        ScreenRepository $screenRepository,
+        RolePermissionScreenRepository $rolePermissionScreenRepository,
         TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
             $orderCheckOutRepository, $orderCancelRepository, $orderBillRepository, $stockDailyRepository,
             $saleRepository, $productRepository, $employeeRepository, $employeeDailyRepository,
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
-            $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository);
+            $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository,
+            $roleRepository, $screenRepository, $rolePermissionScreenRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 

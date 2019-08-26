@@ -17,6 +17,7 @@ Route::post('/employee/create','EmployeeController@create')->name('employee.crea
 Route::get('/employee/update/{id}','EmployeeController@showUpdate')->name('employee.update');
 Route::post('/employee/update/{id}','EmployeeController@update')->name('employee.update');
 Route::post('/employee/add-role/{id}','EmployeeController@addRoleEmployee')->name('employee.add_role');
+Route::delete('/employee/delete-role/{id}/{employee_role_id}','EmployeeController@deleteRoleEmployee')->name('employee.delete_role');
 Route::delete('/employee/delete/{id}','EmployeeController@delete')->name('employee.delete');
 
 

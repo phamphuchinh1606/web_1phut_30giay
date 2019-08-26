@@ -22,6 +22,10 @@ class RoleTypeSeeder extends Seeder
                 'role_type_id' => 2,
                 'role_type_name' => 'User',
             ],
+            [
+                'role_type_id' =>99,
+                'role_type_name' => 'Root',
+            ],
         ];
         foreach ($arrayRoleTypes as $roleType){
             DB::table(RoleType::getTableName())->insert([

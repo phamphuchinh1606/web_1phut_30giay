@@ -27,6 +27,9 @@ use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
 use App\Repositories\Eloquents\UnitRepository;
+use App\Repositories\Eloquents\UserBranchRepository;
+use App\Repositories\Eloquents\UserRepository;
+use App\Repositories\Eloquents\UserRoleRepository;
 use Symfony\Component\Mime\Header\DateHeader;
 
 class BaseService {
@@ -53,6 +56,9 @@ class BaseService {
     protected $roleRepository;
     protected $screenRepository;
     protected $rolePermissionScreenRepository;
+    protected $userRepository;
+    protected $userBranchRepository;
+    protected $userRoleRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
@@ -62,7 +68,8 @@ class BaseService {
                 PaymentBillRepository $paymentBillRepository, SupplierRepository $supplierRepository, SettingOfDayRepository $settingOfDayRepository,
                 SaleCartSmallRepository $saleCartSmallRepository, EmployeeBranchRepository $employeeBranchRepository,
                 AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository, RoleRepository $roleRepository ,ScreenRepository $screenRepository,
-                RolePermissionScreenRepository $rolePermissionScreenRepository)
+                RolePermissionScreenRepository $rolePermissionScreenRepository, UserRepository $userRepository, UserBranchRepository $userBranchRepository,
+                UserRoleRepository $userRoleRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -86,6 +93,9 @@ class BaseService {
         $this->roleRepository = $roleRepository;
         $this->screenRepository = $screenRepository;
         $this->rolePermissionScreenRepository = $rolePermissionScreenRepository;
+        $this->userRepository = $userRepository;
+        $this->userBranchRepository = $userBranchRepository;
+        $this->userRoleRepository = $userRoleRepository;
     }
 
     public function checkDateIsOfDay($branchId, $date){

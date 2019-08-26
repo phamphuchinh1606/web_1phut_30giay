@@ -59,6 +59,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.user')}}">
+                            <i class="nav-icon icon-user-following"></i>
+                            NV Quản Lý
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.setting.setting_of_day')}}">
                             <i class="nav-icon icon-equalizer"></i>
                             Thiết lặp ngày nhĩ

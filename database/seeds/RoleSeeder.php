@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
             [
                 'role_id' => 1,
                 'role_name' => 'RootAdmin',
-                'role_type_id' => 1, //Type Screen Admin
+                'role_type_id' => 99, //Type Screen Admin
             ],
             [
                 'role_id' => 2,

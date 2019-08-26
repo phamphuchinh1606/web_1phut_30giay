@@ -3,28 +3,32 @@
 @section('body.content')
     <div class="card">
         <div class="card-header">
-            <strong>Nhập Thông Tin Nhân Viên</strong>
+            <strong>Cập Nhật Thông Tin Nhân Viên Quản Lý</strong>
         </div>
-        <form action="{{route('admin.employee.update',['id' => $employee->id])}}" method="post">
+        <form action="{{route('admin.user.update',['id' => $user->id])}}" method="post">
             @csrf
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name">Tên Nhân Viên</label>
-                            <input class="form-control" id="name" name="name" type="text" placeholder="Tên nhân viên" value="{{$employee->name}}" required>
+                            <input class="form-control" id="name" name="name" type="text" placeholder="Tên nhân viên" value="{{$user->name}}" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">Số Điện Thoại</label>
-                            <input class="form-control" id="phone" name="phone" type="text" placeholder="Số điện thoại" value="{{$employee->phone}}">
+                            <input class="form-control" id="phone" name="phone" type="text" placeholder="Số điện thoại" value="{{$user->phone}}">
                         </div>
                         <div class="form-group">
                             <label for="email">Địa Chỉ Email</label>
-                            <input class="form-control" id="email" name="email" type="text" placeholder="Địa chỉ email" value="{{$employee->email}}">
+                            <input class="form-control" id="email" name="email" type="text" placeholder="Địa chỉ email" value="{{$user->email}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Mật Khẩu</label>
+                            <input class="form-control" id="password" name="password" type="text" placeholder="Mật khẩu" value="{{$user->password}}">
                         </div>
                         <div class="form-group">
                             <label for="identity_card">Số Chứng Minh Nhân Dân</label>
-                            <input class="form-control" id="identity_card" name="identity_card" type="text" placeholder="Số CMND" value="{{$employee->identity_card}}">
+                            <input class="form-control" id="identity_card" name="identity_card" type="text" placeholder="Số CMND" value="{{$user->identity_card}}">
                         </div>
                     </div>
                     <div class="col-sm-6">

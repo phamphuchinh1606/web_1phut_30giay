@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeeBranchesTable extends Migration
+class CreateEmployeeRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateEmployeeBranchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_branches', function (Blueprint $table) {
+        Schema::create('employee_roles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('employee_id');
-            $table->integer('branch_id');
+            $table->integer('role_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateEmployeeBranchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_branches');
+        Schema::dropIfExists('employee_roles');
     }
 }

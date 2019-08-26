@@ -201,7 +201,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
         }
     }
 
-    public function deleteLogic($whereKeys){
+    public function deleteLogic($whereKeys = []){
+        if(count($whereKeys) <= 0) return;
         $query = $this->model::whereRaw('1=1');
         foreach ($whereKeys as $key => $value){
             if(Schema::hasColumn($this->model::getTableName(),$key)){
