@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Eloquents;
 
+use App\Common\Constant;
+use App\Common\RoleConstant;
 use App\Models\Menu;
 use App\Repositories\Base\BaseRepository;
 
@@ -17,9 +19,13 @@ class MenuRepository extends BaseRepository
         $this->model = $model;
     }
 
-    public function selectAll()
+    public function selectAll($menuType = null)
     {
-        $listMenu = $this->model::orderBy('sort_num')->orderBy('child_sort_num')->get();
+        $query = $this->model::orderBy('sort_num')->orderBy('child_sort_num');
+        if(isset($menuType)){
+            $query->where('menu_type',$menuType);
+        }
+        $listMenu = $query->get();
         $menus = [];
         foreach ($listMenu as $menu){
             if(isset($menu->parent_menu_id) && !empty($menu->parent_menu_id)){

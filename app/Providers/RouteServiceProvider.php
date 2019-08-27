@@ -20,7 +20,11 @@ class RouteServiceProvider extends ServiceProvider
 
     protected $namespaceAdmin = 'App\Http\Controllers\Admin';
 
+    protected $namespaceEmployee = 'App\Http\Controllers\Employee';
+
     protected $prefixAdmin = 'admin';
+
+    protected $prefixEmployee = '';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -63,6 +67,9 @@ class RouteServiceProvider extends ServiceProvider
 
         //Router admin
         $this->routeAdmin();
+
+        //Router Employee
+        $this->routeEmployee();
     }
 
     private function routeAdmin(){
@@ -78,6 +85,18 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix($this->prefixAdmin)
                 ->name($this->prefixAdmin.'.')
                 ->group(base_path('routes/admin/'.$routeName.'.php'));
+        }
+    }
+
+    private function routeEmployee(){
+        //Router admin
+        $middlewareAdmin = ['web','auth'];
+//        $middlewareAdmin = ['web'];
+        $listRoute = ['route_input_daily','route_time_keeping', 'route_payment_bill','route_sale_cart_small'];
+        foreach ($listRoute as $routeName){
+            Route::middleware($middlewareAdmin)
+                ->namespace($this->namespaceEmployee)
+                ->group(base_path('routes/employee/'.$routeName.'.php'));
         }
     }
 

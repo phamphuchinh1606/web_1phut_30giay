@@ -160,7 +160,52 @@ class MenuSeeder extends Seeder
                 'menu_type' => 1,//Admin
                 'sort_num' => 8,
                 'child_sort_num' => 4
-            ]
+            ],
+            //Employee Screen
+            [
+                'menu_id' => 'input_employee',
+                'menu_name' => 'Hằng Ngày',
+                'menu_url' => '/input-daily',
+                'menu_route' => 'input_daily',
+                'menu_icon_class' => 'icon-calendar',
+                'parent_menu_id' => null,
+                'is_show' => 1,
+                'menu_type' => 2,//Employee
+                'sort_num' => 1
+            ],
+            [
+                'menu_id' => 'sale_cart_small_employee',
+                'menu_name' => 'Xe Nhỏ',
+                'menu_url' => '/sale-cart-small',
+                'menu_route' => 'sale_card_small',
+                'menu_icon_class' => 'icon-trophy',
+                'parent_menu_id' => null,
+                'is_show' => 1,
+                'menu_type' => 2,//Admin
+                'sort_num' => 2
+            ],
+            [
+                'menu_id' => 'time_keeping_employee',
+                'menu_name' => 'Chấm Công',
+                'menu_url' => '/time-keeping',
+                'menu_route' => 'time_keeping',
+                'menu_icon_class' => 'icon-layers',
+                'parent_menu_id' => null,
+                'is_show' => 1,
+                'menu_type' => 2,//Admin
+                'sort_num' => 3
+            ],
+            [
+                'menu_id' => 'payment_bill_employee',
+                'menu_name' => 'Phiếu Chi',
+                'menu_url' => '/payment-bill',
+                'menu_route' => 'payment_bill',
+                'menu_icon_class' => 'icon-diamond',
+                'parent_menu_id' => null,
+                'is_show' => 1,
+                'menu_type' => 2,//Admin
+                'sort_num' => 4
+            ],
         ];
         foreach ($arraySuppliers as $supplier){
             DB::table(Menu::getTableName())->insert([

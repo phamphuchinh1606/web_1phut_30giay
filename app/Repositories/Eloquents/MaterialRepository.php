@@ -31,7 +31,7 @@ class MaterialRepository extends BaseRepository
             ->select("$materialTableName.*","$unitTableName.unit_name")->get();
     }
 
-    public function getAllByFormInput($date = null){
+    public function getAllByFormInput($branchId, $date = null){
         $unitTableName = Unit::getTableName();
         $materialTableName = Material::getTableName();
         $orderCheckInTableName = OrderCheckIn::getTableName();
@@ -42,48 +42,55 @@ class MaterialRepository extends BaseRepository
         $stockFirstDailyTableName = StockDaily::getTableName()."First";
         $stockDailyTableName = StockDaily::getTableName();
         return $this->model::join($unitTableName,"$unitTableName.id","$materialTableName.unit_id")
-            ->leftjoin($orderCheckInTableName,function ($join) use ($orderCheckInTableName, $materialTableName,$date){
+            ->leftjoin($orderCheckInTableName,function ($join) use ($orderCheckInTableName, $materialTableName,$branchId,$date){
                 $join->on("$orderCheckInTableName.material_id","$materialTableName.id")
+                    ->where("$orderCheckInTableName.branch_id",$branchId)
                     ->where("$orderCheckInTableName.order_check_in_type",OrderCheckIn::CHECK_IN_TYPE);
                 if(isset($date)){
                     $join->where("$orderCheckInTableName.check_in_date",$date->format('y-m-d'));
                 }
             })
-            ->leftjoin("$orderCheckInTableName as $orderCheckInMoveTableName",function ($join) use ($orderCheckInMoveTableName, $materialTableName,$date){
+            ->leftjoin("$orderCheckInTableName as $orderCheckInMoveTableName",function ($join) use ($orderCheckInMoveTableName, $materialTableName,$branchId,$date){
                 $join->on("$orderCheckInMoveTableName.material_id","$materialTableName.id")
+                    ->where("$orderCheckInMoveTableName.branch_id",$branchId)
                     ->where("$orderCheckInMoveTableName.order_check_in_type",OrderCheckIn::MOVE_IN_TYPE);
                 if(isset($date)){
                     $join->where("$orderCheckInMoveTableName.check_in_date",$date->format('y-m-d'));
                 }
             })
-            ->leftjoin($orderCheckOutTableName,function ($join) use ($orderCheckOutTableName, $materialTableName,$date){
+            ->leftjoin($orderCheckOutTableName,function ($join) use ($orderCheckOutTableName, $materialTableName,$branchId,$date){
                 $join->on("$orderCheckOutTableName.material_id","$materialTableName.id")
-                ->where("$orderCheckOutTableName.order_check_out_type",OrderCheckOut::CHECK_OUT_TYPE);
+                    ->where("$orderCheckOutTableName.branch_id",$branchId)
+                    ->where("$orderCheckOutTableName.order_check_out_type",OrderCheckOut::CHECK_OUT_TYPE);
                 if(isset($date)){
                     $join->where('check_out_date',$date->format('y-m-d'));
                 }
             })
-            ->leftjoin("$orderCheckOutTableName as $orderCheckOutMoveTableName",function ($join) use ($orderCheckOutMoveTableName, $materialTableName,$date){
+            ->leftjoin("$orderCheckOutTableName as $orderCheckOutMoveTableName",function ($join) use ($orderCheckOutMoveTableName, $materialTableName,$branchId,$date){
                 $join->on("$orderCheckOutMoveTableName.material_id","$materialTableName.id")
-                ->where("$orderCheckOutMoveTableName.order_check_out_type",OrderCheckOut::MOVE_OUT_TYPE);
+                    ->where("$orderCheckOutMoveTableName.branch_id",$branchId)
+                    ->where("$orderCheckOutMoveTableName.order_check_out_type",OrderCheckOut::MOVE_OUT_TYPE);
                 if(isset($date)){
                     $join->where("$orderCheckOutMoveTableName.check_out_date",$date->format('Y-m-d'));
                 }
             })
-            ->leftjoin("$stockDailyTableName as $stockFirstDailyTableName",function ($join) use ($stockFirstDailyTableName, $materialTableName,$date){
-                $join->on("$stockFirstDailyTableName.material_id","$materialTableName.id");
+            ->leftjoin("$stockDailyTableName as $stockFirstDailyTableName",function ($join) use ($stockFirstDailyTableName, $materialTableName,$branchId,$date){
+                $join->on("$stockFirstDailyTableName.material_id","$materialTableName.id")
+                    ->where("$stockFirstDailyTableName.branch_id",$branchId);
                 if(isset($date)){
                     $join->where("$stockFirstDailyTableName.stock_date",DateTimeHelper::addDay($date,-1,'Y-m-d'));
                 }
             })
-            ->leftjoin($stockDailyTableName,function ($join) use ($stockDailyTableName, $materialTableName,$date){
-                $join->on("$stockDailyTableName.material_id","$materialTableName.id");
+            ->leftjoin($stockDailyTableName,function ($join) use ($stockDailyTableName, $materialTableName,$branchId,$date){
+                $join->on("$stockDailyTableName.material_id","$materialTableName.id")
+                    ->where("$stockDailyTableName.branch_id",$branchId);
                 if(isset($date)){
                     $join->where("$stockDailyTableName.stock_date",$date->format('y-m-d'));
                 }
             })
-            ->leftjoin($orderCancelTableName,function ($join) use ($orderCancelTableName, $materialTableName,$date){
-                $join->on("$orderCancelTableName.material_id","$materialTableName.id");
+            ->leftjoin($orderCancelTableName,function ($join) use ($orderCancelTableName, $materialTableName,$branchId,$date){
+                $join->on("$orderCancelTableName.material_id","$materialTableName.id")
+                    ->where("$orderCancelTableName.branch_id",$branchId);
                 if(isset($date)){
                     $join->where("$orderCancelTableName.cancel_date",$date->format('y-m-d'));
                 }

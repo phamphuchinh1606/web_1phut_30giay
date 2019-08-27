@@ -105,7 +105,36 @@ class ScreenSeeder extends Seeder
                 'screen_url' => '/admin/setting/setting-of-day',
                 'parent_screen_id' => 'setting',
                 'screen_type' => 1//Admin
-            ]
+            ],
+//           User
+            [
+                'screen_id' => 'input_employee',
+                'screen_name' => 'Hằng Ngày',
+                'screen_url' => '/input-daily',
+                'parent_screen_id' => null,
+                'screen_type' => 2//Employee
+            ],
+            [
+                'screen_id' => 'sale_cart_small_employee',
+                'screen_name' => 'Xe Nhỏ',
+                'screen_url' => '/sale-cart-small',
+                'parent_screen_id' => null,
+                'screen_type' => 2//Employee
+            ],
+            [
+                'screen_id' => 'time_keeping_employee',
+                'screen_name' => 'Chấm Công',
+                'screen_url' => '/time-keeping',
+                'parent_screen_id' => null,
+                'screen_type' => 2//Employee
+            ],
+            [
+                'screen_id' => 'payment_bill_employee',
+                'screen_name' => 'Phiếu Chi',
+                'screen_url' => '/payment-bill',
+                'parent_screen_id' => null,
+                'screen_type' => 2//Employee
+            ],
         ];
         foreach ($arraySuppliers as $supplier){
             DB::table(Screen::getTableName())->insert([

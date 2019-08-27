@@ -2,9 +2,12 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Common\Constant;
+use App\Common\RoleConstant;
 use App\Repositories\Eloquents\BranchRepository;
 use App\Repositories\Eloquents\MenuRepository;
 use App\Repositories\Eloquents\SettingRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AppInfoComposer
@@ -57,7 +60,13 @@ class AppInfoComposer
             self::$branches = $this->branchRepository->selectAll();
         }
         if(!isset(self::$menus)){
-            self::$menus = $this->menuRepository->selectAll();
+            $menuType = null;
+            if(Auth::guard(Constant::AUTH_GUARD_ADMIN) ->check()){
+                $menuType = RoleConstant::MENU_TYPE_ADMIN_CODE;
+            }else if(Auth::guard(Constant::AUTH_GUARD_EMPLOYEE)->check()){
+                $menuType = RoleConstant::MENU_TYPE_EMPLOYEE_CODE;
+            }
+            self::$menus = $this->menuRepository->selectAll($menuType);
         }
         $view->with('appInfo', self::$appInfo)
             ->with('branches',self::$branches)

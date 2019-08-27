@@ -3,6 +3,7 @@
 namespace App\Common;
 
 class Constant{
+    public const AUTH_GUARD_ADMIN = "web";
     public const AUTH_GUARD_EMPLOYEE = "employee";
 
     public const DELETE_FLG_ON = 1;

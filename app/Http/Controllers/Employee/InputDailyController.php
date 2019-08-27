@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Helpers\AppHelper;
 use App\Helpers\DateTimeHelper;
@@ -68,15 +68,15 @@ class InputDailyController extends Controller
         $branchId = SessionHelper::getSelectedBranchId();
         $infoDays = DateTimeHelper::getArrayDateByCurrentDate(SessionHelper::getSelectedMonth());
         $materialTypes = $this->materialTypeRepository->selectAll();
-        $materials = $this->materialRepository->getAllByFormInput($currentDate);
+        $materials = $this->materialRepository->getAllByFormInput($branchId,$currentDate);
         $employees = $this->employeeRepository->getEmployeeDaily($branchId,$currentDate);
         $sumEmployeeTotal = $this->employeeDailyRepository->sumTotalDaily($branchId,$currentDate);
-        $products = $this->productRepository->selectProductMergeSales($currentDate);
+        $products = $this->productRepository->selectProductMergeSales($branchId,$currentDate);
         $sales = $this->saleRepository->findByKey(array('branch_id' => $branchId,'sale_date' => $currentDate->format('Y-m-d')));
         $orderBill = $this->orderBillRepository->findByKeyOrCreate(array('branch_id' => $branchId,'bill_date' => $currentDate->format('Y-m-d')));
         $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$currentDate);
         $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate($branchId,$currentDate);
-        return $this->viewAdmin('input.input_daily',[
+        return $this->viewEmployee('input.input_daily',[
             'currentDate' => $currentDate,
             'branchId' => $branchId,
             'infoDays' => $infoDays,
