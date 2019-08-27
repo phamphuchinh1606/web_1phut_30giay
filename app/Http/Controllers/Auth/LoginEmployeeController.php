@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Common\Constant;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Http\Controllers\Controller;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
-class LoginController extends Controller
+class LoginEmployeeController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +35,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -49,7 +50,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return view('admin.auth.login');
+        return view('admin.auth.login_employee');
     }
 
     public function login(Request $request)
@@ -58,9 +59,8 @@ class LoginController extends Controller
         $email = $request->email;
         $password = $request->password;
         $remember = false;
-
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_flg' => 0], $remember)) {
-            if(Auth::check()){
+        if ($this->guard()->attempt(['employee_login_id' => $email, 'password' => $password, 'delete_flg' => 0], $remember)) {
+            if($this->guard()->check()){
                 $branch = $this->branchRepository->find(1);
                 if(isset($branch)){
                     SessionHelper::setSelectedBranchId($branch->id);
@@ -70,7 +70,7 @@ class LoginController extends Controller
             }
             return redirect()->route('admin.home');
         }else{
-            return redirect()->route('admin.login')->withErrors('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại!');
+            return redirect()->route('login')->withErrors('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại!');
         }
     }
 
@@ -81,5 +81,15 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect('/admin');
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard(Constant::AUTH_GUARD_EMPLOYEE);
     }
 }

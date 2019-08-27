@@ -17,10 +17,13 @@ class CreateMenusTable extends Migration
             $table->string('menu_id',50);
             $table->string('menu_name')->nullable();
             $table->string('menu_url')->nullable();
+            $table->string('menu_route')->nullable();
+            $table->string('menu_icon_class')->nullable();
             $table->string('parent_menu_id')->nullable();
             $table->integer('is_show')->default(1);
             $table->integer('menu_type')->default(1);
             $table->integer('sort_num')->nullable();
+            $table->integer('child_sort_num')->nullable();
             $table->timestamps();
 
             $table->primary('menu_id');

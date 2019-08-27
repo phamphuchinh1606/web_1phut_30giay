@@ -2,8 +2,34 @@
 
 namespace App\Models;
 
-class Employee extends BaseModel
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use App\Models\BaseModel;
+
+class Employee extends Authenticatable
 {
+    use Notifiable;
+
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
+    public static function getPrimaryKeyName()
+    {
+        return with(new static)->getKeyName();
+    }
+
+    public static function getFillableColumns()
+    {
+        return with(new static)->getFillable();
+    }
+
+    public function getFillable()
+    {
+        return $this->fillable;
+    }
+
     public function employee_branches(){
         return $this->hasMany(EmployeeBranch::class,'employee_id');
     }

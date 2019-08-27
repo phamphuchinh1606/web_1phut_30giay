@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\UserBranch;
+use App\Models\UserRole;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,6 +61,10 @@ class User extends Authenticatable
 
     public function user_branches(){
         return $this->hasMany(UserBranch::class,'user_id');
+    }
+
+    public function user_roles(){
+        return $this->hasMany(UserRole::class,'user_id');
     }
 
     public function checkAssetBranch($branchId){

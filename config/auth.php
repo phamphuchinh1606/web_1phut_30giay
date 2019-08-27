@@ -47,9 +47,9 @@ return [
             'hash' => false,
         ],
 
-        'admin' => [
+        'employee' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'employees',
         ]
     ],
 
@@ -76,9 +76,9 @@ return [
             'model' => App\User::class,
         ],
 
-        'admins' => [
+        'employees' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\Employee::class,
         ]
 
         // 'users' => [
@@ -111,6 +111,12 @@ return [
 
         'admins' => [
             'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'employees' => [
+            'provider' => 'employees',
             'table' => 'password_resets',
             'expire' => 60,
         ],

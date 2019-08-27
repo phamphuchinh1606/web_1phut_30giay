@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Eloquents;
 
+use App\Models\Role;
 use App\Models\RolePermissionScreen;
+use App\Models\Screen;
 use App\Repositories\Base\BaseRepository;
 
 /**
@@ -30,6 +32,35 @@ class RolePermissionScreenRepository extends BaseRepository
             }
         }
         return $arrayResult;
+    }
+
+    public static function getRolePermissionCache(){
+        $tableRoleName = Role::getTableName();
+        $tableScreenName = Screen::getTableName();
+        $tableRolePermissionName = RolePermissionScreen::getTableName();
+        $listData = RolePermissionScreen::join($tableRoleName,"$tableRoleName.id","$tableRolePermissionName.role_id")
+            ->join($tableScreenName,"$tableScreenName.screen_id","$tableRolePermissionName.screen_id")
+            ->select([
+                "$tableRolePermissionName.role_id",
+                "$tableRolePermissionName.screen_id",
+                "$tableRolePermissionName.permission_id",
+                "$tableRolePermissionName.assign_code",
+                "$tableScreenName.screen_name",
+                "$tableScreenName.screen_url"
+            ])->get();
+        $rolePermissions = [];
+        foreach ($listData as $data){
+            if(isset($rolePermissions[$data->role_id])){
+                if(isset($rolePermissions[$data->role_id][$data->permission_id])){
+                    $rolePermissions[$data->role_id][$data->permission_id][] = $data;
+                }else{
+                    $rolePermissions[$data->role_id][$data->permission_id] = [$data];
+                }
+            }else{
+                $rolePermissions[$data->role_id][$data->permission_id] = [$data];
+            }
+        }
+        return $rolePermissions;
     }
 
 }

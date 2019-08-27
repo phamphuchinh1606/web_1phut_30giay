@@ -2,9 +2,12 @@
 
 namespace App\Policies;
 
+use App\Common\PermissionRoleCommon;
 use App\User;
+use App\Models\Employee;
 use App\Models\Menu;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Cache;
 
 class MenuPolicy
 {
@@ -17,9 +20,9 @@ class MenuPolicy
      */
     public function before($user, $ability)
     {
-//        if ($user->isAdmin()) {
-//            return true;
-//        }
+        if (PermissionRoleCommon::checkRoleRoot($user)) {
+            return true;
+        }
         return true;
     }
 
@@ -29,9 +32,8 @@ class MenuPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny($user)
     {
-        //
         dd('vao');
     }
 
@@ -42,10 +44,10 @@ class MenuPolicy
      * @param  \App\Menu  $menu
      * @return mixed
      */
-    public function view(User $user, Menu $menu)
+    public function view($user, Menu $menu)
     {
-        dd($user);
         return true;
+        return PermissionRoleCommon::checkViewMenuRoleUser($user, $menu);
     }
 
     /**
@@ -54,7 +56,7 @@ class MenuPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         //
         dd('vao');
@@ -68,7 +70,7 @@ class MenuPolicy
      * @param  \App\Menu  $menu
      * @return mixed
      */
-    public function update(User $user, Menu $menu)
+    public function update($user, Menu $menu)
     {
         //
     }
@@ -80,7 +82,7 @@ class MenuPolicy
      * @param  \App\Menu  $menu
      * @return mixed
      */
-    public function delete(User $user, Menu $menu)
+    public function delete($user, Menu $menu)
     {
         //
     }
@@ -92,7 +94,7 @@ class MenuPolicy
      * @param  \App\Menu  $menu
      * @return mixed
      */
-    public function restore(User $user, Menu $menu)
+    public function restore($user, Menu $menu)
     {
         //
     }
@@ -104,7 +106,7 @@ class MenuPolicy
      * @param  \App\Menu  $menu
      * @return mixed
      */
-    public function forceDelete(User $user, Menu $menu)
+    public function forceDelete($user, Menu $menu)
     {
         //
     }

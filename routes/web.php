@@ -15,3 +15,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/login-admin','Auth\LoginController@login')->name('admin.login');
     Route::get('/logout-admin','Auth\LoginController@logout')->name('admin.logout');
 });
+
+Route::get('/login','Auth\LoginEmployeeController@showLoginForm')->name('login');
+Route::post('/login','Auth\LoginEmployeeController@login')->name('login');
+Route::get('/logout','Auth\LoginEmployeeController@logout')->name('logout');
+Route::get('/','Auth\LoginEmployeeController@showLoginForm')->name('employee.login');

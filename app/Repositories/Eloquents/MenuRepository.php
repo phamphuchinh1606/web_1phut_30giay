@@ -17,4 +17,27 @@ class MenuRepository extends BaseRepository
         $this->model = $model;
     }
 
+    public function selectAll()
+    {
+        $listMenu = $this->model::orderBy('sort_num')->orderBy('child_sort_num')->get();
+        $menus = [];
+        foreach ($listMenu as $menu){
+            if(isset($menu->parent_menu_id) && !empty($menu->parent_menu_id)){
+                if(isset($menus[$menu->parent_menu_id])){
+                    if(isset($menus[$menu->parent_menu_id]->child_menus)){
+                        $menuItem = $menus[$menu->parent_menu_id];
+                        $arrayChildMenu = $menuItem->child_menus;
+                        $arrayChildMenu[] = $menu;
+                        $menus[$menu->parent_menu_id]->child_menus = $arrayChildMenu;
+                    }else{
+                        $menus[$menu->parent_menu_id]->child_menus = [$menu];
+                    }
+                }
+            }else{
+                $menus[$menu->menu_id] = $menu;
+            }
+        }
+        return $menus;
+    }
+
 }

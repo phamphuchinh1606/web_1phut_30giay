@@ -29,6 +29,9 @@ use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
 use App\Repositories\Eloquents\UnitRepository;
+use App\Repositories\Eloquents\UserBranchRepository;
+use App\Repositories\Eloquents\UserRepository;
+use App\Repositories\Eloquents\UserRoleRepository;
 use Illuminate\Support\Facades\DB;
 
 class MaterialService extends BaseService {
@@ -58,6 +61,9 @@ class MaterialService extends BaseService {
         RoleRepository $roleRepository,
         ScreenRepository $screenRepository,
         RolePermissionScreenRepository $rolePermissionScreenRepository,
+        UserRepository $userRepository,
+        UserBranchRepository $userBranchRepository,
+        UserRoleRepository $userRoleRepository,
         TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
@@ -65,7 +71,8 @@ class MaterialService extends BaseService {
             $saleRepository, $productRepository, $employeeRepository, $employeeDailyRepository,
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
             $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository,
-            $roleRepository, $screenRepository, $rolePermissionScreenRepository);
+            $roleRepository, $screenRepository, $rolePermissionScreenRepository, $userRepository, $userBranchRepository,
+            $userRoleRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 

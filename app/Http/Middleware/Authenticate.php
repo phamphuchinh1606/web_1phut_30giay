@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
 
 class Authenticate extends Middleware
 {
@@ -17,5 +18,13 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('admin.login');
         }
+    }
+
+    public function handle($request, Closure $next, ...$guards)
+    {
+        $guards = array('web','employee');
+        $this->authenticate($request, $guards);
+
+        return $next($request);
     }
 }

@@ -24,6 +24,8 @@ class CreateEmployeesTable extends Migration
             $table->double('price_first_hour')->nullable();
             $table->double('price_last_hour')->nullable();
             $table->integer('employee_sale_card_small')->default(0);
+            $table->string('employee_login_id')->nullable();
+            $table->string('password')->nullable();
             $table->integer('delete_flg')->default(0);
             $table->timestamps();
         });
