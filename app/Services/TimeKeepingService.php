@@ -8,8 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class TimeKeepingService extends BaseService {
 
-    public function getTimeKeeping($branchId, $currentDate){
-        $employees = $this->employeeRepository->getEmployeeByBranch($branchId);
+    public function getTimeKeeping($branchId, $currentDate, $employeeId = null){
+        if(isset($employeeId)){
+            $employees = [$this->employeeRepository->find($employeeId)];
+        }else{
+            $employees = $this->employeeRepository->getEmployeeByBranch($branchId);
+        }
         $employeeDailies = $this->employeeDailyRepository->getEmployeeByMonth($branchId,$currentDate);
         $employeeSums = $this->employeeDailyRepository->getEmployeeTotalByMonth($branchId,$currentDate);
         $employeeTimeKeepings = $this->employeeTimeKeepingRepository->getEmployeeTotalByMonth($branchId,$currentDate);

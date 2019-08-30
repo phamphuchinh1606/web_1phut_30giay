@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Employee;
 
+use App\Common\AuthCommon;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Models\EmployeeDaily;
@@ -25,7 +26,8 @@ class TimeKeepingController extends Controller
     public function index(){
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
-        $result = $this->timeKeepingService->getTimeKeeping($branchId, $currentDate);
+        $employeeId = AuthCommon::AuthEmployee()->id;
+        $result = $this->timeKeepingService->getTimeKeeping($branchId, $currentDate,$employeeId);
         return $this->viewEmployee('timekeeping.time_keeping',[
             'currentDate' => $currentDate,
             'branchId' => $branchId,
