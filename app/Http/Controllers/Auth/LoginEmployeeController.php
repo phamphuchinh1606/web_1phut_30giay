@@ -68,7 +68,7 @@ class LoginEmployeeController extends Controller
                 }
                 SessionHelper::setSelectedMonth(DateTimeHelper::now());
             }
-            return redirect()->route('admin.home');
+            return redirect()->route('home');
         }else{
             return redirect()->route('login')->withErrors('Tài khoản hoặc mật khẩu không đúng. Vui lòng nhập lại!');
         }
@@ -80,7 +80,7 @@ class LoginEmployeeController extends Controller
 
         $request->session()->invalidate();
 
-        return $this->loggedOut($request) ?: redirect('/admin');
+        return $this->loggedOut($request) ?: redirect('/');
     }
 
     /**

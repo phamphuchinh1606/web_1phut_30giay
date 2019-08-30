@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+@extends('employee.layouts.master')
 
 @section('head.css')
     <link href="{{asset('/css/admin/plugins/daterangepicker.css')}}" rel="stylesheet">

@@ -11,13 +11,13 @@
 |
 */
 
-Route::get('/employee','EmployeeController@index')->name('employee');
-Route::get('/employee/create','EmployeeController@showCreate')->name('employee.create');
-Route::post('/employee/create','EmployeeController@create')->name('employee.create');
-Route::get('/employee/update/{id}','EmployeeController@showUpdate')->name('employee.update');
-Route::post('/employee/update/{id}','EmployeeController@update')->name('employee.update');
-Route::post('/employee/add-role/{id}','EmployeeController@addRoleEmployee')->name('employee.add_role');
-Route::delete('/employee/delete-role/{id}/{employee_role_id}','EmployeeController@deleteRoleEmployee')->name('employee.delete_role');
-Route::delete('/employee/delete/{id}','EmployeeController@delete')->name('employee.delete');
+Route::get('/setting/employee','EmployeeController@index')->name('employee');
+Route::get('/setting/employee/create','EmployeeController@showCreate')->name('employee.create');
+Route::post('/setting/employee/create','EmployeeController@create')->name('employee.create');
+Route::get('/setting/employee/update/{id}','EmployeeController@showUpdate')->name('employee.update');
+Route::post('/setting/employee/update/{id}','EmployeeController@update')->name('employee.update');
+Route::post('/setting/employee/add-role/{id}','EmployeeController@addRoleEmployee')->name('employee.add_role');
+Route::delete('/setting/employee/delete-role/{id}/{employee_role_id}','EmployeeController@deleteRoleEmployee')->name('employee.delete_role');
+Route::delete('/setting/employee/delete/{id}','EmployeeController@delete')->name('employee.delete');
 
 

@@ -6,26 +6,30 @@ use App\Common\Constant;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Closure;
 
-class Authenticate extends Middleware
+class AuthenticateEmployee extends Middleware
 {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
+    /** redirectTo
+     * @param $request
      * @return string
      */
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('admin.login');
+            return route('login');
         }
     }
 
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
     public function handle($request, Closure $next, ...$guards)
     {
-        $guards = array(Constant::AUTH_GUARD_ADMIN);
+        $guards = array(Constant::AUTH_GUARD_EMPLOYEE);
         $this->authenticate($request, $guards);
-
         return $next($request);
     }
 }

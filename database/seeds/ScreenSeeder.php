@@ -99,6 +99,29 @@ class ScreenSeeder extends Seeder
                 'parent_screen_id' => 'employee',
                 'screen_type' => 1//Admin
             ],
+
+            [
+                'screen_id' => 'user',
+                'screen_name' => 'NV Quản Lý',
+                'screen_url' => '/admin/setting/user',
+                'parent_screen_id' => null,
+                'screen_type' => 1//Admin
+            ],
+            [
+                'screen_id' => 'user.create',
+                'screen_name' => 'Tạo Mới NV Nhân Viên',
+                'screen_url' => '/admin/setting/user/create',
+                'parent_screen_id' => 'user',
+                'screen_type' => 1//Admin
+            ],
+            [
+                'screen_id' => 'user.update',
+                'screen_name' => 'Cập Nhật NV Nhân Viên',
+                'screen_url' => '/admin/setting/user/update',
+                'parent_screen_id' => 'user',
+                'screen_type' => 1//Admin
+            ],
+
             [
                 'screen_id' => 'setting_of_day',
                 'screen_name' => 'Thiết Lặp Ngày Nghĩ',

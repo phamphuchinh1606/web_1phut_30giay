@@ -10,7 +10,7 @@ use App\Repositories\Eloquents\SettingRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AppInfoComposer
+class AppInfoEmployeeComposer
 {
     /**
      * The user repository implementation.
@@ -60,14 +60,8 @@ class AppInfoComposer
             self::$branches = $this->branchRepository->selectAll();
         }
         if(!isset(self::$menus)){
-            $menuType = null;
-            $user = Auth::guard(Constant::AUTH_GUARD_ADMIN)->user();
-            if(Auth::guard(Constant::AUTH_GUARD_ADMIN)->check()){
-                $menuType = RoleConstant::MENU_TYPE_ADMIN_CODE;
-            }else if(Auth::guard(Constant::AUTH_GUARD_EMPLOYEE)->check()){
-                $user = Auth::guard(Constant::AUTH_GUARD_EMPLOYEE)->user();
-                $menuType = RoleConstant::MENU_TYPE_EMPLOYEE_CODE;
-            }
+            $user = Auth::guard(Constant::AUTH_GUARD_EMPLOYEE)->user();
+            $menuType = RoleConstant::MENU_TYPE_EMPLOYEE_CODE;
             self::$menus = $this->menuRepository->selectAll($menuType, $user);
         }
         $view->with('appInfo', self::$appInfo)

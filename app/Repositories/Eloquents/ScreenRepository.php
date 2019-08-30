@@ -21,4 +21,12 @@ class ScreenRepository extends BaseRepository
     {
         return $this->model::orderBy('screen_type')->get();
     }
+
+    public function getScreenAdmin(){
+        return $this->model::where('screen_type', Screen::SCREEN_TYPE_ADMIN)->get();
+    }
+
+    public function getScreenEmployee(){
+        return $this->model::where('screen_type', Screen::SCREEN_TYPE_EMPLOYEE)->get();
+    }
 }

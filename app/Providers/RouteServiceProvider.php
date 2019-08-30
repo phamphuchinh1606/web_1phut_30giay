@@ -90,9 +90,8 @@ class RouteServiceProvider extends ServiceProvider
 
     private function routeEmployee(){
         //Router admin
-        $middlewareAdmin = ['web','auth'];
-//        $middlewareAdmin = ['web'];
-        $listRoute = ['route_input_daily','route_time_keeping', 'route_payment_bill','route_sale_cart_small'];
+        $middlewareAdmin = ['web','auth.employee'];
+        $listRoute = ['route_input_daily','route_time_keeping', 'route_payment_bill','route_sale_cart_small', 'route_home'];
         foreach ($listRoute as $routeName){
             Route::middleware($middlewareAdmin)
                 ->namespace($this->namespaceEmployee)

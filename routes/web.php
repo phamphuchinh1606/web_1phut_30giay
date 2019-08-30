@@ -19,4 +19,3 @@ Route::group(['prefix' => 'admin'], function () {
 Route::get('/login','Auth\LoginEmployeeController@showLoginForm')->name('login');
 Route::post('/login','Auth\LoginEmployeeController@login')->name('login');
 Route::get('/logout','Auth\LoginEmployeeController@logout')->name('logout');
-Route::get('/','Auth\LoginEmployeeController@showLoginForm')->name('employee.login');

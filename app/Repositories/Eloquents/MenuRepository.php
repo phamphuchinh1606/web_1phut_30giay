@@ -19,7 +19,7 @@ class MenuRepository extends BaseRepository
         $this->model = $model;
     }
 
-    public function selectAll($menuType = null)
+    public function selectAll($menuType = null, $user = null)
     {
         $query = $this->model::orderBy('sort_num')->orderBy('child_sort_num');
         if(isset($menuType)){
@@ -28,6 +28,9 @@ class MenuRepository extends BaseRepository
         $listMenu = $query->get();
         $menus = [];
         foreach ($listMenu as $menu){
+            if($user!= null && !$user->can('menu.view', $menu) && !empty($menu->menu_url) ){
+                continue;
+            }
             if(isset($menu->parent_menu_id) && !empty($menu->parent_menu_id)){
                 if(isset($menus[$menu->parent_menu_id])){
                     if(isset($menus[$menu->parent_menu_id]->child_menus)){

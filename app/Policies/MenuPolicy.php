@@ -23,7 +23,6 @@ class MenuPolicy
         if (PermissionRoleCommon::checkRoleRoot($user)) {
             return true;
         }
-        return true;
     }
 
     /**
@@ -34,7 +33,6 @@ class MenuPolicy
      */
     public function viewAny($user)
     {
-        dd('vao');
     }
 
     /**
@@ -46,7 +44,7 @@ class MenuPolicy
      */
     public function view($user, Menu $menu)
     {
-        return true;
+//        return true;
         return PermissionRoleCommon::checkViewMenuRoleUser($user, $menu);
     }
 
@@ -58,8 +56,6 @@ class MenuPolicy
      */
     public function create($user)
     {
-        //
-        dd('vao');
         return true;
     }
 

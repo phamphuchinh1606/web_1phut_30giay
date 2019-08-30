@@ -38,8 +38,16 @@ class PermissionRoleCommon{
     }
     public static function checkViewMenuRoleUser($user, $menu){
         $listRolePermission = self::rolePermission();
-        $userRoles = $user->user_roles;
-        $mapUserBranch = ArrayHelper::parseListObjectToArrayKey($user->user_branches,'branch_id');
+        if($user instanceof User){
+            $userRoles = $user->user_roles;
+            $mapUserBranch = ArrayHelper::parseListObjectToArrayKey($user->user_branches,'branch_id');
+        }else{
+            $userRoles = $user->employee_roles;
+            $mapUserBranch = ArrayHelper::parseListObjectToArrayKey($user->employee_branches,'branch_id');
+        }
+        if(!isset($userRoles)){
+            return false;
+        }
         foreach ($userRoles as $role){
             if(isset($listRolePermission[$role->role_id]) && isset($listRolePermission[$role->role_id][RoleConstant::PERMISSION_VIEW_ID])){
                 $canViewScreens = $listRolePermission[$role->role_id][RoleConstant::PERMISSION_VIEW_ID];

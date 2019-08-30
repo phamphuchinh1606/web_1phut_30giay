@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+@extends('employee.layouts.master')
 
 <style>
     table.dataTable{

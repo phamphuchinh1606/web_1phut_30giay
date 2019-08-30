@@ -34,6 +34,10 @@ class Employee extends Authenticatable
         return $this->hasMany(EmployeeBranch::class,'employee_id');
     }
 
+    public function employee_roles(){
+        return $this->hasMany(EmployeeRole::class,'employee_id');
+    }
+
     public function assign_sale_cart_smalls(){
         return $this->hasMany(AssignEmployeeSaleCartSmall::class,'employee_id');
     }

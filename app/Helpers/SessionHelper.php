@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 use App\Common\Constant;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class SessionHelper{

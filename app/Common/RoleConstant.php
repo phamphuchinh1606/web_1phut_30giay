@@ -5,8 +5,8 @@ namespace App\Common;
 class RoleConstant{
     public const ROLE_TYPE_ADMIN_CODE = 1;
     public const ROLE_TYPE_ADMIN_NAME = "Admin";
-    public const ROLE_TYPE_USER_CODE = 2;
-    public const ROLE_TYPE_USER_NAME = "User";
+    public const ROLE_TYPE_EMPLOYEE_CODE = 2;
+    public const ROLE_TYPE_EMPLOYEE_NAME = "Employee";
     public const ROLE_TYPE_ROOT = 99;
 
     public const MENU_TYPE_ADMIN_CODE = 1;
@@ -14,8 +14,8 @@ class RoleConstant{
 
     public const SCREEN_TYPE_ADMIN_CODE = 1;
     public const SCREEN_TYPE_ADMIN_NAME = "Admin";
-    public const SCREEN_TYPE_USER_CODE = 1;
-    public const SCREEN_TYPE_USER_NAME = "User";
+    public const SCREEN_TYPE_EMPLOYEE_CODE = 1;
+    public const SCREEN_TYPE_EMPLOYEE_NAME = "Employee";
 
     public const PERMISSION_VIEW_ID = "1";
     public const PERMISSION_INSERT_ID = "2";
@@ -31,8 +31,8 @@ class RoleConstant{
             case self::SCREEN_TYPE_ADMIN_CODE:
                 return self::SCREEN_TYPE_ADMIN_NAME;
                 break;
-            case self::SCREEN_TYPE_USER_CODE:
-                return self::SCREEN_TYPE_USER_NAME;
+            case self::SCREEN_TYPE_EMPLOYEE_CODE:
+                return self::SCREEN_TYPE_EMPLOYEE_NAME;
                 break;
         }
         return "";

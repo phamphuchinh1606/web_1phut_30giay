@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Common\Constant;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Http\Controllers\Controller;
@@ -59,8 +60,8 @@ class LoginController extends Controller
         $password = $request->password;
         $remember = false;
 
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_flg' => 0], $remember)) {
-            if(Auth::check()){
+        if ($this->guard()->attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_flg' => 0], $remember)) {
+            if($this->guard()->check()){
                 $branch = $this->branchRepository->find(1);
                 if(isset($branch)){
                     SessionHelper::setSelectedBranchId($branch->id);
@@ -81,5 +82,15 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect('/admin');
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard(Constant::AUTH_GUARD_ADMIN);
     }
 }

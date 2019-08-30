@@ -17,6 +17,9 @@ class ComposerServiceProvider extends ServiceProvider
         //Build data app info
         View::composer(['admin.*'],
             'App\Http\ViewComposers\AppInfoComposer');
+
+        View::composer(['employee.*'],
+            'App\Http\ViewComposers\AppInfoEmployeeComposer');
     }
 
     /**
