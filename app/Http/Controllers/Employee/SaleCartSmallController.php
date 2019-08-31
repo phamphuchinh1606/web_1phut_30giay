@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Employee;
 
+use App\Common\AuthCommon;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Services\SaleReportService;
@@ -20,7 +21,8 @@ class SaleCartSmallController extends Controller
     public function index(){
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
-        $result = $this->saleReportService->getSaleCartSmall($branchId,$currentDate);
+        $employeeId = AuthCommon::AuthEmployee()->id;
+        $result = $this->saleReportService->getSaleCartSmall($branchId,$currentDate,$employeeId);
         return $this->viewEmployee('saleCartSmall.sale_cart_small',[
             'branchId' => $branchId,
             'currentDate' => $currentDate,

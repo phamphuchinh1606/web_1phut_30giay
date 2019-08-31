@@ -175,8 +175,12 @@
                         <td colspan="2" class="text-center">Chuyên Cần</td>
                         @foreach($employees as $employee)
                             <td>
-                                <input class="input-time-keeping form-control number" name="diligence_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->diligence_amount)}}">
-                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                                @can('time_keeping.update')
+                                    <input class="input-time-keeping form-control number" name="diligence_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->diligence_amount)}}">
+                                    <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                                @else
+                                    <span>{{\App\Helpers\AppHelper::formatMoney($employee->diligence_amount)}}</span>
+                                @endcan
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
@@ -184,9 +188,13 @@
                     <tr>
                         <td colspan="2" class="text-center">Phụ Cấp</td>
                         @foreach($employees as $employee)
-                            <td>
-                                <input class="input-time-keeping form-control number" name="allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->allowance_amount)}}">
-                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            <td class="text-right">
+                                @can('time_keeping.update')
+                                    <input class="input-time-keeping form-control number" name="allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->allowance_amount)}}">
+                                    <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                                @else
+                                    <span>{{\App\Helpers\AppHelper::formatMoney($employee->allowance_amount)}}</span>
+                                @endcan
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
@@ -194,9 +202,13 @@
                     <tr>
                         <td colspan="2" class="text-center">Thưởng</td>
                         @foreach($employees as $employee)
-                            <td>
-                                <input class="input-time-keeping form-control number" name="bonus_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->bonus_amount)}}">
-                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            <td class="text-right">
+                                @can('time_keeping.update')
+                                    <input class="input-time-keeping form-control number" name="bonus_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->bonus_amount)}}">
+                                    <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                                @else
+                                    <span>{{\App\Helpers\AppHelper::formatMoney($employee->bonus_amount)}}</span>
+                                @endcan
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
@@ -204,9 +216,13 @@
                     <tr>
                         <td colspan="2" class="text-center">Phụ Cấp Thêm</td>
                         @foreach($employees as $employee)
-                            <td>
-                                <input class="input-time-keeping form-control number" name="extra_allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->extra_allowance_amount)}}">
-                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                            <td class="text-right">
+                                @can('time_keeping.update')
+                                    <input class="input-time-keeping form-control number" name="extra_allowance_amount" value="{{\App\Helpers\AppHelper::formatMoney($employee->extra_allowance_amount)}}">
+                                    <input type="hidden" name="employee_id" value="{{$employee->id}}">
+                                @else
+                                    <span>{{\App\Helpers\AppHelper::formatMoney($employee->extra_allowance_amount)}}</span>
+                                @endcan
                             </td>
                         @endforeach
                         <th colspan="4" class="text-center"></th>

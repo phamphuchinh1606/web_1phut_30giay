@@ -44,8 +44,8 @@ class MenuPolicy
      */
     public function view($user, Menu $menu)
     {
-        return true;
-        return PermissionRoleCommon::checkViewMenuRoleUser($user, $menu);
+//        return true;
+        return PermissionRoleCommon::checkMenuViewRoleUser($user, $menu);
     }
 
     /**

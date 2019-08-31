@@ -36,7 +36,8 @@ class PermissionRoleCommon{
         });
         return $rolePermission;
     }
-    public static function checkViewMenuRoleUser($user, $menu){
+
+    private static function checkRoleUser($user, $url, $permission){
         $listRolePermission = self::rolePermission();
         if($user instanceof User){
             $userRoles = $user->user_roles;
@@ -49,10 +50,10 @@ class PermissionRoleCommon{
             return false;
         }
         foreach ($userRoles as $role){
-            if(isset($listRolePermission[$role->role_id]) && isset($listRolePermission[$role->role_id][RoleConstant::PERMISSION_VIEW_ID])){
-                $canViewScreens = $listRolePermission[$role->role_id][RoleConstant::PERMISSION_VIEW_ID];
+            if(isset($listRolePermission[$role->role_id]) && isset($listRolePermission[$role->role_id][$permission])){
+                $canViewScreens = $listRolePermission[$role->role_id][$permission];
                 foreach ($canViewScreens as $rolePermission){
-                    if($rolePermission->screen_url == $menu->menu_url){
+                    if($rolePermission->screen_url == $url){
                         switch ($rolePermission->assign_code){
                             case RoleConstant::ASSIGN_PERMISSION_ALL_ID:
                                 return true;
@@ -67,6 +68,26 @@ class PermissionRoleCommon{
             }
         }
         return false;
+    }
+
+    public static function checkMenuViewRoleUser($user, $menu){
+        return self::checkRoleUser($user, $menu->menu_url, RoleConstant::PERMISSION_VIEW_ID);
+    }
+
+    public static function checkScreenViewRoleUser($user, $screenUrl){
+        return self::checkRoleUser($user, $screenUrl, RoleConstant::PERMISSION_VIEW_ID);
+    }
+
+    public static function checkScreenInsertRoleUser($user, $screenUrl){
+        return self::checkRoleUser($user, $screenUrl, RoleConstant::PERMISSION_INSERT_ID);
+    }
+
+    public static function checkScreenUpdateRoleUser($user, $screenUrl){
+        return self::checkRoleUser($user, $screenUrl, RoleConstant::PERMISSION_UPDATE_ID);
+    }
+
+    public static function checkScreenDeleteRoleUser($user, $screenUrl){
+        return self::checkRoleUser($user, $screenUrl, RoleConstant::PERMISSION_DELETE_ID);
     }
 
     public static function checkRoleRoot($user){

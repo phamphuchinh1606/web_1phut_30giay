@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\User;
 use App\Models\PaymentBill;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class PaymentBillPolicy
 {
@@ -17,7 +18,7 @@ class PaymentBillPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(Authenticatable $user)
     {
         return true;
     }
@@ -29,7 +30,7 @@ class PaymentBillPolicy
      * @param  \App\PaymentBill  $paymentBill
      * @return mixed
      */
-    public function view(User $user)
+    public function view(Authenticatable $user)
     {
         return true;
     }
@@ -40,7 +41,7 @@ class PaymentBillPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(Authenticatable $user)
     {
         dd('vao');
         return true;
@@ -54,7 +55,7 @@ class PaymentBillPolicy
      * @param  \App\PaymentBill  $paymentBill
      * @return mixed
      */
-    public function update(User $user, PaymentBill $paymentBill)
+    public function update(Authenticatable $user, PaymentBill $paymentBill)
     {
         //
     }
@@ -66,7 +67,7 @@ class PaymentBillPolicy
      * @param  \App\PaymentBill  $paymentBill
      * @return mixed
      */
-    public function delete(User $user, PaymentBill $paymentBill)
+    public function delete(Authenticatable $user, PaymentBill $paymentBill)
     {
         //
     }
@@ -78,7 +79,7 @@ class PaymentBillPolicy
      * @param  \App\PaymentBill  $paymentBill
      * @return mixed
      */
-    public function restore(User $user, PaymentBill $paymentBill)
+    public function restore(Authenticatable $user, PaymentBill $paymentBill)
     {
         //
     }
@@ -90,7 +91,7 @@ class PaymentBillPolicy
      * @param  \App\PaymentBill  $paymentBill
      * @return mixed
      */
-    public function forceDelete(User $user, PaymentBill $paymentBill)
+    public function forceDelete(Authenticatable $user, PaymentBill $paymentBill)
     {
         //
     }

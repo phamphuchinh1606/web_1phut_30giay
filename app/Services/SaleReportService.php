@@ -105,11 +105,12 @@ class SaleReportService extends BaseService {
         return $result;
     }
 
-    public function getSaleCartSmall($branchId, $date){
+    public function getSaleCartSmall($branchId, $date, $employeeId = null){
+
         $infoDays = DateTimeHelper::parseMonthToArrayDay($date);
-        $employees = $this->employeeRepository->getEmployeeSaleSmall($branchId);
-        $saleCartSmalls = $this->saleCartSmallRepository->getSaleSmallByMonth($branchId,$date);
-        $sumSaleCartSmall = $this->saleCartSmallRepository->getSumSaleSmallByMonth($branchId,$date);
+        $employees = $this->employeeRepository->getEmployeeSaleSmall($branchId, $employeeId);
+        $saleCartSmalls = $this->saleCartSmallRepository->getSaleSmallByMonth($branchId,$date,$employeeId);
+        $sumSaleCartSmall = $this->saleCartSmallRepository->getSumSaleSmallByMonth($branchId,$date,$employeeId, true);
 
         $arraySaleCardSmall = ArrayHelper::parseListObjectToArrayKey($saleCartSmalls,array('employee_id','sale_date'));
         $arraySumSaleCardSmall = ArrayHelper::parseListObjectToArrayKey($sumSaleCartSmall,'employee_id');

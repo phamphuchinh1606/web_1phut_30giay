@@ -16,7 +16,8 @@ class ArrayHelper{
                             $valueItem = $objectItem[$key];
                         }
                     }else{
-                        eval('$valueItem = $objectItem->'.$key.';');
+                        eval('$valueItem = !isset($objectItem->'.$key.') ? null : $objectItem->'.$key.';');
+//                        eval('$valueItem = $objectItem->'.$key.';');
                     }
                     if($keyArray != null ) $keyArray.= $sperator;
                     if(isset($valueItem)) $keyArray.= $valueItem;

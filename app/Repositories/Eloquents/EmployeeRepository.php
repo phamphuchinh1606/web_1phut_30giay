@@ -43,16 +43,20 @@ class EmployeeRepository extends BaseRepository
             ->where("$tableEmployeeBranchName.branch_id",$branchId)->get();
     }
 
-    public function getEmployeeSaleSmall($branchId){
+    public function getEmployeeSaleSmall($branchId, $employeeId = null){
         $tableEmployeeName = Employee::getTableName();
         $tableEmployeeBranchName = EmployeeBranch::getTableName();
         $tableAssignEmployeeSaleCartSmallName = AssignEmployeeSaleCartSmall::getTableName();
-        return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
+        $query = $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
             ->join($tableEmployeeBranchName,"$tableEmployeeBranchName.employee_id","$tableEmployeeName.id")
             ->join($tableAssignEmployeeSaleCartSmallName,"$tableAssignEmployeeSaleCartSmallName.employee_id","$tableEmployeeName.id")
             ->where("$tableEmployeeBranchName.branch_id",$branchId)
-            ->where('employee_sale_card_small',Constant::EMPLOYEE_SALE_CARD_SMALL)
-            ->get();
+            ->where('employee_sale_card_small',Constant::EMPLOYEE_SALE_CARD_SMALL);
+        if(isset($employeeId)){
+            $query->where("$tableEmployeeName.id", $employeeId);
+        }
+        $query->select("$tableEmployeeName.*");
+        return $query->get();
     }
 
     public function getEmployeeDaily($branchId, $date){

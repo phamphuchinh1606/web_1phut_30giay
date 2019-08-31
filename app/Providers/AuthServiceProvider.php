@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Menu;
 use App\Models\PaymentBill;
+use App\Policies\EmployeeTimeKeepingPolicy;
 use App\Policies\MenuPolicy;
 use App\Policies\PaymentBillPolicy;
+use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -20,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Model' => 'App\Policies\ModelPolicy',
         'App\Models\Menu' => MenuPolicy::class,
         'App\Models\PaymentBill' => PaymentBillPolicy::class,
+        'App\Models\EmployeeTimeKeeping' => EmployeeTimeKeepingPolicy::class,
     ];
 
     /**
@@ -33,5 +36,6 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::resource('payment_bill', 'App\Policies\PaymentBillPolicy');
         Gate::resource('menu', 'App\Policies\MenuPolicy');
+        Gate::resource('time_keeping', 'App\Policies\EmployeeTimeKeepingPolicy');
     }
 }
