@@ -105,4 +105,43 @@ class PermissionRoleCommon{
         return false;
     }
 
+    public static function getPermissionUserOnBranch($user, $url){
+        $listRolePermission = self::rolePermission();
+        if($user instanceof User){
+            $userRoles = $user->user_roles;
+            $mapUserBranch = ArrayHelper::parseListObjectToArrayKey($user->user_branches,'branch_id');
+        }else{
+            $userRoles = $user->employee_roles;
+            $mapUserBranch = ArrayHelper::parseListObjectToArrayKey($user->employee_branches,'branch_id');
+        }
+        if(!isset($userRoles)){
+            return -1;
+        }
+        $id = null;
+        foreach ($userRoles as $role){
+            if(isset($listRolePermission[$role->role_id])){
+                $roles = $listRolePermission[$role->role_id];
+                foreach ($roles as $rolePermissions){
+                    foreach ($rolePermissions as $rolePermission){
+                        if($rolePermission->screen_url == $url){
+                            switch ($rolePermission->assign_code){
+                                case RoleConstant::ASSIGN_PERMISSION_ALL_ID:
+                                case RoleConstant::ASSIGN_PERMISSION_BRANCH_ASSIGN_ID:
+                                    return $id;
+                                    break;
+                                default:
+                                    if(isset($mapUserBranch[SessionHelper::getSelectedBranchId()])){
+                                        $id = $user->id;
+                                    }
+                                    break;
+                            }
+                            return $id;
+                        }
+                    }
+                }
+            }
+        }
+        return $id;
+    }
+
 }

@@ -67,7 +67,7 @@ class InputDailyController extends Controller
         }
         $branchId = SessionHelper::getSelectedBranchId();
         $infoDays = DateTimeHelper::getArrayDateByCurrentDate(SessionHelper::getSelectedMonth());
-        $materialTypes = $this->materialTypeRepository->selectAll();
+        $materialTypes = $this->materialTypeRepository->selectShowAll();
         $materials = $this->materialRepository->getAllByFormInput($branchId,$currentDate);
         $employees = $this->employeeRepository->getEmployeeDaily($branchId,$currentDate);
         $sumEmployeeTotal = $this->employeeDailyRepository->sumTotalDaily($branchId,$currentDate);

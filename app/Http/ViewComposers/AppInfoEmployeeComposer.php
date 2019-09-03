@@ -2,6 +2,7 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Common\AuthCommon;
 use App\Common\Constant;
 use App\Common\RoleConstant;
 use App\Repositories\Eloquents\BranchRepository;
@@ -57,10 +58,11 @@ class AppInfoEmployeeComposer
             self::$appInfo = $this->settingService->firstOrNew(['id' => 1]);
         }
         if(!isset(self::$branches)){
-            self::$branches = $this->branchRepository->selectAll();
+            $user = AuthCommon::AuthEmployee();
+            self::$branches = $this->branchRepository->getListByEmployeeAssign($user->id);
         }
         if(!isset(self::$menus)){
-            $user = Auth::guard(Constant::AUTH_GUARD_EMPLOYEE)->user();
+            $user = AuthCommon::AuthEmployee();
             $menuType = RoleConstant::MENU_TYPE_EMPLOYEE_CODE;
             self::$menus = $this->menuRepository->selectAll($menuType, $user);
         }

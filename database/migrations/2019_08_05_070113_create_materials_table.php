@@ -20,6 +20,8 @@ class CreateMaterialsTable extends Migration
             $table->integer('unit_id');
             $table->double('price');
             $table->integer('supplier_id')->nullable();
+            $table->integer('is_show_input')->default(1);
+            $table->integer('specification')->nullable();
             $table->timestamps();
         });
     }

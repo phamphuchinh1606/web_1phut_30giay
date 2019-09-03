@@ -86,7 +86,11 @@
                             <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($day->total_first_amount)}}</td>
                             <td rowspan="2" class="text-right">{{\App\Helpers\AppHelper::formatMoney($day->total_amount)}}</td>
                             @if($day->week_no == 1 || $index == 0)
-                                <td rowspan="{{(8 - $day->week_no)*2}}" class="text-right">{{\App\Helpers\AppHelper::formatMoney($day->total_week_amount)}}</td>
+                                @if($index == 0 && $day->week_no == 0)
+                                    <td rowspan="2" class="text-right">{{\App\Helpers\AppHelper::formatMoney($day->total_week_amount)}}</td>
+                                @else
+                                    <td rowspan="{{(8 - $day->week_no)*2}}" class="text-right">{{\App\Helpers\AppHelper::formatMoney($day->total_week_amount)}}</td>
+                                @endif
                             @endif
                         </tr>
                         <tr>

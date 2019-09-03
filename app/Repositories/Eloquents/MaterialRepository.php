@@ -31,6 +31,14 @@ class MaterialRepository extends BaseRepository
             ->select("$materialTableName.*","$unitTableName.unit_name")->get();
     }
 
+    public function selectShowAll(){
+        $unitTableName = Unit::getTableName();
+        $materialTableName = Material::getTableName();
+        return $this->model::join($unitTableName,"$unitTableName.id","$materialTableName.unit_id")
+            ->where("$materialTableName.is_show_input",'1')
+            ->select("$materialTableName.*","$unitTableName.unit_name")->get();
+    }
+
     public function getAllByFormInput($branchId, $date = null){
         $unitTableName = Unit::getTableName();
         $materialTableName = Material::getTableName();

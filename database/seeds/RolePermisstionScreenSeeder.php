@@ -58,9 +58,11 @@ class RolePermisstionScreenSeeder extends Seeder
                                     $assignCode = RoleConstant::ASSIGN_PERMISSION_ALL_ID;
                                     break;
                                 case 7:
+                                    $assignCode = RoleConstant::ASSIGN_PERMISSION_BRANCH_LOGIN_ID;
+                                    break;
                                 case 8:
                                 case 9:
-                                    $assignCode = RoleConstant::ASSIGN_PERMISSION_BRANCH_LOGIN_ID;
+                                    $assignCode = RoleConstant::ASSIGN_PERMISSION_BRANCH_ASSIGN_ID;
                                     break;
                                 default:
                                     $assignCode = RoleConstant::ASSIGN_PERMISSION_BRANCH_ASSIGN_ID;

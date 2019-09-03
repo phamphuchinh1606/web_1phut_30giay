@@ -150,6 +150,18 @@ class MenuSeeder extends Seeder
                 'child_sort_num' => 3
             ],
             [
+                'menu_id' => 'setting_material',
+                'menu_name' => 'Danh Sách Nguyên Liệu',
+                'menu_url' => '/admin/setting/material',
+                'menu_route' => 'admin.setting.material',
+                'menu_icon_class' => 'icon-equalizer',
+                'parent_menu_id' => 'setting',
+                'is_show' => 1,
+                'menu_type' => 1,//Admin
+                'sort_num' => 8,
+                'child_sort_num' => 4
+            ],
+            [
                 'menu_id' => 'setting_role',
                 'menu_name' => 'Thiết Lặp Quyền',
                 'menu_url' => '/admin/setting/role',
@@ -159,7 +171,7 @@ class MenuSeeder extends Seeder
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
                 'sort_num' => 8,
-                'child_sort_num' => 4
+                'child_sort_num' => 5
             ],
             //Employee Screen
             [

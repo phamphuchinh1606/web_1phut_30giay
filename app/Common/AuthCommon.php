@@ -15,4 +15,9 @@ class AuthCommon{
     public static function AuthAdmin(){
         return Auth::guard(Constant::AUTH_GUARD_ADMIN)->user();
     }
+
+    public static function AuthEmployeeAssignBranches(){
+        $user = Auth::guard(Constant::AUTH_GUARD_EMPLOYEE)->user();
+        return $user->employee_branches;
+    }
 }

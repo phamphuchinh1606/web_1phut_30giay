@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Common\AuthCommon;
+use App\Common\PermissionRoleCommon;
+use App\Enums\ScreenEnum;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Services\SaleReportService;
@@ -21,7 +23,7 @@ class SaleCartSmallController extends Controller
     public function index(){
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
-        $employeeId = AuthCommon::AuthEmployee()->id;
+        $employeeId = PermissionRoleCommon::getPermissionUserOnBranch(AuthCommon::AuthEmployee(), ScreenEnum::SCREEN_SALE_CART_SMALL_URL);
         $result = $this->saleReportService->getSaleCartSmall($branchId,$currentDate,$employeeId);
         return $this->viewEmployee('saleCartSmall.sale_cart_small',[
             'branchId' => $branchId,

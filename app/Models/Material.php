@@ -7,4 +7,8 @@ class Material extends BaseModel
     public function Unit(){
         return $this->belongsTo('App\Models\Unit','unit_id','id');
     }
+
+    public function material_type(){
+        return $this->belongsTo('App\Models\MaterialType','material_type_id','id');
+    }
 }

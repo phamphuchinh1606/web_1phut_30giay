@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Employee;
 
 use App\Common\AuthCommon;
+use App\Common\PermissionRoleCommon;
+use App\Enums\ScreenEnum;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Models\EmployeeDaily;
@@ -26,7 +28,7 @@ class TimeKeepingController extends Controller
     public function index(){
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
-        $employeeId = AuthCommon::AuthEmployee()->id;
+        $employeeId = PermissionRoleCommon::getPermissionUserOnBranch(AuthCommon::AuthEmployee(), ScreenEnum::SCREEN_TIME_KEEPING_URL);
         $result = $this->timeKeepingService->getTimeKeeping($branchId, $currentDate,$employeeId);
         return $this->viewEmployee('timekeeping.time_keeping',[
             'currentDate' => $currentDate,

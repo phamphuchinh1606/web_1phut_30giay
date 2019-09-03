@@ -12,4 +12,5 @@ use BenSampo\Enum\Enum;
 final class ScreenEnum extends Enum
 {
     const SCREEN_TIME_KEEPING_URL =  "/time-keeping";
+    const SCREEN_SALE_CART_SMALL_URL =  "/sale-cart-small";
 }
