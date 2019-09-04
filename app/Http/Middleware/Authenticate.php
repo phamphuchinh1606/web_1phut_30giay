@@ -25,7 +25,6 @@ class Authenticate extends Middleware
     {
         $guards = array(Constant::AUTH_GUARD_ADMIN);
         $this->authenticate($request, $guards);
-
         return $next($request);
     }
 }

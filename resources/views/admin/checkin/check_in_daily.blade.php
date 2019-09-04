@@ -65,18 +65,18 @@
                                     {{\App\Helpers\AppHelper::formatMoney($supplier->total_amount)}}
                                 </td>
                                 @if($day->week_no == 1 || $index == 0)
-                                    <td class="text-right" rowspan="{{8 - $day->week_no}}">
+                                    <td class="text-right" rowspan="@if($index == 0 && $day->week_no == 0) 1 @else {{8 - $day->week_no}} @endif">
                                         <?php $valueQty =0; eval('$valueQty=$day->week->total_qty_'.$supplier->supplier_id.';') ?>
                                         {{\App\Helpers\AppHelper::formatMoney($valueQty)}}
                                     </td>
-                                    <td class="text-right" rowspan="{{8 - $day->week_no}}">
+                                    <td class="text-right" rowspan="@if($index == 0 && $day->week_no == 0) 1 @else {{8 - $day->week_no}} @endif ">
                                         <?php $valueAmount =0; eval('$valueAmount=$day->week->total_amount_'.$supplier->supplier_id.';') ?>
                                         {{\App\Helpers\AppHelper::formatMoney($valueAmount)}}
                                     </td>
                                 @endif
                             @endforeach
                             @if($day->week_no == 1 || $index == 0)
-                                <td class="text-right" rowspan="{{8 - $day->week_no}}">
+                                <td class="text-right" rowspan="@if($index == 0 && $day->week_no == 0) 1 @else {{8 - $day->week_no}} @endif">
                                 {{\App\Helpers\AppHelper::formatMoney($day->week->sum_total_amount)}}
                                 </td>
                             @endif

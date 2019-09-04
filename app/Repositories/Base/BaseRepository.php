@@ -82,6 +82,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
             }
         }
         $modelData = $query->first();
+
         if(isset($modelData)){
             foreach ($attribute as $key => $value){
                 if(!array_search($key,$keys)){

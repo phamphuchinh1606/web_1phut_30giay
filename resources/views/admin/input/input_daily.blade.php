@@ -120,8 +120,17 @@
                                     <td>{{$material->material_name}}</td>
                                     <td class="hide-item-sm">{{$material->unit->unit_name}}</td>
                                     <td class="text-right hide-item-sm">
-                                        {{\App\Helpers\AppHelper::formatMoney($material->price)}}
-{{--                                        <input class="input-daily" name="price_{{$material->id}}" value="{{\App\Helpers\AppHelper::formatMoney($material->price)}}">--}}
+
+                                        <a data-toggle="modal" class="changePricePopupClick"
+                                           data-url="{{route('input_daily.update_daily')}}"
+                                           price-current="{{\App\Helpers\AppHelper::formatMoney($material->price)}}"
+                                           price="{{$material->price}}"
+                                           material-name="{{$material->material_name}}"
+                                           material-id="{{$material->id}}"
+                                           qty-in="{{$material->qty_in}}"
+                                           href="#changePriceModal">
+                                            {{\App\Helpers\AppHelper::formatMoney($material->price)}}
+                                        </a>
                                     </td>
                                     <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($material->qty_first)}}</td>
                                     <td>
@@ -185,7 +194,11 @@
                                     <td>
                                         <input class="input-employee form-control double" name="last_hours" value="{{$employee->last_hours}}">
                                     </td>
-                                    <td class="text-right"><span class="total-amount-employee">{{\App\Helpers\AppHelper::formatMoney($employee->total_amount_employee)}}</span></td>
+                                    <td class="text-right">
+                                        <span class="total-amount-employee">
+                                            {{\App\Helpers\AppHelper::formatMoney($employee->total_amount_employee)}}
+                                        </span>
+                                    </td>
                                 </tr>
                             @endforeach
                             <tr>
@@ -253,12 +266,65 @@
     </div>
 @endsection
 
+@section('body.modal')
+    <div class="modal fade show" id="changePriceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+        <div class="modal-dialog modal-success" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thay Đổi Đơn Giá</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p> <span id="confirm-content" class="font-weight-bold"></span></p>
+                    <div class="form-group">
+                        <label class="form-col-form-label" for="inputSuccess1">Giá hiện tại : <span class="current-price"></span></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-col-form-label" for="inputSuccess1">Nhập giá thay đổi</label>
+                        <input class="form-control is-valid number text-right" name="price" required id="inputSuccess1" value="" type="text">
+                        <input name="material_id" value="" type="hidden">
+                        <input name="qty_in" value="" type="hidden">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary name-cancel" type="button" data-dismiss="modal">Đóng</button>
+                    <button class="btn btn-success btn-change-price" type="button">Thay Đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('body.js')
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/input-daily.js')}}"></script>
     <script>
+        function changePricePopup() {
+            $('.changePricePopupClick').each(function () {
+                $(this).on('click', function () {
+                    let modal = $('#changePriceModal');
+                    modal.find('.current-price').html($(this).attr('price-current'));
+                    modal.find('#confirm-content').html($(this).attr('material-name'));
+                    modal.find('input[name=material_id]').val($(this).attr('material-id'));
+                    modal.find('input[name=qty_in]').val($(this).attr('qty-in'));
+                    // modal.find('input[name=price]').val($(this).attr('price-current'));
+                });
+            });
+            $('#changePriceModal').find('.btn-change-price').on('click',function () {
+                let modal = $('#changePriceModal');
+                let price = modal.find('input[name=price]');
+                let priceValue = price.val();
+                if(priceValue != '' && priceValue != 0){
+                    InputDailyAPI.updateInputPriceDaily(price);
+                }
+            });
+
+        }
+
         $(document).ready(function(){
-            let editForm = {{$editForm}};
+            let editForm = @can('input_daily.update', $currentDate) 1; @else 0; @endcan
             $('input.input-daily').on('change',function(){
                 InputDailyAPI.updateInputDaily(this);
             });
@@ -284,6 +350,8 @@
                     $(this).remove();
                 });
             }
+
+            changePricePopup();
         });
     </script>
 @endsection

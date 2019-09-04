@@ -23,7 +23,7 @@ class SaleCartSmallController extends Controller
     public function index(){
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
-        $employeeId = PermissionRoleCommon::getPermissionUserOnBranch(AuthCommon::AuthEmployee(), ScreenEnum::SCREEN_SALE_CART_SMALL_URL);
+        $employeeId = PermissionRoleCommon::getPermissionUserOnBranch(AuthCommon::AuthEmployee()->user(), ScreenEnum::SCREEN_SALE_CART_SMALL_URL);
         $result = $this->saleReportService->getSaleCartSmall($branchId,$currentDate,$employeeId);
         return $this->viewEmployee('saleCartSmall.sale_cart_small',[
             'branchId' => $branchId,

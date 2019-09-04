@@ -1,6 +1,43 @@
 /*==============================================================================*/
 if ((typeof InputDailyAPI) === 'undefined') { InputDailyAPI = {}; }
 
+InputDailyAPI.updateInputPriceDaily = function(note, callback) {
+    var data = 'name=' + $(note).attr('name') +
+        '&value='+InputFortmat.originalDouble($(note).val()) +
+        '&price=' + InputFortmat.originalNumber($(note).closest('.modal-content').find('input[name=price]').val()) +
+        '&date=' + $('input[name=current_date]').val() +
+        '&qty_in=' + $(note).closest('.modal-content').find('input[name=qty_in]').val() +
+        "&material_id="+$(note).closest('.modal-content').find('input[name=material_id]').val();
+    var thisItem = $(note);
+    var $body = $(document.body),
+        params = {
+            type: 'POST',
+            url: '/admin/input-daily/update-daily.js',
+            data: data,
+            dataType: 'json',
+            beforeSend: function() {
+                // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+            },
+            success: function(data) {
+                if ((typeof callback) === 'function') {
+                    callback(cart);
+                }
+                else {
+                    InputDailyAPI.onInputUpdate(data,thisItem);
+                }
+                // $body.trigger('afterUpdateCartNote.ajaxCart', [note, cart]);
+            },
+            error: function(XMLHttpRequest, textStatus) {
+                // $body.trigger('errorUpdateCartNote.ajaxCart', [XMLHttpRequest, textStatus]);
+                // HaravanAPI.onError(XMLHttpRequest, textStatus);
+            },
+            complete: function(jqxhr, text) {
+                // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+            }
+        };
+    jQuery.ajax(params);
+};
+
 InputDailyAPI.updateInputDaily = function(note, callback) {
     var data = 'name=' + $(note).attr('name') +
         '&value='+InputFortmat.originalDouble($(note).val()) +

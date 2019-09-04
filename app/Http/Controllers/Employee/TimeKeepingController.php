@@ -28,7 +28,7 @@ class TimeKeepingController extends Controller
     public function index(){
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
-        $employeeId = PermissionRoleCommon::getPermissionUserOnBranch(AuthCommon::AuthEmployee(), ScreenEnum::SCREEN_TIME_KEEPING_URL);
+        $employeeId = PermissionRoleCommon::getPermissionUserOnBranch(AuthCommon::AuthEmployee()->user(), ScreenEnum::SCREEN_TIME_KEEPING_URL);
         $result = $this->timeKeepingService->getTimeKeeping($branchId, $currentDate,$employeeId);
         return $this->viewEmployee('timekeeping.time_keeping',[
             'currentDate' => $currentDate,

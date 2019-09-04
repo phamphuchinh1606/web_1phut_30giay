@@ -2,7 +2,9 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Common\AuthCommon;
 use App\Common\Constant;
+use App\Common\PermissionRoleCommon;
 use App\Common\RoleConstant;
 use App\Repositories\Eloquents\BranchRepository;
 use App\Repositories\Eloquents\MenuRepository;
@@ -57,7 +59,14 @@ class AppInfoComposer
             self::$appInfo = $this->settingService->firstOrNew(['id' => 1]);
         }
         if(!isset(self::$branches)){
-            self::$branches = $this->branchRepository->selectAll();
+            if(AuthCommon::AuthAdmin()->check()){
+                $user = AuthCommon::AuthAdmin()->user();
+                if(PermissionRoleCommon::checkRoleRoot($user)){
+                    self::$branches = $this->branchRepository->selectAll();
+                }else{
+                    self::$branches = $this->branchRepository->getListByUserAssign($user->id);
+                }
+            }
         }
         if(!isset(self::$menus)){
             $menuType = null;

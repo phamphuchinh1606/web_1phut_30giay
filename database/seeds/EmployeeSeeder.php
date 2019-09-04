@@ -44,7 +44,7 @@ class EmployeeSeeder extends Seeder
                 'name' => 'Lực',
                 'price_first_hour' => 20000,
                 'price_last_hour' => 20000,
-                'employee_login_id' => 'phamluc',
+                'employee_login_id' => 'luc',
                 'password' => '123456'
             ],
             [
@@ -52,23 +52,15 @@ class EmployeeSeeder extends Seeder
                 'name' => 'Linh',
                 'price_first_hour' => 20000,
                 'price_last_hour' => 20000,
-                'employee_login_id' => 'phamlinh',
+                'employee_login_id' => 'linh',
                 'password' => '123456'
             ],
             [
                 'branch_id' => 1,
-                'name' => 'Định',
+                'name' => 'My',
                 'price_first_hour' => 20000,
                 'price_last_hour' => 20000,
-                'employee_login_id' => 'phamdinh',
-                'password' => '123456'
-            ],
-            [
-                'branch_id' => 1,
-                'name' => 'Dũng',
-                'price_first_hour' => 20000,
-                'price_last_hour' => 20000,
-                'employee_login_id' => 'phamdung',
+                'employee_login_id' => 'my',
                 'password' => '123456'
             ],
         ];

@@ -4,6 +4,7 @@
 namespace App\Repositories\Eloquents;
 
 use App\Models\EmployeeBranch;
+use App\Models\UserBranch;
 use App\Repositories\Base\BaseRepository;
 use App\Models\Branch;
 
@@ -24,5 +25,12 @@ class BranchRepository extends BaseRepository
         $tableBranchName = Branch::getTableName();
         return $this->model::join("$tableEmployeeBranchName","$tableEmployeeBranchName.branch_id","$tableBranchName.id")
             ->where("$tableEmployeeBranchName.employee_id", $employeeId)->select("$tableBranchName.*")->get();
+    }
+
+    public function getListByUserAssign($userId){
+        $tableUserBranchName = UserBranch::getTableName();
+        $tableBranchName = Branch::getTableName();
+        return $this->model::join("$tableUserBranchName","$tableUserBranchName.branch_id","$tableBranchName.id")
+            ->where("$tableUserBranchName.user_id", $userId)->select("$tableBranchName.*")->get();
     }
 }

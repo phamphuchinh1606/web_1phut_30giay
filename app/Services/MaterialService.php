@@ -99,6 +99,12 @@ class MaterialService extends BaseService {
             if($isTransaction) DB::beginTransaction();
             $resultQty = $this->calculatorStock($branchId,$dailyDate,$materialId,$inputName,$inputValue,$inputPrice);
             switch ($inputName){
+                case 'price':
+                    $qtyIn = isset($values['qty_in']) && !empty($values['qty_in']) ? $values['qty_in'] : 0;
+                    $valueUpdatePrice = array('qty'=> $qtyIn,'price' => $inputPrice, 'amount' => $qtyIn * $inputPrice);
+                    $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
+                    $this->orderCheckInRepository->updateOrCreate($valueUpdatePrice,$wheres);
+                    break;
                 case 'qty_in':
                     $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
                     $this->orderCheckInRepository->updateOrCreate($valueUpdate,$wheres);

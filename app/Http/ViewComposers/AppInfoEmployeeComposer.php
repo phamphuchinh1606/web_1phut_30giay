@@ -4,6 +4,7 @@ namespace App\Http\ViewComposers;
 
 use App\Common\AuthCommon;
 use App\Common\Constant;
+use App\Common\PermissionRoleCommon;
 use App\Common\RoleConstant;
 use App\Repositories\Eloquents\BranchRepository;
 use App\Repositories\Eloquents\MenuRepository;
@@ -58,11 +59,17 @@ class AppInfoEmployeeComposer
             self::$appInfo = $this->settingService->firstOrNew(['id' => 1]);
         }
         if(!isset(self::$branches)){
-            $user = AuthCommon::AuthEmployee();
-            self::$branches = $this->branchRepository->getListByEmployeeAssign($user->id);
+            if(AuthCommon::AuthEmployee()->check()){
+                $user = AuthCommon::AuthEmployee()->user();
+                if(PermissionRoleCommon::checkRoleRoot($user)){
+                    self::$branches = $this->branchRepository->selectAll();
+                }else{
+                    self::$branches = $this->branchRepository->getListByEmployeeAssign($user->id);
+                }
+            }
         }
         if(!isset(self::$menus)){
-            $user = AuthCommon::AuthEmployee();
+            $user = AuthCommon::AuthEmployee()->user();
             $menuType = RoleConstant::MENU_TYPE_EMPLOYEE_CODE;
             self::$menus = $this->menuRepository->selectAll($menuType, $user);
         }

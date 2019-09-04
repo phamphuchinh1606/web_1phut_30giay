@@ -122,21 +122,21 @@ class ScreenSeeder extends Seeder
                 'screen_type' => 1//Admin
             ],
             [
-                'screen_id' => 'smaterial',
+                'screen_id' => 'material',
                 'screen_name' => 'Danh Sách Nguyên Liệu',
                 'screen_url' => '/admin/setting/material',
                 'parent_screen_id' => 'setting',
                 'screen_type' => 1//Admin
             ],
             [
-                'screen_id' => 'smaterial.update',
+                'screen_id' => 'material.update',
                 'screen_name' => 'Cập Nhật Nguyên Liệu',
                 'screen_url' => '/admin/setting/material/update',
                 'parent_screen_id' => 'setting',
                 'screen_type' => 1//Admin
             ],
             [
-                'screen_id' => 'smaterial.insert',
+                'screen_id' => 'material.insert',
                 'screen_name' => 'Thêm Mới Nguyên Liệu',
                 'screen_url' => '/admin/setting/material/create',
                 'parent_screen_id' => 'setting',

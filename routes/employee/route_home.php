@@ -13,3 +13,6 @@
 Route::get('/',function(){
     return redirect()->route('time_keeping');
 })->name('home');
+Route::get('/home',function(){
+    return redirect()->route('time_keeping');
+});

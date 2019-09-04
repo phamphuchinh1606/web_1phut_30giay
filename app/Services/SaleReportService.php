@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class SaleReportService extends BaseService {
 
     public function getSaleReport($branchId, $date){
-        $infoDays = DateTimeHelper::parseMonthToArrayDay($date);
+        $infoDays = DateTimeHelper::parseMonthToArrayDay($date,5,5);
         $weeks = DateTimeHelper::parseWeekToArray($date);
         $products = $this->productRepository->selectAll();
         $sumAmountByMonth = $this->saleRepository->sumAmountSaleByMonth($branchId,$date);

@@ -16,6 +16,11 @@ class UserSeeder extends Seeder
     {
         $arrayUsers = [
             [
+                'name' => 'Admin',
+                'email' => 'admin',
+                'password' => '123456',
+            ],
+            [
                 'name' => 'Phạm Ly',
                 'email' => 'phamly',
                 'password' => '123456',

@@ -62,7 +62,7 @@ class DateTimeHelper{
         return Carbon::parse($date,self::timezone())->endOfMonth();
     }
 
-    public static function parseMonthToArrayDay($date){
+    public static function parseMonthToArrayDay($date, $addBeforeOnWeek = 0, $addAfterOnWeek = 0){
         $firstDay = Carbon::parse($date,self::timezone())->startOfMonth();
         $lastDay = Carbon::parse($date,self::timezone())->endOfMonth();
         $nextDay = $firstDay->clone();
@@ -77,6 +77,24 @@ class DateTimeHelper{
             6 => 'Thứ 7',
         ];
         $weekNo = 1;
+        $dayOfWeek = $firstDay->dayOfWeek;
+        if($dayOfWeek == 0){
+            $dayOfWeek = 7;
+        }
+        if($dayOfWeek + $addBeforeOnWeek - 7 > 1  && $addBeforeOnWeek > 0 && $addBeforeOnWeek < 7){
+            for($dayNum = $dayOfWeek + $addBeforeOnWeek - 7 - 1 ; $dayNum >= 1 ; $dayNum--){
+                $dayBefore = $firstDay->clone()->addDay(-1 * $dayNum);
+                $dayOfWeekBefore = $dayBefore->dayOfWeek;
+                $dayObject = new \StdClass();
+                $dayObject->date_str = $dayBefore->format('Y-m-d');
+                $dayObject->date = $dayBefore->clone();
+                $dayObject->week_day = $weekMap[$dayOfWeekBefore];
+                $dayObject->week_no = $dayOfWeekBefore;
+                $dayObject->week_of_thing = $weekNo;
+                $arrayDay[] = $dayObject;
+            }
+        }
+
         while($nextDay->format('Y-m-d') <= $lastDay->format('Y-m-d')){
             $dayOfWeek = $nextDay->dayOfWeek;
             $dayObject = new \StdClass();
@@ -91,6 +109,25 @@ class DateTimeHelper{
                 $weekNo++;
             }
         }
+
+        $dayOfWeek = $lastDay->dayOfWeek;
+        if($dayOfWeek == 0){
+            $dayOfWeek = 7;
+        }
+        if($dayOfWeek - $addAfterOnWeek < 0  && $addAfterOnWeek > 0 && $addAfterOnWeek < 7){
+            for($dayNum = -1 ; $dayNum >= $dayOfWeek - $addAfterOnWeek ; $dayNum--){
+                $dayBefore = $lastDay->clone()->addDay(-1 * $dayNum);
+                $dayOfWeekBefore = $dayBefore->dayOfWeek;
+                $dayObject = new \StdClass();
+                $dayObject->date_str = $dayBefore->format('Y-m-d');
+                $dayObject->date = $dayBefore->clone();
+                $dayObject->week_day = $weekMap[$dayOfWeekBefore];
+                $dayObject->week_no = $dayOfWeekBefore;
+                $dayObject->week_of_thing = $weekNo;
+                $arrayDay[] = $dayObject;
+            }
+        }
+
         return $arrayDay;
     }
 

@@ -3,16 +3,16 @@
 @section('head.css')
     <link href="{{asset('/css/admin/plugins/daterangepicker.css')}}" rel="stylesheet">
     <style>
-        /*table.dataTable{*/
-        /*    width: auto;*/
-        /*}*/
-        /*table.dataTable th{*/
-        /*    text-align: center;*/
-        /*}*/
-        /*table.dataTable th, table.dataTable td{*/
-        /*    padding: 3px;*/
-        /*    vertical-align: middle !important;*/
-        /*}*/
+        table.dataTable{
+            width: auto;
+        }
+        table.dataTable th{
+            text-align: center;
+        }
+        table.dataTable th, table.dataTable td{
+            padding: 3px;
+            vertical-align: middle !important;
+        }
     </style>
 @endsection
 
@@ -33,10 +33,10 @@
                 <thead>
                 <tr>
                     <th width="50">Mã</th>
-                    <th width="150">Tên Nguyên Liệu</th>
-                    <th width="120">Loại Nguyên Liệu</th>
-                    <th width="150">Đơn Vị</th>
-                    <th width="120">Đon Giá</th>
+                    <th width="200">Tên Nguyên Liệu</th>
+                    <th width="150">Loại Nguyên Liệu</th>
+                    <th width="100">Đơn Vị</th>
+                    <th width="100">Đon Giá</th>
                     <th width="120">Nhà Cung Cấp</th>
                     <th width="120"></th>
                 </tr>
@@ -44,11 +44,12 @@
                 <tbody>
                 @foreach($materials as $index => $material)
                     <tr>
-                        <td>{{$index + 1}}</td>
+                        <td class="text-center">{{$index + 1}}</td>
                         <td>{{$material->material_name}}</td>
                         <td>{{$material->material_type->material_type_name}}</td>
                         <td>{{$material->unit->unit_name}}</td>
-                        <td>{{ \App\Helpers\AppHelper::formatMoney($material->pirce)}}</td>
+                        <td class="text-right">{{ \App\Helpers\AppHelper::formatMoney($material->price)}}</td>
+                        <td>{{$material->supplier->supplier_name}}</td>
                         <td class="text-center">
                             <a class="btn btn-info" href="{{route('admin.material.update',['id' => $material->id])}}">
                                 <i class="fa fa-edit"></i>

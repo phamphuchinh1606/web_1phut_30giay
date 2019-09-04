@@ -43,7 +43,6 @@ class PaymentBillPolicy
      */
     public function create(Authenticatable $user)
     {
-        dd('vao');
         return true;
 
     }

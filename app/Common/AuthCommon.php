@@ -9,11 +9,11 @@ class AuthCommon{
     public const AUTH_GUARD_EMPLOYEE = "employee";
 
     public static function AuthEmployee(){
-        return Auth::guard(Constant::AUTH_GUARD_EMPLOYEE)->user();
+        return Auth::guard(Constant::AUTH_GUARD_EMPLOYEE);
     }
 
     public static function AuthAdmin(){
-        return Auth::guard(Constant::AUTH_GUARD_ADMIN)->user();
+        return Auth::guard(Constant::AUTH_GUARD_ADMIN);
     }
 
     public static function AuthEmployeeAssignBranches(){

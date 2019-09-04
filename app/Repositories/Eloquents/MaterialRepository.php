@@ -103,7 +103,9 @@ class MaterialRepository extends BaseRepository
                     $join->where("$orderCancelTableName.cancel_date",$date->format('y-m-d'));
                 }
             })
+            ->where("$materialTableName.is_show_input",1)
             ->select("$materialTableName.*","$unitTableName.unit_name",
+                \DB::raw("IFNULL($orderCheckInTableName.price,$materialTableName.price) as price"),
                 "$orderCheckInTableName.qty as qty_in","$orderCheckInTableName.amount as amount_in","$orderCheckInTableName.price as amount_price","$orderCheckInTableName.check_in_date",
                 "$orderCheckInMoveTableName.qty as qty_in_move",
                 "$orderCheckOutTableName.qty as qty_out",
