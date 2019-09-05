@@ -111,7 +111,7 @@
                     @if(isset($materials))
                         @foreach($materials as $material)
                             @if($material->material_type_id == $materialType->id)
-                                <tr role="row">
+                                <tr role="row" id="{{$material->id}}">
                                     <td class="hide">
                                         <input type="hidden" value="{{$material->id}}" name="material_id">
                                         <input type="hidden" value="{{$material->price}}" name="price">
@@ -120,17 +120,20 @@
                                     <td>{{$material->material_name}}</td>
                                     <td class="hide-item-sm">{{$material->unit->unit_name}}</td>
                                     <td class="text-right hide-item-sm">
-
-                                        <a data-toggle="modal" class="changePricePopupClick"
-                                           data-url="{{route('input_daily.update_daily')}}"
-                                           price-current="{{\App\Helpers\AppHelper::formatMoney($material->price)}}"
-                                           price="{{$material->price}}"
-                                           material-name="{{$material->material_name}}"
-                                           material-id="{{$material->id}}"
-                                           qty-in="{{$material->qty_in}}"
-                                           href="#changePriceModal">
-                                            {{\App\Helpers\AppHelper::formatMoney($material->price)}}
-                                        </a>
+                                        @can('input_daily.update', $currentDate)
+                                            <a data-toggle="modal" class="changePricePopupClick"
+                                               data-url="{{route('input_daily.update_daily')}}"
+                                               price-current="{{\App\Helpers\AppHelper::formatMoney($material->price)}}"
+                                               price="{{$material->price}}"
+                                               material-name="{{$material->material_name}}"
+                                               material-id="{{$material->id}}"
+                                               qty-in="{{$material->qty_in}}"
+                                               href="#changePriceModal">
+                                                {{\App\Helpers\AppHelper::formatMoney($material->price)}}
+                                            </a>
+                                        @else
+                                            <span>{{\App\Helpers\AppHelper::formatMoney($material->price)}}</span>
+                                        @endcan
                                     </td>
                                     <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($material->qty_first)}}</td>
                                     <td>
@@ -289,7 +292,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary name-cancel" type="button" data-dismiss="modal">Đóng</button>
+                    <button class="btn btn-secondary btn-cancel" type="button" data-dismiss="modal">Đóng</button>
                     <button class="btn btn-success btn-change-price" type="button">Thay Đổi</button>
                 </div>
             </div>
@@ -301,6 +304,10 @@
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/input-daily.js')}}"></script>
     <script>
+        function closeModalChangePrice() {
+            $('#changePriceModal').find('.btn-cancel').click();
+        }
+
         function changePricePopup() {
             $('.changePricePopupClick').each(function () {
                 $(this).on('click', function () {
@@ -309,6 +316,7 @@
                     modal.find('#confirm-content').html($(this).attr('material-name'));
                     modal.find('input[name=material_id]').val($(this).attr('material-id'));
                     modal.find('input[name=qty_in]').val($(this).attr('qty-in'));
+                    modal.find('input[name=price]').val('');
                     // modal.find('input[name=price]').val($(this).attr('price-current'));
                 });
             });
@@ -317,7 +325,7 @@
                 let price = modal.find('input[name=price]');
                 let priceValue = price.val();
                 if(priceValue != '' && priceValue != 0){
-                    InputDailyAPI.updateInputPriceDaily(price);
+                    InputDailyAPI.updateInputPriceDaily(price,closeModalChangePrice);
                 }
             });
 

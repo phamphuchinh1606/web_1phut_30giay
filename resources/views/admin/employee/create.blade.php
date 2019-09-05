@@ -29,6 +29,14 @@
                             <label for="identity_card">Số Chứng Minh Nhân Dân</label>
                             <input class="form-control" id="identity_card" name="identity_card" type="text" placeholder="Số CMND">
                         </div>
+                        <div class="form-group">
+                            <label for="price_first_hour">Lương 3 Giờ Đầu</label>
+                            <input class="form-control number" id="price_first_hour" name="price_first_hour" type="text" placeholder="Lương 3 giờ đầu">
+                        </div>
+                        <div class="form-group">
+                            <label for="price_last_hour">Lương 2 Giờ Sau</label>
+                            <input class="form-control number" id="price_last_hour" name="price_last_hour" type="text" placeholder="Lương 2 giờ sau">
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="card">

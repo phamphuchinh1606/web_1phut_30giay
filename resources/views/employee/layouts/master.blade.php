@@ -77,6 +77,8 @@
     {{--Footer--}}
     @include('employee.layouts.partials.__footer')
 
+    @yield('body.modal')
+
 
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/popper.min.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/bootstrap.min.js')}}"></script>

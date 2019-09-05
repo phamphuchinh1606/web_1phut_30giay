@@ -13,6 +13,7 @@ final class ScreenEnum extends Enum
 {
     const SCREEN_TIME_KEEPING_URL =  "/time-keeping";
     const SCREEN_SALE_CART_SMALL_URL =  "/sale-cart-small";
+    const SCREEN_INPUT_DAILY_URL = "/input-daily";
 
     //Screen Admin
     const SCREEN_ADMIN_INPUT_DAILY_URL = "/admin/input-daily";

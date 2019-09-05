@@ -1,18 +1,26 @@
 /*==============================================================================*/
 if ((typeof InputDailyAPI) === 'undefined') { InputDailyAPI = {}; }
 
+InputDailyAPI.UpdateInputPriceDailyUrl = '/admin/input-daily/update-daily.js';
+InputDailyAPI.UpdateInputDailyUrl = '/admin/input-daily/update-daily.js';
+InputDailyAPI.UpdateSaleDailyUrl = '/admin/input-daily/update-sale.js';
+InputDailyAPI.UpdateBillDailyUrl = '/admin/input-daily/update-bill.js';
+InputDailyAPI.UpdateEmployeeDailyUrl = '/admin/input-daily/update-employee.js';
+
 InputDailyAPI.updateInputPriceDaily = function(note, callback) {
+    var materialId = $(note).closest('.modal-content').find('input[name=material_id]').val();
+    var thisItem = $('tr#'+ materialId).find('input[name=price]');
     var data = 'name=' + $(note).attr('name') +
         '&value='+InputFortmat.originalDouble($(note).val()) +
         '&price=' + InputFortmat.originalNumber($(note).closest('.modal-content').find('input[name=price]').val()) +
         '&date=' + $('input[name=current_date]').val() +
-        '&qty_in=' + $(note).closest('.modal-content').find('input[name=qty_in]').val() +
-        "&material_id="+$(note).closest('.modal-content').find('input[name=material_id]').val();
-    var thisItem = $(note);
+        '&qty_in=' + InputFortmat.originalNumber(thisItem.closest('tr').find('input[name=qty_in]').val()) +
+        "&material_id="+materialId;
+
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: '/admin/input-daily/update-daily.js',
+            url: InputDailyAPI.UpdateInputPriceDailyUrl,
             data: data,
             dataType: 'json',
             beforeSend: function() {
@@ -20,7 +28,8 @@ InputDailyAPI.updateInputPriceDaily = function(note, callback) {
             },
             success: function(data) {
                 if ((typeof callback) === 'function') {
-                    callback(cart);
+                    InputDailyAPI.onInputUpdate(data,thisItem);
+                    callback();
                 }
                 else {
                     InputDailyAPI.onInputUpdate(data,thisItem);
@@ -48,7 +57,7 @@ InputDailyAPI.updateInputDaily = function(note, callback) {
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: '/admin/input-daily/update-daily.js',
+            url: InputDailyAPI.UpdateInputDailyUrl,
             data: data,
             dataType: 'json',
             beforeSend: function() {
@@ -83,6 +92,10 @@ InputDailyAPI.onInputUpdate = function(data, thisItem) {
     $('#table-bill').find('tr#' + data.product_id+' span.product-'+data.product_id).html(data.product_qty);
     $('#table-bill').find('span.total-amount').html(data.total_amount);
     $('#table-bill').find('span.lack-amount').html(data.lack_amount);
+    if(data.price != undefined && data.price_str != undefined && data.price != '' && data.price_str != ''){
+        thisItem.closest('tr').find('input[name=price]').val(data.price);
+        thisItem.closest('tr').find('a.changePricePopupClick').html(data.price_str);
+    }
 };
 
 InputDailyAPI.updateSaleDaily = function(note ,callback){
@@ -94,7 +107,7 @@ InputDailyAPI.updateSaleDaily = function(note ,callback){
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: '/admin/input-daily/update-sale.js',
+            url: InputDailyAPI.UpdateSaleDailyUrl,
             data: data,
             dataType: 'json',
             beforeSend: function() {
@@ -136,7 +149,7 @@ InputDailyAPI.updateBillDaily = function (note, callback){
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: '/admin/input-daily/update-bill.js',
+            url: InputDailyAPI.UpdateBillDailyUrl,
             data: data,
             dataType: 'json',
             beforeSend: function() {
@@ -175,7 +188,7 @@ InputDailyAPI.updateEmployeeDaily = function(note, callback){
     var $body = $(document.body),
         params = {
             type: 'POST',
-            url: '/admin/input-daily/update-employee.js',
+            url: InputDailyAPI.UpdateEmployeeDailyUrl,
             data: data,
             dataType: 'json',
             beforeSend: function() {

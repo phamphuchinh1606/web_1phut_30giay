@@ -144,13 +144,15 @@ class MaterialSeeder extends Seeder
                 'name' => 'Đồ chua',
                 'unit' => 'Kg',
                 'price' => 17000,
-                'material_type_id' => 1
+                'material_type_id' => 1,
+                'is_show_input' => 0
             ],
             [
                 'name' => 'Hành tây',
                 'unit' => 'Kg',
                 'price' => 17000,
-                'material_type_id' => 1
+                'material_type_id' => 1,
+                'is_show_input' => 0
             ],
             // Nuoc Uong
             [
@@ -309,7 +311,8 @@ class MaterialSeeder extends Seeder
                 'material_type_id' => $material['material_type_id'],
                 'price' => $material['price'],
                 'unit_id' => $unitId,
-                'supplier_id' => isset($material['supplier_id']) ? $material['supplier_id'] : 1
+                'supplier_id' => isset($material['supplier_id']) ? $material['supplier_id'] : 1,
+                'is_show_input' => isset($material['is_show_input']) ? $material['is_show_input'] : 1,
             ]);
         }
     }

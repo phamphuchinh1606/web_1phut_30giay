@@ -48,6 +48,9 @@ class InputDailyPolicy
         if(AuthCommon::AuthAdmin()->check()){
             if(!PermissionRoleCommon::checkScreenUpdateRoleUser($user, ScreenEnum::SCREEN_ADMIN_INPUT_DAILY_URL)) return false;
             return $this->checkEditFormByDate($date);
+        }else if(AuthCommon::AuthEmployee()->check()){
+            if(!PermissionRoleCommon::checkScreenUpdateRoleUser($user, ScreenEnum::SCREEN_INPUT_DAILY_URL)) return false;
+            return $this->checkEditFormByDate($date);
         }
     }
 

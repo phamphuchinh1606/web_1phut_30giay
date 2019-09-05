@@ -101,9 +101,14 @@ class MaterialService extends BaseService {
             switch ($inputName){
                 case 'price':
                     $qtyIn = isset($values['qty_in']) && !empty($values['qty_in']) ? $values['qty_in'] : 0;
-                    $valueUpdatePrice = array('qty'=> $qtyIn,'price' => $inputPrice, 'amount' => $qtyIn * $inputPrice);
+                    $amountIn = $qtyIn * $inputPrice;
+                    $valueUpdatePrice = array('qty'=> $qtyIn,'price' => $inputPrice, 'amount' => $amountIn);
                     $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
                     $this->orderCheckInRepository->updateOrCreate($valueUpdatePrice,$wheres);
+                    $resultQty = array_merge($resultQty,['amount_in' =>  AppHelper::formatMoney($amountIn),
+                        'price' => $inputPrice,
+                        'price_str' => AppHelper::formatMoney($inputPrice)
+                        ]);
                     break;
                 case 'qty_in':
                     $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
@@ -245,7 +250,7 @@ class MaterialService extends BaseService {
             $checkOut->amount = $checkOut->qty * $checkOut->price;
             $this->orderCheckOutRepository->updateModel($checkOut);
             //update Sale
-            if($materialId < 5){
+            if($materialId < 5 && $inputName != 'price'){
                 $product = $this->productRepository->find($materialId);
                 if(isset($product)){
                     $productTheSame = $this->productRepository->findByKey(array('product_the_same_id' => $product->id));
