@@ -7,6 +7,7 @@ use App\Models\OrderCancel;
 use App\Models\OrderCheckIn;
 use App\Models\OrderCheckOut;
 use App\Models\StockDaily;
+use App\Models\Supplier;
 use App\Repositories\Eloquents\AssignEmployeeSaleCartSmallRepository;
 use App\Repositories\Eloquents\EmployeeBranchRepository;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
@@ -111,9 +112,12 @@ class MaterialService extends BaseService {
                         ]);
                     break;
                 case 'qty_in':
-                    $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
-                    $this->orderCheckInRepository->updateOrCreate($valueUpdate,$wheres);
-                    $resultQty = array_merge($resultQty,['amount_in' => AppHelper::formatMoney($valueUpdate['amount'])]);
+                    $material = $this->materialRepository->find($materialId);
+                    if(isset($material)){
+                        $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::CHECK_IN_TYPE]);
+                        $this->orderCheckInRepository->updateOrCreate($valueUpdate,$wheres);
+                        $resultQty = array_merge($resultQty,['amount_in' => AppHelper::formatMoney($valueUpdate['amount'])]);
+                    }
                     break;
                 case 'qty_in_move':
                     $wheres = array_merge($wheres,['check_in_date' => $dailyDate, 'order_check_in_type' => OrderCheckIn::MOVE_IN_TYPE]);

@@ -45,7 +45,7 @@ class OrderCheckInRepository extends BaseRepository
             ->get();
     }
 
-    public function amountByMonth($branchId, $date, $orderCheckInType = null){
+    public function amountByMonth($branchId, $date, $orderCheckInType = null, $supplierId = null){
         if(is_string($date)) $date = DateTimeHelper::dateFromString($date);
         $firstDate = DateTimeHelper::startOfMonth($date,'Y-m-d');
         $lastDate = DateTimeHelper::endOfMonth($date,'Y-m-d');
@@ -53,6 +53,13 @@ class OrderCheckInRepository extends BaseRepository
             ->where('check_in_date','<=', $lastDate);
         if(isset($orderCheckInType)){
             $query->where('order_check_in_type',$orderCheckInType);
+        }
+        if(isset($supplierId)){
+            $query->whereIn('material_id',function ($query) use ($supplierId){
+                $query->select('id')
+                    ->from(Material::getTableName())
+                    ->where('supplier_id',$supplierId);
+            });
         }
         return $query->sum('amount');
     }

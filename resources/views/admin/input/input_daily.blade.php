@@ -253,7 +253,7 @@
                             <tr>
                                 <td colspan="3" class="text-center">Tiền Thực Thu</td>
                                 <td class="text-right">
-                                    <input class="input-bill form-control double" value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
+                                    <input class="input-bill form-control double" style="width: 100px;padding: 2px 2px;" value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
                                 </td>
                             </tr>
                             <tr>
