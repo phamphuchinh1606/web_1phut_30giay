@@ -15,6 +15,7 @@ class TimeKeepingService extends BaseService {
             $employees = $this->employeeRepository->getEmployeeByBranch($branchId);
         }
         $employeeDailies = $this->employeeDailyRepository->getEmployeeByMonth($branchId,$currentDate);
+
         $employeeSums = $this->employeeDailyRepository->getEmployeeTotalByMonth($branchId,$currentDate);
         $employeeTimeKeepings = $this->employeeTimeKeepingRepository->getEmployeeTotalByMonth($branchId,$currentDate);
         $totalSalaryAmount = 0;

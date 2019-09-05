@@ -28,6 +28,7 @@ class MaterialRepository extends BaseRepository
         $unitTableName = Unit::getTableName();
         $materialTableName = Material::getTableName();
         return $this->model::join($unitTableName,"$unitTableName.id","$materialTableName.unit_id")
+            ->orderBy("$materialTableName.id")
             ->select("$materialTableName.*","$unitTableName.unit_name")->get();
     }
 
@@ -104,6 +105,7 @@ class MaterialRepository extends BaseRepository
                 }
             })
             ->where("$materialTableName.is_show_input",1)
+            ->orderBy("$materialTableName.id")
             ->select("$materialTableName.*","$unitTableName.unit_name",
                 \DB::raw("IFNULL($orderCheckInTableName.price,$materialTableName.price) as price"),
                 "$orderCheckInTableName.qty as qty_in","$orderCheckInTableName.amount as amount_in","$orderCheckInTableName.price as amount_price","$orderCheckInTableName.check_in_date",

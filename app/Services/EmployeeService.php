@@ -21,10 +21,14 @@ class EmployeeService extends BaseService {
                     }
                 }
             }
-
-            $assignEmployee = $values['assign_employee'];
-            if(isset($assignEmployee) && $assignEmployee == Constant::SWITCH_FLG_ON){
-                $this->assignEmployeeSaleCartSmallRepository->create(array('employee_id' => $employee->id, 'branch_id' => $values['branch_id']));
+            if(isset($values['assign_employee'])) {
+                $assignEmployee = $values['assign_employee'];
+                if (isset($assignEmployee) && $assignEmployee == Constant::SWITCH_FLG_ON) {
+                    $this->assignEmployeeSaleCartSmallRepository->create(array(
+                        'employee_id' => $employee->id,
+                        'branch_id' => $values['branch_id']
+                    ));
+                }
             }
             DB::commit();
         }catch (\Exception $ex){

@@ -40,7 +40,10 @@ class EmployeeRepository extends BaseRepository
         $tableEmployeeBranchName = EmployeeBranch::getTableName();
         return $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
             ->join($tableEmployeeBranchName,"$tableEmployeeBranchName.employee_id","$tableEmployeeName.id")
-            ->where("$tableEmployeeBranchName.branch_id",$branchId)->get();
+            ->where("$tableEmployeeBranchName.branch_id",$branchId)
+            ->select("$tableEmployeeName.*")
+            ->orderBy("$tableEmployeeName.id")
+            ->get();
     }
 
     public function getEmployeeSaleSmall($branchId, $employeeId = null){
@@ -71,6 +74,7 @@ class EmployeeRepository extends BaseRepository
                     ->where("$employeeDailyTable.branch_id",$branchId)
                     ->where("$employeeDailyTable.date_daily",$date->format('Y-m-d'));
             })
+            ->orderBy("$employeeTable.id")
             ->select(["$employeeTable.id","$employeeTable.name","$employeeDailyTable.first_hours",
                 "$employeeDailyTable.last_hours","$employeeDailyTable.price_first_hour", "$employeeDailyTable.price_last_hour"])
             ->selectRaw("(ifnull($employeeDailyTable.first_hours,0) * ifnull($employeeDailyTable.price_first_hour,0)) + (ifnull($employeeDailyTable.last_hours,0)*ifnull($employeeDailyTable.price_last_hour,0)) as total_amount_employee")
