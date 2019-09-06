@@ -46,11 +46,13 @@ class InputDailyPolicy
     public function update(Authenticatable $user, $date = null)
     {
         if(AuthCommon::AuthAdmin()->check()){
+            $branchId = SessionHelper::getSelectedBranchId();
             if(!PermissionRoleCommon::checkScreenUpdateRoleUser($user, ScreenEnum::SCREEN_ADMIN_INPUT_DAILY_URL)) return false;
-            return $this->checkEditFormByDate($date);
+            return $this->checkEditFormByDate($date) && !$this->materialService->checkDateIsOfDay($branchId,$date);
         }else if(AuthCommon::AuthEmployee()->check()){
+            $branchId = SessionHelper::getSelectedBranchId();
             if(!PermissionRoleCommon::checkScreenUpdateRoleUser($user, ScreenEnum::SCREEN_INPUT_DAILY_URL)) return false;
-            return $this->checkEditFormByDate($date);
+            return $this->checkEditFormByDate($date) && !$this->materialService->checkDateIsOfDay($branchId,$date);
         }
     }
 

@@ -63,6 +63,18 @@
                     <i class="fa icon-arrow-down-circle"></i>
                 </a>
             </span>
+
+            <span class="pull-right pr-3">
+                @if($isOfDay)
+                    <span class="badge badge-danger">Không bán</span>
+                @elseif(\App\Helpers\DateTimeHelper::truncateTime($currentDate) >= \App\Helpers\DateTimeHelper::now(true))
+                    <label class="switch switch-label switch-outline-danger-alt">
+                        <input class="switch-input is-off-day" type="checkbox" @if(!$isOfDay) checked="checked" @endif>
+                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                    </label>
+                @endif
+            </span>
+
             <input name="current_date" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m-d')}}">
             <hr class="multi-collapse collapse" id="multiCollapseExample1">
             <nav class="nav nav-pills flex-column flex-sm-row multi-collapse collapse" id="multiCollapseExample1">
@@ -150,7 +162,7 @@
                                     <td>
                                         <input class="input-daily form-control double" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
                                     </td>
-                                    <td>
+                                    <td class="text-right">
                                         <input class="input-daily form-control double" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
                                     </td>
                                 </tr>
@@ -247,7 +259,8 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="3" class="text-center">Doanh Thu</td>
+                                <td colspan="2" class="text-center">Doanh Thu</td>
+                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</td>
                                 <td class="text-right"><span class="total-amount">{{\App\Helpers\AppHelper::formatMoney($orderBill->total_amount)}}</span></td>
                             </tr>
                             <tr>
@@ -331,6 +344,10 @@
 
         }
 
+        function cancelOfDay(){
+
+        }
+
         $(document).ready(function(){
             let editForm = @can('input_daily.update', $currentDate) 1; @else 0; @endcan
             $('input.input-daily').on('change',function(){
@@ -347,6 +364,14 @@
 
             $('input.input-employee').on('change',function(){
                 InputDailyAPI.updateEmployeeDaily(this);
+            });
+            $('.is-off-day').on('change',function(){
+                ModalConfirm.showConfirm(
+                    'Xác Nhận',
+                    'Bạn Có Thật Sự Muốn Nghĩ Bán Ngày' + '{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y/m/d')}}',
+                    '{{route('admin.input_daily.update_of_day',['date' => \App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m-d')])}}',
+                    cancelOfDay
+                );
             });
             if(editForm == 0){
                 $('table.dataTable input:visible').each(function(){

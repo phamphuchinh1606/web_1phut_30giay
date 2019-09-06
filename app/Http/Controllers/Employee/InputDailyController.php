@@ -76,6 +76,12 @@ class InputDailyController extends Controller
         $orderBill = $this->orderBillRepository->findByKeyOrCreate(array('branch_id' => $branchId,'bill_date' => $currentDate->format('Y-m-d')));
         $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$currentDate);
         $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate($branchId,$currentDate);
+        $totalQty = 0;
+        foreach ($products as $product){
+            if(isset($product->qty)){
+                $totalQty+= $product->qty;
+            }
+        }
         return $this->viewEmployee('input.input_daily',[
             'currentDate' => $currentDate,
             'branchId' => $branchId,
@@ -89,6 +95,7 @@ class InputDailyController extends Controller
             'orderBill' => $orderBill,
             'totalAmountCheckIn' => $totalAmountCheckIn,
             'totalAmountCheckOut' => $totalAmountCheckOut,
+            'totalQty' => $totalQty,
             'editForm' => $this->checkEditFormByDate($branchId,$currentDate) ? 1 : 0
         ]);
     }

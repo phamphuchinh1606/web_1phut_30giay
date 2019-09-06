@@ -243,7 +243,8 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="3" class="text-center">Doanh Thu</td>
+                                <td colspan="2" class="text-center">Doanh Thu</td>
+                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</td>
                                 <td class="text-right"><span class="total-amount">{{\App\Helpers\AppHelper::formatMoney($orderBill->total_amount)}}</span></td>
                             </tr>
                             <tr>

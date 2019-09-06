@@ -6,6 +6,7 @@ use App\Helpers\DateTimeHelper;
 use App\Models\OrderCancel;
 use App\Models\OrderCheckIn;
 use App\Models\OrderCheckOut;
+use App\Models\SettingOfDay;
 use App\Models\StockDaily;
 use App\Models\Supplier;
 use App\Repositories\Eloquents\AssignEmployeeSaleCartSmallRepository;
@@ -421,5 +422,39 @@ class MaterialService extends BaseService {
             dd($ex);
         }
         return $resultQty;
+    }
+
+    public function updateOfDay($branchId,$date){
+        if(!is_string($date)){
+            $date = DateTimeHelper::dateFormat($date,'Y-m-d');
+        }
+        try{
+            DB::beginTransaction();
+            $this->settingOfDayRepository->updateOrCreate(['note' => 'Nghĩ không bán'],array(
+                'branch_id' => $branchId,
+                'type_day' => SettingOfDay::TYPE_OFF_DAY,
+                'date_off' => $date
+            ));
+            $firstDay =  DateTimeHelper::addDay($date,-1,'Y-m-d');
+            $stockDailyLasts = $this->stockDailyRepository->getByKey(['branch_id' => $branchId, 'stock_date' => $firstDay]);
+            foreach ($stockDailyLasts as $stockDaily){
+                $this->stockDailyRepository->updateOrCreate(
+                    [
+                        'qty' => $stockDaily->qty,
+                        'price' => $stockDaily->price,
+                        'amount' => $stockDaily->amount
+                    ],
+                    [
+                        'branch_id' => $branchId,
+                        'stock_date' => $date,
+                        'material_id' => $stockDaily->material_id
+                    ]
+                );
+            }
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollBack();
+            dd($exception);
+        }
     }
 }

@@ -87,6 +87,7 @@
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/coreui.min.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js') }}" type='text/javascript'></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/tooltips.js') }}" type='text/javascript'></script>
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/modal-confirm.js') }}" type='text/javascript'></script>
     @yield('body.js')
     <script>
         // $('#ui-view').ajaxLoad();
@@ -102,6 +103,7 @@
 
     </script>
     @include('admin.common.__popup_confirm_delete')
+    @include('admin.common.__popup_danger_modal')
     @yield('body.popup')
 </body>
 </html>

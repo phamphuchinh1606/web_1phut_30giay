@@ -160,7 +160,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
                     }
                 }
             }
-            $this->model->insert($valueInsertDbs);
+            return $this->model->insert($valueInsertDbs);
         }
     }
 

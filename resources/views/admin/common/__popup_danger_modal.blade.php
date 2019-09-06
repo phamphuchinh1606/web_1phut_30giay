@@ -11,10 +11,10 @@
                 <p> <span id="confirm-content"></span> ?</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary name-cancel" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-secondary name-cancel btn-cancel" type="button" data-dismiss="modal">Cancel</button>
                 <form class="inline" action="route" method="post" id="formHolder">
                     @csrf
-                    <button class="btn btn-danger name-ok" type="submit">OK</button>
+                    <button class="btn btn-danger name-ok btn-ok" type="submit">OK</button>
                 </form>
             </div>
         </div>

@@ -19,8 +19,11 @@ class DateTimeHelper{
      * Get Current Date
      * @return Carbon
      */
-    public static function now()
+    public static function now($truncateTime = false)
     {
+        if($truncateTime){
+            return self::truncateTime(Carbon::now(static::timezone()));
+        }
         return Carbon::now(static::timezone());
 //        return new \DateTime('now', static::timezone());
     }

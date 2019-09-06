@@ -15,6 +15,7 @@ Route::post('/input-daily/update-daily.js','InputDailyController@updateDaily')->
 Route::post('/input-daily/update-sale.js','InputDailyController@updateSale')->name('input_daily.update_sale');
 Route::post('/input-daily/update-bill.js','InputDailyController@updateBill')->name('input_daily.update_bill');
 Route::post('/input-daily/update-employee.js','InputDailyController@updateEmployee')->name('input_daily.update_Employee');
+Route::post('/input-daily/update-of-day/{date?}','InputDailyController@updateOfDay')->name('input_daily.update_of_day');
 Route::get('/input-daily/{date?}','InputDailyController@index')->name('input_daily');
 
 

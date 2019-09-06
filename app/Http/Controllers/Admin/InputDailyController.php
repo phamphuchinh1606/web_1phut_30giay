@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\AppHelper;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
+use App\Models\SettingOfDay;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
 use App\Repositories\Eloquents\MaterialRepository;
@@ -14,6 +15,7 @@ use App\Repositories\Eloquents\OrderCheckInRepository;
 use App\Repositories\Eloquents\OrderCheckOutRepository;
 use App\Repositories\Eloquents\ProductRepository;
 use App\Repositories\Eloquents\SaleRepository;
+use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Services\MaterialService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,9 +43,12 @@ class InputDailyController extends Controller
 
     private $orderBillRepository;
 
+    private $settingOfDayRepository;
+
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, EmployeeRepository $employeeRepository,
         ProductRepository $productRepository, OrderCheckInRepository $orderCheckInRepository, MaterialService $materialService, SaleRepository $saleRepository,
-        OrderBillRepository $orderBillRepository, EmployeeDailyRepository $employeeDailyRepository, OrderCheckOutRepository $orderCheckOutRepository)
+        OrderBillRepository $orderBillRepository, EmployeeDailyRepository $employeeDailyRepository, OrderCheckOutRepository $orderCheckOutRepository,
+        SettingOfDayRepository $settingOfDayRepository)
     {
         $this->materialService = $materialService;
         $this->materialRepository = $materialRepository;
@@ -55,6 +60,7 @@ class InputDailyController extends Controller
         $this->orderCheckOutRepository = $orderCheckOutRepository;
         $this->saleRepository = $saleRepository;
         $this->orderBillRepository = $orderBillRepository;
+        $this->settingOfDayRepository = $settingOfDayRepository;
     }
 
     public function index($date = null, Request $request){
@@ -76,6 +82,13 @@ class InputDailyController extends Controller
         $orderBill = $this->orderBillRepository->findByKeyOrCreate(array('branch_id' => $branchId,'bill_date' => $currentDate->format('Y-m-d')));
         $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$currentDate);
         $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate($branchId,$currentDate);
+        $totalQty = 0;
+        foreach ($products as $product){
+            if(isset($product->qty)){
+                $totalQty+= $product->qty;
+            }
+        }
+        $isOfDay = $this->materialService->checkDateIsOfDay($branchId,$currentDate);
         return $this->viewAdmin('input.input_daily',[
             'currentDate' => $currentDate,
             'branchId' => $branchId,
@@ -89,7 +102,9 @@ class InputDailyController extends Controller
             'orderBill' => $orderBill,
             'totalAmountCheckIn' => $totalAmountCheckIn,
             'totalAmountCheckOut' => $totalAmountCheckOut,
-            'editForm' => $this->checkEditFormByDate($branchId,$currentDate) ? 1 : 0
+            'totalQty' => $totalQty,
+            'editForm' => $this->checkEditFormByDate($branchId,$currentDate) ? 1 : 0,
+            'isOfDay' => $isOfDay
         ]);
     }
 
@@ -130,5 +145,14 @@ class InputDailyController extends Controller
             $currentDate = $currentDate->addDay(-1);
         }
         return false;
+    }
+
+    public function updateOfDay($date, Request $request){
+        if(isset($date)){
+            $branchId = SessionHelper::getSelectedBranchId();
+            $this->materialService->updateOfDay($branchId,$date);
+            return redirect()->route('admin.input_daily',['date' => $date])->with('message','Đã cặp nhật thành công');
+        }
+        return redirect()->route('admin.input_daily')->with('message','Đã cặp nhật thành công');
     }
 }
