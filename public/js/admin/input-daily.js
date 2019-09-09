@@ -62,6 +62,7 @@ InputDailyAPI.updateInputDaily = function(note, callback) {
             dataType: 'json',
             beforeSend: function() {
                 // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+                ModalConfirm.showLoading();
             },
             success: function(data) {
                 if ((typeof callback) === 'function') {
@@ -78,6 +79,7 @@ InputDailyAPI.updateInputDaily = function(note, callback) {
             },
             complete: function(jqxhr, text) {
                 // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+                ModalConfirm.hideLoading();
             }
         };
     jQuery.ajax(params);
@@ -91,6 +93,7 @@ InputDailyAPI.onInputUpdate = function(data, thisItem) {
     $('#table-bill').find('tr#' + data.product_id+' span.product-amount').html(data.product_amount);
     $('#table-bill').find('tr#' + data.product_id+' span.product-'+data.product_id).html(data.product_qty);
     $('#table-bill').find('span.total-amount').html(data.total_amount);
+    $('#table-bill').find('span.total-qty').html(data.total_qty);
     $('#table-bill').find('span.lack-amount').html(data.lack_amount);
     if(data.price != undefined && data.price_str != undefined && data.price != '' && data.price_str != ''){
         thisItem.closest('tr').find('input[name=price]').val(data.price);
@@ -111,7 +114,7 @@ InputDailyAPI.updateSaleDaily = function(note ,callback){
             data: data,
             dataType: 'json',
             beforeSend: function() {
-                // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+                ModalConfirm.showLoading();
             },
             success: function(data) {
                 if ((typeof callback) === 'function') {
@@ -127,7 +130,7 @@ InputDailyAPI.updateSaleDaily = function(note ,callback){
                 // HaravanAPI.onError(XMLHttpRequest, textStatus);
             },
             complete: function(jqxhr, text) {
-                // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+                ModalConfirm.hideLoading();
             }
         };
     jQuery.ajax(params);
@@ -138,6 +141,7 @@ InputDailyAPI.onSaleDailyUpdate = function(data, thisItem){
     thisItem.closest('table').find('tr#'+data.product_the_same_id+' span.product-amount').html(data.product_the_same_amount);
     thisItem.closest('table').find('.product-'+data.product_the_same_id).html(data.product_the_same_qty);
     thisItem.closest('table').find('span.total-amount').html(data.total_amount);
+    thisItem.closest('table').find('span.total-qty').html(data.total_qty);
     thisItem.closest('table').find('span.lack-amount').html(data.lack_amount);
 }
 
@@ -153,7 +157,7 @@ InputDailyAPI.updateBillDaily = function (note, callback){
             data: data,
             dataType: 'json',
             beforeSend: function() {
-                // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+                ModalConfirm.showLoading();
             },
             success: function(data) {
                 if ((typeof callback) === 'function') {
@@ -169,7 +173,7 @@ InputDailyAPI.updateBillDaily = function (note, callback){
                 // HaravanAPI.onError(XMLHttpRequest, textStatus);
             },
             complete: function(jqxhr, text) {
-                // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+                ModalConfirm.hideLoading();
             }
         };
     jQuery.ajax(params);
@@ -192,7 +196,7 @@ InputDailyAPI.updateEmployeeDaily = function(note, callback){
             data: data,
             dataType: 'json',
             beforeSend: function() {
-                // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+                ModalConfirm.showLoading();
             },
             success: function(data) {
                 console.log(data);
@@ -209,7 +213,7 @@ InputDailyAPI.updateEmployeeDaily = function(note, callback){
                 // HaravanAPI.onError(XMLHttpRequest, textStatus);
             },
             complete: function(jqxhr, text) {
-                // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+                ModalConfirm.hideLoading();
             }
         };
     jQuery.ajax(params);
@@ -222,5 +226,6 @@ InputDailyAPI.onEmployeeUpdate = function(data, thisItem){
     thisItem.closest('table').find('span.total-first-amount').html(data.total_first_amount);
     thisItem.closest('table').find('span.total-last-amount').html(data.total_last_amount);
     thisItem.closest('table').find('span.total-amount').html(data.total_amount);
+    thisItem.closest('table').find('span.total-qty').html(data.total_qty);
     thisItem.closest('table').find('span.total-hour').html(data.total_hour);
 }

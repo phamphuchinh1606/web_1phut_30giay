@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\AppHelper;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
+use App\Models\OrderCheckIn;
 use App\Models\SettingOfDay;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
@@ -80,7 +81,7 @@ class InputDailyController extends Controller
         $products = $this->productRepository->selectProductMergeSales($branchId,$currentDate);
         $sales = $this->saleRepository->findByKey(array('branch_id' => $branchId,'sale_date' => $currentDate->format('Y-m-d')));
         $orderBill = $this->orderBillRepository->findByKeyOrCreate(array('branch_id' => $branchId,'bill_date' => $currentDate->format('Y-m-d')));
-        $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$currentDate);
+        $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$currentDate, OrderCheckIn::CHECK_IN_TYPE);
         $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate($branchId,$currentDate);
         $totalQty = 0;
         foreach ($products as $product){

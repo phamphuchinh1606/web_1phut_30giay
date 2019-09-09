@@ -51,6 +51,13 @@ class ScreenSeeder extends Seeder
                 'screen_type' => 1//Admin
             ],
             [
+                'screen_id' => 'check_in_charge',
+                'screen_name' => 'Đặt Hàng thêm',
+                'screen_url' => '/admin/check-in-charge',
+                'parent_screen_id' => null,
+                'screen_type' => 1//Admin
+            ],
+            [
                 'screen_id' => 'time_keeping',
                 'screen_name' => 'Chấm Công',
                 'screen_url' => '/admin/time-keeping',
@@ -146,6 +153,13 @@ class ScreenSeeder extends Seeder
                 'screen_id' => 'setting_of_day',
                 'screen_name' => 'Thiết Lặp Ngày Nghĩ',
                 'screen_url' => '/admin/setting/setting-of-day',
+                'parent_screen_id' => 'setting',
+                'screen_type' => 1//Admin
+            ],
+            [
+                'screen_id' => 'setting_app',
+                'screen_name' => 'Thông Tin Hệ Thống',
+                'screen_url' => '/admin/setting/setting-app',
                 'parent_screen_id' => 'setting',
                 'screen_type' => 1//Admin
             ],

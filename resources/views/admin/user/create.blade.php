@@ -49,6 +49,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Chi Nhánh Mặc Định</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="col-md-9 col-form-label">
+                                    @foreach($branches as $branch)
+                                        <div class="form-check form-check-inline mr-1">
+                                            <input class="form-check-input" name="default_branch_id" id="inline-checkbox_{{$branch->id}}" type="radio" value="{{$branch->id}}">
+                                            <label class="form-check-label" for="inline-checkbox_{{$branch->id}}">{{$branch->branch_name}}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

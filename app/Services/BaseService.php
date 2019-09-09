@@ -24,6 +24,7 @@ use App\Repositories\Eloquents\SaleCartSmallRepository;
 use App\Repositories\Eloquents\SaleRepository;
 use App\Repositories\Eloquents\ScreenRepository;
 use App\Repositories\Eloquents\SettingOfDayRepository;
+use App\Repositories\Eloquents\SettingRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
 use App\Repositories\Eloquents\UnitRepository;
@@ -59,6 +60,7 @@ class BaseService {
     protected $userRepository;
     protected $userBranchRepository;
     protected $userRoleRepository;
+    protected $settingRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
@@ -69,7 +71,7 @@ class BaseService {
                 SaleCartSmallRepository $saleCartSmallRepository, EmployeeBranchRepository $employeeBranchRepository,
                 AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository, RoleRepository $roleRepository ,ScreenRepository $screenRepository,
                 RolePermissionScreenRepository $rolePermissionScreenRepository, UserRepository $userRepository, UserBranchRepository $userBranchRepository,
-                UserRoleRepository $userRoleRepository)
+                UserRoleRepository $userRoleRepository, SettingRepository $settingRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -96,6 +98,7 @@ class BaseService {
         $this->userRepository = $userRepository;
         $this->userBranchRepository = $userBranchRepository;
         $this->userRoleRepository = $userRoleRepository;
+        $this->settingRepository = $settingRepository;
     }
 
     public function checkDateIsOfDay($branchId, $date){

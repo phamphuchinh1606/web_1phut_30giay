@@ -70,6 +70,17 @@ class MenuSeeder extends Seeder
                 'sort_num' => 5
             ],
             [
+                'menu_id' => 'check_in_charge',
+                'menu_name' => 'Đặt Hàng Thêm',
+                'menu_url' => '/admin/check-in-charge',
+                'menu_route' => 'admin.check_in.check_in_charge',
+                'menu_icon_class' => 'icon-handbag',
+                'parent_menu_id' => null,
+                'is_show' => 1,
+                'menu_type' => 1,//Admin
+                'sort_num' => 6
+            ],
+            [
                 'menu_id' => 'time_keeping',
                 'menu_name' => 'Chấm Công',
                 'menu_url' => '/admin/time-keeping',
@@ -78,7 +89,7 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => null,
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 5
+                'sort_num' => 7
             ],
             [
                 'menu_id' => 'payment_bill',
@@ -89,7 +100,7 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => null,
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 6
+                'sort_num' => 8
             ],
             [
                 'menu_id' => 'finance',
@@ -100,7 +111,7 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => null,
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 7
+                'sort_num' => 9
             ],
             [
                 'menu_id' => 'setting',
@@ -111,7 +122,7 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => null,
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 8
+                'sort_num' => 10
             ],
             [
                 'menu_id' => 'employee',
@@ -122,7 +133,7 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => 'setting',
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 8,
+                'sort_num' => 10,
                 'child_sort_num' => 1
             ],
             [
@@ -134,7 +145,7 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => 'setting',
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 8,
+                'sort_num' => 10,
                 'child_sort_num' => 2
             ],
             [
@@ -146,8 +157,20 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => 'setting',
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 8,
+                'sort_num' => 10,
                 'child_sort_num' => 3
+            ],
+            [
+                'menu_id' => 'setting_app',
+                'menu_name' => 'Thông Tin Hệ Thống',
+                'menu_url' => '/admin/setting/setting-app',
+                'menu_route' => 'admin.setting.setting_app',
+                'menu_icon_class' => 'icon-graduation',
+                'parent_menu_id' => 'setting',
+                'is_show' => 1,
+                'menu_type' => 1,//Admin
+                'sort_num' => 10,
+                'child_sort_num' => 4
             ],
             [
                 'menu_id' => 'setting_material',
@@ -158,8 +181,8 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => 'setting',
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 8,
-                'child_sort_num' => 4
+                'sort_num' => 10,
+                'child_sort_num' => 5
             ],
             [
                 'menu_id' => 'setting_role',
@@ -170,8 +193,8 @@ class MenuSeeder extends Seeder
                 'parent_menu_id' => 'setting',
                 'is_show' => 1,
                 'menu_type' => 1,//Admin
-                'sort_num' => 8,
-                'child_sort_num' => 5
+                'sort_num' => 10,
+                'child_sort_num' => 6
             ],
             //Employee Screen
             [

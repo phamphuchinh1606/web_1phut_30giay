@@ -28,6 +28,7 @@ use App\Repositories\Eloquents\SaleCartSmallRepository;
 use App\Repositories\Eloquents\SaleRepository;
 use App\Repositories\Eloquents\ScreenRepository;
 use App\Repositories\Eloquents\SettingOfDayRepository;
+use App\Repositories\Eloquents\SettingRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
 use App\Repositories\Eloquents\UnitRepository;
@@ -66,6 +67,7 @@ class MaterialService extends BaseService {
         UserRepository $userRepository,
         UserBranchRepository $userBranchRepository,
         UserRoleRepository $userRoleRepository,
+        SettingRepository $settingRepository,
         TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
@@ -74,7 +76,7 @@ class MaterialService extends BaseService {
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
             $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository,
             $roleRepository, $screenRepository, $rolePermissionScreenRepository, $userRepository, $userBranchRepository,
-            $userRoleRepository);
+            $userRoleRepository, $settingRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 
@@ -273,7 +275,8 @@ class MaterialService extends BaseService {
                     $resultQty['product_amount'] = AppHelper::formatMoney($qtyProduct * $product->price);
 
                     //Update Bill Order
-                    $totalAmount = $this->saleRepository->sumAmountSale(1,$dailyDate);
+                    $totalAmount = $this->saleRepository->sumAmountSale($branchId,$dailyDate);
+                    $totalQty = $this->saleRepository->sumQtySale($branchId,$dailyDate);
                     $orderBill = $this->orderBillRepository->findByKey(array('bill_date' => $dailyDate,'branch_id' => $branchId));
                     $realAmount = 0;
                     if(isset($orderBill)){
@@ -281,6 +284,7 @@ class MaterialService extends BaseService {
                     }
                     $this->orderBillRepository->updateOrCreate(array('total_amount' => $totalAmount,'lack_amount' => $totalAmount - $realAmount),array('bill_date' => $dailyDate,'branch_id' => $branchId));
                     $resultQty['total_amount'] = AppHelper::formatMoney($totalAmount);
+                    $resultQty['total_qty'] = AppHelper::formatMoney($totalQty);
                     $resultQty['lack_amount'] = AppHelper::formatMoney($totalAmount - $realAmount);
                 }
             }
@@ -340,6 +344,7 @@ class MaterialService extends BaseService {
 
                 //Update bill order
                 $totalAmount = $this->saleRepository->sumAmountSale($branchId,$dailyDate);
+                $totalQty = $this->saleRepository->sumQtySale($branchId,$dailyDate);
                 $orderBill = $this->orderBillRepository->findByKey(array('bill_date' => $dailyDate,'branch_id' => $branchId));
                 $realAmount = 0;
                 if(isset($orderBill)){
@@ -348,6 +353,7 @@ class MaterialService extends BaseService {
                 $this->orderBillRepository->updateOrCreate(array('total_amount' => $totalAmount,'lack_amount' => $totalAmount - $realAmount),array('bill_date' => $dailyDate,'branch_id' => $branchId));
 
                 $resultQty['total_amount'] = AppHelper::formatMoney($totalAmount);
+                $resultQty['total_qty'] = AppHelper::formatMoney($totalQty);
                 $resultQty['lack_amount'] = AppHelper::formatMoney($totalAmount - $realAmount);
 
                 $resultQty['product_the_same_id'] = $productTheSameId;
@@ -437,6 +443,7 @@ class MaterialService extends BaseService {
             ));
             $firstDay =  DateTimeHelper::addDay($date,-1,'Y-m-d');
             $stockDailyLasts = $this->stockDailyRepository->getByKey(['branch_id' => $branchId, 'stock_date' => $firstDay]);
+
             foreach ($stockDailyLasts as $stockDaily){
                 $this->stockDailyRepository->updateOrCreate(
                     [
@@ -451,6 +458,7 @@ class MaterialService extends BaseService {
                     ]
                 );
             }
+
             DB::commit();
         }catch (\Exception $exception){
             DB::rollBack();

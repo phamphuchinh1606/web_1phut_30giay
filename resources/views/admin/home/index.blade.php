@@ -39,6 +39,16 @@
                 </div>
                 <div class="col-sm-4 col-6">
                     <div class="callout callout-success">
+                        <small class="text-muted">Tiền Mua Hàng 1p30s Thêm</small>
+                        <br>
+                        <strong class="h4">{{\App\Helpers\AppHelper::formatMoney($dashboard->sum_check_in_1p30s_add_amount)}}</strong>
+                        <div class="chart-wrapper">
+                            <canvas id="sparkline-chart-2" width="100" height="30"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <div class="callout callout-success">
                         <small class="text-muted">Tiền Vận Chuyển</small>
                         <br>
                         <strong class="h4">{{\App\Helpers\AppHelper::formatMoney($dashboard->sum_shipping_amount)}}</strong>

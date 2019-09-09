@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label for="date_daily">Ngày</label>
                             <div>
-                                <input class="form-control date-picker" id="date_daily" type="text" name="date_daily" required>
+                                <input class="form-control date-picker" autocomplete="off" id="date_daily" type="text" name="date_daily" required>
                             </div>
                         </div>
                     </div>

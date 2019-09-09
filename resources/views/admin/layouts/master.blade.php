@@ -105,5 +105,6 @@
     @include('admin.common.__popup_confirm_delete')
     @include('admin.common.__popup_danger_modal')
     @yield('body.popup')
+    @include('admin.common.__loading_form')
 </body>
 </html>

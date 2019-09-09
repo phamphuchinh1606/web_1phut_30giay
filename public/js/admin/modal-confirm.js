@@ -1,5 +1,15 @@
 if ((typeof ModalConfirm) === 'undefined') { ModalConfirm = {}; }
 
+ModalConfirm.showLoading = function(){
+    let loadingForm = $('#loading');
+    loadingForm.show();
+}
+
+ModalConfirm.hideLoading = function(){
+    let loadingForm = $('#loading');
+    loadingForm.hide();
+}
+
 ModalConfirm.showConfirm = function(title,content, url="", callbackCancel, callbackOk , okName = "Có", cancelName = "Không")
 {
     $('#dangerModal').on('shown.bs.modal', function (event) {

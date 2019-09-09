@@ -15,7 +15,7 @@ TimeKeepingAPI.updateTimeKeeping = function(note, callback) {
             data: data,
             dataType: 'json',
             beforeSend: function() {
-                // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+                ModalConfirm.showLoading();
             },
             success: function(data) {
                 if ((typeof callback) === 'function') {
@@ -31,7 +31,7 @@ TimeKeepingAPI.updateTimeKeeping = function(note, callback) {
                 // HaravanAPI.onError(XMLHttpRequest, textStatus);
             },
             complete: function(jqxhr, text) {
-                // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+                ModalConfirm.hideLoading();
             }
         };
     jQuery.ajax(params);

@@ -15,6 +15,9 @@ class CreateSettingAppsTable extends Migration
     {
         Schema::create('setting_apps', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('branch_id');
+            $table->decimal('rent_amount',12,2)->nullable();
+            $table->decimal('percent_shipping',12,2)->nullable();
             $table->timestamps();
         });
     }

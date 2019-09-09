@@ -21,6 +21,9 @@ Route::delete('/setting/setting-of-day/delete/{id}','SettingOfDayController@dele
 Route::post('/setting/update-selected-branch.js','SettingController@updateSelectedBranch')->name('setting.update_selected_branch');
 Route::post('/setting/update-selected-month.js','SettingController@updateSelectedMonth')->name('setting.update_selected_month');
 
+Route::get('setting/setting-app','SettingController@showSettingApp')->name('setting.setting_app');
+Route::post('setting/setting-app','SettingController@updateSettingApp')->name('setting.setting_app.update');
+
 
 
 

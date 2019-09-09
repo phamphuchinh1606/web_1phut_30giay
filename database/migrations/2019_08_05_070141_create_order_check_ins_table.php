@@ -18,7 +18,8 @@ class CreateOrderCheckInsTable extends Migration
             $table->integer('branch_id');
             $table->date('check_in_date');
             $table->integer('order_check_in_type');
-            $table->integer('material_id');
+            $table->integer('material_id')->nullable();
+            $table->string('note')->nullable();
             $table->double('qty');
             $table->double('price');
             $table->double('amount');

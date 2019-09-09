@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Common\Constant;
+use App\Common\PermissionRoleCommon;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Http\Controllers\Controller;
@@ -62,7 +63,15 @@ class LoginController extends Controller
 
         if ($this->guard()->attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_flg' => 0], $remember)) {
             if($this->guard()->check()){
-                $branch = $this->branchRepository->find(1);
+                $user = $this->guard()->user();
+                $branchId = $user->default_branch_id;
+                if(!isset($branchId) && isset($user->user_branches) && count($user->user_branches) > 0){
+                    $branchId = $user->user_branches[0]->branch_id;
+                }
+                if(PermissionRoleCommon::checkRoleRoot($user)){
+                    $branchId = 1;
+                }
+                $branch = $this->branchRepository->find($branchId);
                 if(isset($branch)){
                     SessionHelper::setSelectedBranchId($branch->id);
                     SessionHelper::setSelectedBranchName($branch->branch_name);

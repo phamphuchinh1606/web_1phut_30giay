@@ -173,10 +173,10 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6" class="text-center" style="background-color: #5cd08d">Tổng Tiền Nhập</td>
+                        <td colspan="@if($agent->isMobile()) 3 @else 6 @endif" class="text-center" style="background-color: #5cd08d">Tổng Tiền Nhập</td>
                         <td class="text-right" style="color: red"><span class="total-amount-check-in">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckIn)}}</span></td>
-                        <td colspan="2" class="text-center" style="background-color: #5cd08d">Tổng Tiền Xuất</td>
-                        <td class="text-right" colspan="3" style="color: red"><span class="total-amount-check-out">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckOut)}}</span></td>
+                        <td colspan="2" class="text-center hide-item-sm" style="background-color: #5cd08d">Tổng Tiền Xuất</td>
+                        <td class="text-right hide-item-sm" colspan="3" style="color: red"><span class="total-amount-check-out">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckOut)}}</span></td>
                     </tr>
                 </tfoot>
             </table>
@@ -217,13 +217,13 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="2" class="text-center">Tổng Giờ Công</td>
+                                <td colspan="@if($agent->isMobile()) 1 @else 2 @endif" class="text-center">Tổng Giờ Công</td>
                                 <td class="text-right"><span class="total-first-hour">{{\App\Helpers\AppHelper::formatMoney($sumEmployeeTotal->first_hours_total)}}</span></td>
                                 <td class="text-right"><span class="total-last-hour">{{\App\Helpers\AppHelper::formatMoney($sumEmployeeTotal->last_hours_total)}}</span></td>
                                 <td class="text-right"><span class="total-hour">{{\App\Helpers\AppHelper::formatMoney($sumEmployeeTotal->first_hours_total + $sumEmployeeTotal->last_hours_total)}}</span></td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="text-center">Thành Tiền</td>
+                                <td colspan="@if($agent->isMobile()) 1 @else 2 @endif" class="text-center">Thành Tiền</td>
                                 <td class="text-right"><span class="total-first-amount">{{\App\Helpers\AppHelper::formatMoney($sumEmployeeTotal->amount_first_total)}}</span></td>
                                 <td class="text-right"><span class="total-last-amount">{{\App\Helpers\AppHelper::formatMoney($sumEmployeeTotal->amount_last_total)}}</span></td>
                                 <td class="text-right"><span class="total-amount">{{\App\Helpers\AppHelper::formatMoney($sumEmployeeTotal->amount_first_total + $sumEmployeeTotal->amount_last_total)}}</span></td>
@@ -260,7 +260,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="2" class="text-center">Doanh Thu</td>
-                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</td>
+                                <td class="text-right"><span class="total-qty">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</span></td>
                                 <td class="text-right"><span class="total-amount">{{\App\Helpers\AppHelper::formatMoney($orderBill->total_amount)}}</span></td>
                             </tr>
                             <tr>

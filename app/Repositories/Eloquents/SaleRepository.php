@@ -22,6 +22,10 @@ class SaleRepository extends BaseRepository
         return $this->model::where('branch_id',$branchId)->where('sale_date',$date)->sum('amount');
     }
 
+    public function sumQtySale($branchId,$date){
+        return $this->model::where('branch_id',$branchId)->where('sale_date',$date)->sum('qty');
+    }
+
     public function sumAmountSaleByMonth($branchId,$date){
         if(is_string($date)) $date = DateTimeHelper::dateFromString($date);
         $firstDate = DateTimeHelper::startOfMonth($date,'Y-m-d');

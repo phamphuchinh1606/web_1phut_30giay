@@ -13,9 +13,10 @@ class CheckInService extends BaseService {
         $weeks = DateTimeHelper::parseWeekToArray($date);
         $suppliers = $this->supplierRepository->selectAll();
         $checkInAmountMonth = $this->orderCheckInRepository->getCheckInByMonth($branchId, $date);
+        $checkInAddAmountMonth = $this->orderCheckInRepository->getCheckInAddByMonth($branchId,$date);
 
         $arrayCheckInDaily = ArrayHelper::parseListObjectToArrayKey($checkInAmountMonth, array('supplier_id','check_in_date'));
-
+        $arrayCheckInAddDaily = ArrayHelper::parseListObjectToArrayKey($checkInAddAmountMonth, array('check_in_date'));
         foreach ($weeks as $week){
             $sumTotalAmount = 0;
             foreach ($suppliers as $supplier){
@@ -27,6 +28,10 @@ class CheckInService extends BaseService {
                     if(isset($arrayCheckInDaily[$key])){
                         $totalAmount+= $arrayCheckInDaily[$key]->total_amount;
                         $totalQty+= $arrayCheckInDaily[$key]->total_qty;
+                    }
+                    if(isset($arrayCheckInAddDaily[$keyDate])){
+                        $totalAmount+= $arrayCheckInAddDaily[$keyDate]->total_amount;
+                        $totalQty+= $arrayCheckInAddDaily[$keyDate]->total_qty;
                     }
                 }
                 eval('$week->total_amount_'.$supplier->id.'=$totalAmount;');

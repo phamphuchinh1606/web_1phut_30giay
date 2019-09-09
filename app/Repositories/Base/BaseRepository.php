@@ -160,7 +160,10 @@ abstract class BaseRepository implements BaseRepositoryInterface
                     }
                 }
             }
-            return $this->model->insert($valueInsertDbs);
+            $idInsert = $this->model->insertGetId($valueInsertDbs);
+            if(isset($idInsert) && $idInsert > 0){
+                return $this->find($idInsert);
+            }
         }
     }
 
@@ -210,9 +213,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
                 $query->where($key, $value);
             }
         }
-//        \DB::listen(function($query){
-//            dd($query);
-//        });
         $this->model::getPrimaryKeyName();
         $listModel = $query->get();
         foreach ($listModel as $modelData){

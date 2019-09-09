@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('head.css')
-    <link href="{{ \App\Helpers\AppHelper::assetPublic('/css/admin/plugins/daterangepicker.css')}}" rel="stylesheet">
+    <link href="{{ \App\Helpers\AppHelper::assetPublic('css/admin/plugins/daterangepicker.css')}}" rel="stylesheet">
     <style>
         table.dataTable{
             width: auto;
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="bill_date">Ngày Chi</label>
                             <div class="">
-                                <input class="form-control date-picker" id="bill_date" type="text" name="bill_date" required>
+                                <input class="form-control date-picker" autocomplete="off" id="bill_date" type="text" name="bill_date" required>
                             </div>
                         </div>
                     </div>
