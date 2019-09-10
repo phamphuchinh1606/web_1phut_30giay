@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Helpers\AppHelper;
 use App\Helpers\ArrayHelper;
 use App\Helpers\DateTimeHelper;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
 
 class CheckInService extends BaseService {
@@ -29,9 +30,11 @@ class CheckInService extends BaseService {
                         $totalAmount+= $arrayCheckInDaily[$key]->total_amount;
                         $totalQty+= $arrayCheckInDaily[$key]->total_qty;
                     }
-                    if(isset($arrayCheckInAddDaily[$keyDate])){
-                        $totalAmount+= $arrayCheckInAddDaily[$keyDate]->total_amount;
-                        $totalQty+= $arrayCheckInAddDaily[$keyDate]->total_qty;
+                    if(Supplier::SUPPLIER_1P_30S_ID == $supplier->id){
+                        if(isset($arrayCheckInAddDaily[$keyDate])){
+                            $totalAmount+= $arrayCheckInAddDaily[$keyDate]->total_amount;
+                            $totalQty+= $arrayCheckInAddDaily[$keyDate]->total_qty;
+                        }
                     }
                 }
                 eval('$week->total_amount_'.$supplier->id.'=$totalAmount;');

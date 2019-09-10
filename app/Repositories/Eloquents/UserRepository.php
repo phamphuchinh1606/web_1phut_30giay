@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquents;
 
 use App\Common\Constant;
+use App\Models\UserRole;
 use App\User;
 use App\Repositories\Base\BaseRepository;
 
@@ -20,6 +21,11 @@ class UserRepository extends BaseRepository
 
     public function selectAll()
     {
+        return $this->model::where('delete_flg', Constant::DELETE_FLG_OFF)->orderBy('id')->get();
+    }
+
+    public function selectUser($differentRoleId){
+        $query = $this->model::where('delete_flg', Constant::DELETE_FLG_OFF);
         return $this->model::where('delete_flg', Constant::DELETE_FLG_OFF)->orderBy('id')->get();
     }
 
