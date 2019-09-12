@@ -30,7 +30,7 @@ class Constant{
     public static $TAG_KEY_ONE = 1;
     public static $TAG_KEY_TWO = 2;
 
-    public static $PATH_FOLDER_PUBLIC = "public";
+    public static $PATH_FOLDER_PUBLIC = "";
     public static $PATH_FOLDER_UPLOAD_IMAGE_EDITOR = "images_editor";
     public static $PATH_FOLDER_UPLOAD_IMAGE_DROP = "images_drop";
     public static $PATH_FOLDER_UPLOAD_PRODUCT = "products";

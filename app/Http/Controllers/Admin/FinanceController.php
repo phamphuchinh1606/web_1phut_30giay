@@ -29,11 +29,19 @@ class FinanceController extends Controller
             $finance->amount_in = 0;
             $finance->amount_out = 0;
         }
+        $totalAmountIn = 0;
+        $totalAmountOut = 0;
+        foreach ($finances as $financeItem){
+            $totalAmountIn+= $financeItem->amount_in;
+            $totalAmountOut+= $financeItem->amount_out;
+        }
         return $this->viewAdmin('finance.finance',[
             'currentDate' => $currentDate,
             'branchId' => $branchId,
             'finances' => $finances,
-            'finance' => $finance
+            'finance' => $finance,
+            'totalAmountIn' => $totalAmountIn,
+            'totalAmountOut' => $totalAmountOut
         ]);
     }
 

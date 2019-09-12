@@ -95,6 +95,7 @@
       <path value="$PROJECT_DIR$/vendor/riverskies/laravel-mobile-detect" />
       <path value="$PROJECT_DIR$/vendor/jaybizzle/crawler-detect" />
       <path value="$PROJECT_DIR$/vendor/jenssegers/agent" />
+      <path value="$PROJECT_DIR$/vendor/facade/ignition-contracts" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

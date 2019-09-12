@@ -73,41 +73,67 @@
                     </div>
                 </div>
             </form>
-            <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
-                   role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
-                <thead>
-                <tr role="row">
-                    <th class="text-center date" width="100">Ngày</th>
-                    <th class="text-center" width="100">Tền Thu</th>
-                    <th class="text-center" width="100">Tiền Chi</th>
-                    <th class="text-center" width="300">Ghi Chú</th>
-                    <th class="text-center"></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($finances as $financeItem)
-                    <tr>
-                        <td class="text-center">
-                            {{\App\Helpers\DateTimeHelper::dateFormat($financeItem->date_daily,'Y/m/d')}}<br/>
-                            <span>{{\App\Helpers\DateTimeHelper::dateToWeek($financeItem->date_daily)}}</span>
-                        </td>
-                        <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($financeItem->amount_in)}}</td>
-                        <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($financeItem->amount_out)}}</td>
-                        <td>{{$financeItem->note}}</td>
-                        <td class="text-center">
-                            <a class="btn btn-info" href="{{route('admin.finance.update',['id' => $financeItem->id])}}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a data-toggle="modal" class="btn btn-danger anchorClick"
-                               data-url="{{route('admin.finance.delete',['id' => $financeItem->id]) }}"
-                               data-name="{{$financeItem->note}}" href="#deleteModal">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-striped table-bordered datatable dataTable no-footer table-overflow-x" id="DataTables_Table_0"
+                           role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
+                        <thead>
+                        <tr role="row">
+                            <th class="text-center date" width="80">Ngày</th>
+                            <th class="text-center" width="90">Tền Thu</th>
+                            <th class="text-center" width="90">Tiền Chi</th>
+                            <th class="text-center" width="300">Ghi Chú</th>
+                            <th class="text-center"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($finances as $financeItem)
+                            @if($financeItem->amount_in != 0 || $financeItem->amount_out != 0)
+                            <tr>
+                                <td class="text-center">
+                                    {{\App\Helpers\DateTimeHelper::dateFormat($financeItem->date_daily,'Y/m/d')}}<br/>
+                                    <span>{{\App\Helpers\DateTimeHelper::dateToWeek($financeItem->date_daily)}}</span>
+                                </td>
+                                <td class="text-right">@if($financeItem->amount_in != 0) {{\App\Helpers\AppHelper::formatMoney($financeItem->amount_in)}} @endif</td>
+                                <td class="text-right">@if($financeItem->amount_out != 0){{\App\Helpers\AppHelper::formatMoney($financeItem->amount_out)}} @endif</td>
+                                <td>{{$financeItem->note}}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-info" href="{{route('admin.finance.update',['id' => $financeItem->id])}}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a data-toggle="modal" class="btn btn-danger anchorClick"
+                                       data-url="{{route('admin.finance.delete',['id' => $financeItem->id]) }}"
+                                       data-name="{{$financeItem->note}}" href="#deleteModal">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            @endif
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
+                           role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
+                        <thead>
+                        <tr role="row">
+                            <th class="text-center date">Tổng Thu</th>
+                            <th class="text-center">Tổng Chi</th>
+                            <th class="text-center">Còn Lại</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{\App\Helpers\AppHelper::formatMoney($totalAmountIn)}} VNĐ</td>
+                                <td>{{\App\Helpers\AppHelper::formatMoney($totalAmountOut)}} VNĐ</td>
+                                <td>{{\App\Helpers\AppHelper::formatMoney($totalAmountIn - $totalAmountOut)}} VNĐ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
