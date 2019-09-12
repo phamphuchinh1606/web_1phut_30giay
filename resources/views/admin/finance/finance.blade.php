@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('head.css')
-    <link href="{{asset('/css/admin/plugins/daterangepicker.css')}}" rel="stylesheet">
+    <link href="{{\App\Helpers\AppHelper::assetPublic('/css/admin/plugins/daterangepicker.css')}}" rel="stylesheet">
     <style>
         table.dataTable{
             width: auto;
@@ -11,9 +11,9 @@
 
 @section('body.js')
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
-    <script src="{{asset('js/admin/plugins/moment.min.js') }}" type='text/javascript'></script>
-    <script src="{{asset('js/admin/plugins/daterangepicker.min.js') }}" type='text/javascript'></script>
-    <script src="{{asset('js/admin/date-picker.js') }}" type='text/javascript'></script>
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/moment.min.js') }}" type='text/javascript'></script>
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/daterangepicker.min.js') }}" type='text/javascript'></script>
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/date-picker.js') }}" type='text/javascript'></script>
     <script>
         $(document).ready(function(){
             $('.input-qty-price').on('change',function(){
