@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquents;
 use App\Helpers\DateTimeHelper;
 use App\Models\EmployeeTimeKeeping;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ChannelBotRepository

@@ -92,7 +92,7 @@ class TimeKeepingService extends BaseService {
         $inputName = isset($values['name']) ? $values['name'] : null;
         $month = $values['month'];
         $employeeId = $values['employee_id'];
-        $branchId = 1;
+        $branchId = $values['branch_id'];
         $result = [];
         try{
             if($isTransaction) DB::beginTransaction();

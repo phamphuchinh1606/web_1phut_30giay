@@ -53,7 +53,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                <form class="inline" action="route_delete" method="post" id="formHolder">
+                <form class="inline" action="route_delete" method="post" id="formConfirmDelete">
                     @csrf
                     <input name="_method" type="hidden" value="DELETE">
                     <button class="btn btn-danger" type="submit">Xóa</button>
@@ -72,7 +72,7 @@
             $(this).on('click', function () {
                 var $url = $(this).attr('data-url');
                 var $name = $(this).attr('data-name');
-                $('#formHolder').attr('action', $url);
+                $('#formConfirmDelete').attr('action', $url);
                 $('#confirm-delete-name').html($name);
             });
         });

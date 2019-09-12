@@ -44,7 +44,7 @@ class LoginEmployeeController extends Controller
      */
     public function __construct(BranchRepository $branchRepository)
     {
-        $this->middleware('guest')->except('logout');
+//        $this->middleware('guest')->except('logout');
         $this->branchRepository = $branchRepository;
     }
 

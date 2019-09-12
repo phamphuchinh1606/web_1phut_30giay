@@ -235,9 +235,9 @@
                 <div class="dropdown-header text-center">
                     <strong>Account</strong>
                 </div>
-                <div class="dropdown-item text-center">
-                    <strong>Tài khoản quản lý</strong>
-                </div>
+                <a class="dropdown-item" href="{{route('admin.change_pass')}}">
+                    <i class="fa fa-chain"></i> Thay đổi mật khẩu
+                </a>
                 {{--<a class="dropdown-item" href="#">--}}
                     {{--<i class="fa fa-bell-o"></i> Updates--}}
                     {{--<span class="badge badge-info">42</span>--}}

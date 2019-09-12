@@ -316,7 +316,7 @@ class MaterialService extends BaseService {
         if(isset($product)){
             try{
                 DB::beginTransaction();
-                $whereValues = array('sale_date' => $dailyDate, 'product_id' => $productId);
+                $whereValues = array('branch_id' => $branchId,'sale_date' => $dailyDate, 'product_id' => $productId);
                 $saleItem = $this->saleRepository->findByKey($whereValues);
                 if(!isset($saleItem)){
                     $saleItem = new \StdClass();
@@ -408,7 +408,7 @@ class MaterialService extends BaseService {
                 $whereValues = array('date_daily' => $dailyDate,'branch_id' => $branchId,'employee_id' => $employeeId);
                 $valueUpdate = array($inputName => $inputValue,'price_first_hour' => $employee->price_first_hour,'price_last_hour' => $employee->price_first_hour);
                 $this->employeeDailyRepository->updateOrCreate($valueUpdate,$whereValues);
-                $sumTotal = $this->employeeDailyRepository->sumTotalDaily(1,$dailyDate);
+                $sumTotal = $this->employeeDailyRepository->sumTotalDaily($branchId,$dailyDate);
                 $sumTotalEmployee = $this->employeeDailyRepository->sumTotalAmountEmployeeDaily($branchId,$dailyDate,$employeeId);
                 $resultQty = array_merge($resultQty,array(
                     'total_first_hour' => $sumTotal->first_hours_total,
@@ -422,6 +422,7 @@ class MaterialService extends BaseService {
                 $values = [];
                 $values['month'] = DateTimeHelper::dateFormat($dailyDate,'Y-m');
                 $values['employee_id'] = $employeeId;
+                $values['branch_id'] = $branchId;
                 $this->timeKeepingService->updateTimeKeeping($values, false);
             }
             DB::commit();
