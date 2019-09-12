@@ -14,6 +14,7 @@ use App\Repositories\Eloquents\EmployeeBranchRepository;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
 use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
+use App\Repositories\Eloquents\FinanceRepository;
 use App\Repositories\Eloquents\MaterialRepository;
 use App\Repositories\Eloquents\MaterialTypeRepository;
 use App\Repositories\Eloquents\OrderBillRepository;
@@ -68,6 +69,7 @@ class MaterialService extends BaseService {
         UserBranchRepository $userBranchRepository,
         UserRoleRepository $userRoleRepository,
         SettingRepository $settingRepository,
+        FinanceRepository $financeRepository,
         TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
@@ -76,7 +78,7 @@ class MaterialService extends BaseService {
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
             $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository,
             $roleRepository, $screenRepository, $rolePermissionScreenRepository, $userRepository, $userBranchRepository,
-            $userRoleRepository, $settingRepository);
+            $userRoleRepository, $settingRepository, $financeRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 
@@ -163,7 +165,7 @@ class MaterialService extends BaseService {
                     $this->stockDailyRepository->updateOrCreate($valueUpdate,$wheres);
                     break;
             }
-            $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$dailyDate);
+            $totalAmountCheckIn = $this->orderCheckInRepository->getTotalAmountByDate($branchId,$dailyDate, OrderCheckIn::CHECK_IN_TYPE);
             $totalAmountCheckOut = $this->orderCheckOutRepository->getTotalAmountByDate($branchId,$dailyDate);
             $resultQty = array_merge($resultQty,[$inputName => $inputValue,
                 'total_amount_check_in' => AppHelper::formatMoney($totalAmountCheckIn),

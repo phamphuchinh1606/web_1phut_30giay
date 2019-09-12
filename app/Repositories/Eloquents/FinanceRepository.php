@@ -25,7 +25,7 @@ class FinanceRepository extends BaseRepository
         return $this->model::where('branch_id',$branchId)
             ->where('date_daily', '>=' , $firstDate)
             ->where('date_daily', '<=', $lastDate)
-            ->orderBy('date_daily','desc')->get();
+            ->orderBy('date_daily','asc')->get();
     }
 
 }

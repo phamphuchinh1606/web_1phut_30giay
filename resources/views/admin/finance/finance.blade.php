@@ -30,6 +30,10 @@
         <div class="card-header">
             <i class="fa fa-edit"></i> Tài Chính Trong Tháng : {{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'m/Y')}}
             <input name="current_month" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m')}}">
+
+            <span class="pull-right">
+                <a class="btn btn-sm btn-primary" href="{{route('admin.finance.get_sale_amount')}}">Nhập Tiền Bán</a>
+            </span>
         </div>
         <div class="card-body">
             <form method="post" action="@if(isset($finance->id)) {{route('admin.finance.update',['id' => $finance->id]) }} @else {{route('admin.finance.create')}} @endif">

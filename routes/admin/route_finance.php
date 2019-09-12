@@ -15,6 +15,7 @@ Route::post('/finance/create','FinanceController@create')->name('finance.create'
 Route::get('/finance/update/{id}','FinanceController@index')->name('finance.update');
 Route::post('/finance/update/{id}','FinanceController@update')->name('finance.update');
 Route::delete('/finance/delete/{id}','FinanceController@delete')->name('finance.delete');
+Route::get('/finance/get-sale-amount','FinanceController@getFinanceSaleAmount')->name('finance.get_sale_amount');
 
 
 

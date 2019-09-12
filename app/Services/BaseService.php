@@ -10,6 +10,7 @@ use App\Repositories\Eloquents\EmployeeBranchRepository;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
 use App\Repositories\Eloquents\EmployeeTimeKeepingRepository;
+use App\Repositories\Eloquents\FinanceRepository;
 use App\Repositories\Eloquents\MaterialRepository;
 use App\Repositories\Eloquents\MaterialTypeRepository;
 use App\Repositories\Eloquents\OrderBillRepository;
@@ -61,6 +62,7 @@ class BaseService {
     protected $userBranchRepository;
     protected $userRoleRepository;
     protected $settingRepository;
+    protected $financeRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
@@ -71,7 +73,7 @@ class BaseService {
                 SaleCartSmallRepository $saleCartSmallRepository, EmployeeBranchRepository $employeeBranchRepository,
                 AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository, RoleRepository $roleRepository ,ScreenRepository $screenRepository,
                 RolePermissionScreenRepository $rolePermissionScreenRepository, UserRepository $userRepository, UserBranchRepository $userBranchRepository,
-                UserRoleRepository $userRoleRepository, SettingRepository $settingRepository)
+                UserRoleRepository $userRoleRepository, SettingRepository $settingRepository, FinanceRepository $financeRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -99,6 +101,7 @@ class BaseService {
         $this->userBranchRepository = $userBranchRepository;
         $this->userRoleRepository = $userRoleRepository;
         $this->settingRepository = $settingRepository;
+        $this->financeRepository = $financeRepository;
     }
 
     public function checkDateIsOfDay($branchId, $date){

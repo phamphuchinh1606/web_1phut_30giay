@@ -25,4 +25,21 @@ class OrderCheckIn extends BaseModel
             self::CHECK_IN_TYPE_CHARGE
         );
     }
+
+    public function getCheckInTypeNameAttribute(){
+        $checkInTypeName = '';
+        switch ($this->order_check_in_type){
+            case self::CHECK_IN_TYPE_CHARGE:
+                $checkInTypeName = self::CHECK_IN_TYPE_CHARGE_NAME;
+                break;
+            case self::CHECK_INT_TYPE_NOT_CHARGE:
+                $checkInTypeName = self::CHECK_IN_TYPE_NOT_CHARGE_NAME;
+                break;
+        }
+        return $checkInTypeName;
+    }
+
+    public static function checkInTypeName (){
+
+    }
 }

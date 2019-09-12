@@ -103,13 +103,14 @@
                     <th class="text-center" width="100">Đơn Giá(đ)</th>
                     <th class="text-center" width="120">Thành Tiền(đ)</th>
                     <th class="text-center" width="300">Tên Mặt Hàng</th>
+                    <td class="text-center" width="120">Phí</td>
                     <th class="text-center"></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($checkIns as $index => $checkInItem)
                     <tr>
-                        <td>{{$index++}}</td>
+                        <td>{{$index+1}}</td>
                         <td class="text-center">
                             {{\App\Helpers\DateTimeHelper::dateFormat($checkInItem->check_in_date,'Y/m/d')}}<br/>
                             <span>{{\App\Helpers\DateTimeHelper::dateToWeek($checkInItem->check_in_date)}}</span>
@@ -118,6 +119,7 @@
                         <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($checkInItem->price)}}</td>
                         <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($checkInItem->amount)}}</td>
                         <td>{{$checkInItem->note}}</td>
+                        <td>{{$checkInItem->check_in_type_name}}</td>
                         <td class="text-center">
                             <a class="btn btn-info" href="{{route('admin.check_in.check_in_charge',['id' => $checkInItem->id])}}">
                                 <i class="fa fa-edit"></i>
@@ -131,6 +133,12 @@
                     </tr>
                 @endforeach
                 </tbody>
+                <tfoot>
+                    <tr class="text-center font-weight-bold" style="color: red">
+                        <td colspan="3">Tổng Tiền</td>
+                        <td colspan="5">{{\App\Helpers\AppHelper::formatMoney($totalAmount)}} VNĐ</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

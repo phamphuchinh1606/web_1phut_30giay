@@ -45,11 +45,16 @@ class CheckInController extends Controller
             $checkIn->amount = 0;
         }
         $checkIns = $this->checkInRepository->listCheckInByType(OrderCheckIn::arrayTypeCheckInCharge(), $branchId, $currentDate);
+        $totalAmount = 0;
+        foreach ($checkIns as $checkInItem){
+            $totalAmount+= $checkInItem->amount;
+        }
         return $this->viewAdmin('checkin.check_in_charge',[
             'currentDate' => $currentDate,
             'branchId' => $branchId,
             'checkIn' => $checkIn,
-            'checkIns' => $checkIns
+            'checkIns' => $checkIns,
+            'totalAmount' => $totalAmount
         ]);
     }
 

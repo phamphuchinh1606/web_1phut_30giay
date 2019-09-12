@@ -91,45 +91,64 @@
                 </div>
             </form>
             @endcan
-            <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
-                   role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
-                <thead>
-                <tr role="row">
-                    <th class="text-center date" width="100">Ngày Chi</th>
-                    <th class="text-center" width="100">Số Lượng</th>
-                    <th class="text-center" width="100">Đơn Giá(đ)</th>
-                    <th class="text-center" width="120">Thành Tiền(đ)</th>
-                    <th class="text-center" width="300">Lý Do Chi</th>
-                    <th class="text-center" width="150">Người Chi</th>
-                    <th class="text-center"></th>
-                </tr>
-                </thead>
-                <tbody>
-                    @foreach($paymentBills as $paymentBill)
-                        <tr>
-                            <td class="text-center">
-                                {{\App\Helpers\DateTimeHelper::dateFormat($paymentBill->bill_date,'Y/m/d')}}<br/>
-                                <span>{{\App\Helpers\DateTimeHelper::dateToWeek($paymentBill->bill_date)}}</span>
-                            </td>
-                            <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->qty)}}</td>
-                            <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->price)}}</td>
-                            <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->amount)}}</td>
-                            <td>{{$paymentBill->note}}</td>
-                            <td>@if(isset($paymentBill->user)){{$paymentBill->user->name}}@endif</td>
-                            <td class="text-center">
-                                <a class="btn btn-info" href="{{route('admin.payment_bill.update',['id' => $paymentBill->id])}}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a data-toggle="modal" class="btn btn-danger anchorClick"
-                                   data-url="{{route('admin.payment_bill.delete',['id' => $paymentBill->id]) }}"
-                                   data-name="{{$paymentBill->note}}" href="#deleteModal">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </td>
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0"
+                           role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
+                        <thead>
+                        <tr role="row">
+                            <th class="text-center date" width="100">Ngày Chi</th>
+                            <th class="text-center" width="100">Số Lượng</th>
+                            <th class="text-center" width="100">Đơn Giá(đ)</th>
+                            <th class="text-center" width="120">Thành Tiền(đ)</th>
+                            <th class="text-center" width="300">Lý Do Chi</th>
+                            <th class="text-center" width="150">Người Chi</th>
+                            <th class="text-center"></th>
                         </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($paymentBills as $paymentBill)
+                            <tr>
+                                <td class="text-center">
+                                    {{\App\Helpers\DateTimeHelper::dateFormat($paymentBill->bill_date,'Y/m/d')}}<br/>
+                                    <span>{{\App\Helpers\DateTimeHelper::dateToWeek($paymentBill->bill_date)}}</span>
+                                </td>
+                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->qty)}}</td>
+                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->price)}}</td>
+                                <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($paymentBill->amount)}}</td>
+                                <td>{{$paymentBill->note}}</td>
+                                <td>@if(isset($paymentBill->user)){{$paymentBill->user->name}}@endif</td>
+                                <td class="text-center">
+                                    <a class="btn btn-info" href="{{route('admin.payment_bill.update',['id' => $paymentBill->id])}}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a data-toggle="modal" class="btn btn-danger anchorClick"
+                                       data-url="{{route('admin.payment_bill.delete',['id' => $paymentBill->id]) }}"
+                                       data-name="{{$paymentBill->note}}" href="#deleteModal">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr style="color: red" class="font-weight-bold">
+                                <td colspan="3" class="text-center">Tổng Chi</td>
+                                <td colspan="4" class="text-center">{{\App\Helpers\AppHelper::formatMoney($paymentBillTotalAmount)}} VNĐ</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    @foreach($users as $user)
+                        <div class="form-group">
+                            <label>{{$user->name}}</label>
+                            <label class="form-control ml-2"> {{\App\Helpers\AppHelper::formatMoney($user->total_amount)}} VNĐ</label>
+                        </div>
                     @endforeach
-                </tbody>
-            </table>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection

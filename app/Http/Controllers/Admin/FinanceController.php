@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\SessionHelper;
 use App\Models\Finance;
 use App\Repositories\Eloquents\FinanceRepository;
+use App\Services\FinanceService;
 use Illuminate\Http\Request;
 class FinanceController extends Controller
 {
     protected $financeRepository;
+    protected $financeService;
 
-    public function __construct(FinanceRepository $financeRepository)
+    public function __construct(FinanceRepository $financeRepository, FinanceService $financeService)
     {
         $this->financeRepository = $financeRepository;
+        $this->financeService = $financeService;
     }
 
     public function index($id = null,Request $request){
@@ -32,6 +35,13 @@ class FinanceController extends Controller
             'finances' => $finances,
             'finance' => $finance
         ]);
+    }
+
+    public function getFinanceSaleAmount(Request $request){
+        $currentDate = SessionHelper::getSelectedMonth();
+        $branchId = SessionHelper::getSelectedBranchId();
+        $this->financeService->getFinanceSaleAmount($branchId,$currentDate);
+        return redirect()->route('admin.finance')->with('message','Đã lấy thành công');
     }
 
     public function create(Request $request){

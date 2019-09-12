@@ -26,7 +26,18 @@ class PaymentBillController extends Controller
         $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
         $paymentBills = $this->paymentBillRepository->getList($branchId,$currentDate);
-        $users = $this->userRepository->selectAll();
+        $users = $this->userRepository->selectListUser();
+        $paymentBillTotalAmount = 0;
+        foreach ($users as $user){
+            $totalAmount = 0;
+            foreach ($paymentBills as $paymentBill){
+                if($paymentBill->user_id == $user->id){
+                    $totalAmount+= $paymentBill->amount;
+                }
+            }
+            $user->total_amount = $totalAmount;
+            $paymentBillTotalAmount+= $totalAmount;
+        }
         if(isset($id)){
             $paymentBill = $this->paymentBillRepository->find($id);
         }else{
@@ -40,7 +51,8 @@ class PaymentBillController extends Controller
             'branchId' => $branchId,
             'paymentBills' => $paymentBills,
             'users' => $users,
-            'paymentBill' => $paymentBill
+            'paymentBill' => $paymentBill,
+            'paymentBillTotalAmount' => $paymentBillTotalAmount
         ]);
     }
 

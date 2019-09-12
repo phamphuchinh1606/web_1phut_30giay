@@ -149,7 +149,7 @@
                                     </td>
                                     <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($material->qty_first)}}</td>
                                     <td>
-                                        <input class="input-daily form-control double" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
+                                        <input style="background-color: #B9D3EE;font-weight: bold" class="input-daily form-control double" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
                                     </td>
                                     <td class="text-right"><span class="amount_in">{{\App\Helpers\AppHelper::formatMoney($material->amount_in)}}</span></td>
                                     <td class="hide-item-sm">
@@ -163,7 +163,7 @@
                                         <input class="input-daily form-control double" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
                                     </td>
                                     <td class="text-right">
-                                        <input class="input-daily form-control double" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
+                                        <input style="background-color: #66CC66;font-weight: bold" class="input-daily form-control double" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
                                     </td>
                                 </tr>
                             @endif

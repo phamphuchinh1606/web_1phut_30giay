@@ -20,6 +20,7 @@ class CreateFinancesTable extends Migration
             $table->double('amount_in')->nullable();
             $table->double('amount_out')->nullable();
             $table->string('note')->nullable();
+            $table->integer('order_bill_id')->nullable();
             $table->timestamps();
         });
     }
