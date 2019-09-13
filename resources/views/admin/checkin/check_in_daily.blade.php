@@ -27,16 +27,21 @@
                     <th width="80" rowspan="2" class="text-center">Ngày</th>
                     <th width="80" rowspan="2" class="text-center">Thứ</th>
                     @foreach($suppliers as $supplier)
-                        <th class="text-center" colspan="2">{{$supplier->supplier_name}}</th>
-                        <th class="text-center" colspan="2">Tổng</th>
+
+                        <th class="text-center" colspan="@if(App\Models\Supplier::SUPPLIER_1P_30S_ID == $supplier->id) 1 @else 2 @endif">{{$supplier->supplier_name}}</th>
+                        <th class="text-center" colspan="@if(App\Models\Supplier::SUPPLIER_1P_30S_ID == $supplier->id) 1 @else 2 @endif">Tổng</th>
                     @endforeach
                     <th width="100" rowspan="2">Tổng Chi</th>
                 </tr>
                 <tr>
                     @foreach($suppliers as $supplier)
+                        @if(App\Models\Supplier::SUPPLIER_1P_30S_ID != $supplier->id)
                         <th width="80" class="text-center">Số Lượng</th>
+                        @endif
                         <th width="100" class="text-center">Thành Tiền</th>
+                        @if(App\Models\Supplier::SUPPLIER_1P_30S_ID != $supplier->id)
                         <th width="80" class="text-center">Số Lượng</th>
+                        @endif
                         <th width="100" class="text-center">Tiền</th>
                     @endforeach
                 </tr>
@@ -58,17 +63,21 @@
                                 {{$day->week_day}}
                             </td>
                             @foreach($day->suppliers as $supplier)
+                                @if(App\Models\Supplier::SUPPLIER_1P_30S_ID != $supplier->supplier_id)
                                 <td class="text-right">
                                     {{\App\Helpers\AppHelper::formatMoney($supplier->total_qty)}}
                                 </td>
+                                @endif
                                 <td class="text-right">
                                     {{\App\Helpers\AppHelper::formatMoney($supplier->total_amount)}}
                                 </td>
                                 @if($day->week_no == 1 || $index == 0)
+                                    @if(App\Models\Supplier::SUPPLIER_1P_30S_ID != $supplier->supplier_id)
                                     <td class="text-right" rowspan="@if($index == 0 && $day->week_no == 0) 1 @else {{8 - $day->week_no}} @endif">
                                         <?php $valueQty =0; eval('$valueQty=$day->week->total_qty_'.$supplier->supplier_id.';') ?>
                                         {{\App\Helpers\AppHelper::formatMoney($valueQty)}}
                                     </td>
+                                    @endif
                                     <td class="text-right" rowspan="@if($index == 0 && $day->week_no == 0) 1 @else {{8 - $day->week_no}} @endif ">
                                         <?php $valueAmount =0; eval('$valueAmount=$day->week->total_amount_'.$supplier->supplier_id.';') ?>
                                         {{\App\Helpers\AppHelper::formatMoney($valueAmount)}}

@@ -16,41 +16,46 @@
         padding: 2px;
         vertical-align: middle !important;
     }
-    table.dataTable .no{
+    table.dataTable th.no{
         width: 20px;
     }
-    table.dataTable .name{
+    table.dataTable th.name{
         width: 120px;
     }
-    table.dataTable .unit{
+    table.dataTable th.unit{
         width: 60px;
     }
-    table.dataTable .price{
+    table.dataTable th.price{
         width: 80px;
     }
-    table.dataTable .first-qty{
+    table.dataTable th.first-qty{
         width: 80px;
     }
-    table.dataTable .check-in{
+    table.dataTable th.check-in{
         width: 80px;
     }
-    table.dataTable .amount-in{
+    table.dataTable th.amount-in{
         width: 100px;
     }
-    table.dataTable .move-in{
+    table.dataTable th.move-in{
         width: 80px;
     }
-    table.dataTable .move-out{
+    table.dataTable th.move-out{
         width: 80px;
     }
-    table.dataTable .last-qty{
+    table.dataTable th.last-qty{
         width: 80px;
     }
-    table.dataTable .check-out{
+    table.dataTable th.check-out{
         width: 80px;
     }
-    table.dataTable .cancel{
+    table.dataTable th.cancel{
         width: 80px;
+    }
+    @media (max-width: 575.98px){
+        table.dataTable .name{
+            width: 80px;
+        }
     }
 </style>
 
@@ -63,18 +68,18 @@
                     <i class="fa icon-arrow-down-circle"></i>
                 </a>
             </span>
-
-            <span class="pull-right pr-3">
-                @if($isOfDay)
-                    <span class="badge badge-danger">Không bán</span>
-                @elseif(\App\Helpers\DateTimeHelper::truncateTime($currentDate) >= \App\Helpers\DateTimeHelper::now(true))
-                    <label class="switch switch-label switch-outline-danger-alt">
+            @can('input_daily.canOfDay')
+                <span class="pull-right pr-3">
+                    @if($isOfDay)
+                        <span class="badge badge-danger">Không bán</span>
+                    @elseif(\App\Helpers\DateTimeHelper::truncateTime($currentDate) >= \App\Helpers\DateTimeHelper::now(true))
+                        <label class="switch switch-label switch-outline-danger-alt">
                         <input class="switch-input is-off-day" type="checkbox" @if(!$isOfDay) checked="checked" @endif>
                         <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
                     </label>
-                @endif
-            </span>
-
+                    @endif
+                </span>
+            @endcan
             <input name="current_date" type="hidden" value="{{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'Y-m-d')}}">
             <hr class="multi-collapse collapse" id="multiCollapseExample1">
             <nav class="nav nav-pills flex-column flex-sm-row multi-collapse collapse" id="multiCollapseExample1">
@@ -99,16 +104,33 @@
                 <thead>
                 <tr role="row">
                     <th rowspan="2" class="text-center hide-item-sm no">MSP</th>
-                    <th rowspan="2" class="text-center name">Tên Sản Phẩm</th>
+                    <th rowspan="2" class="text-center name">
+                        Tên Sản Phẩm
+                    </th>
                     <th rowspan="2" class="text-center hide-item-sm unit">Đơn Vị</th>
                     <th rowspan="2" class="text-center hide-item-sm price">Đơn Giá</th>
-                    <th rowspan="2" class="text-center first-qty">Tồn Đầu</th>
-                    <th rowspan="2" class="text-center check-in">Nhập</th>
-                    <th rowspan="2" class="text-center amount-in">Thành Tiền</th>
+                    <th rowspan="2" class="text-center first-qty">
+                        Tồn Đầu
+                        @if($agent->isMobile())
+                            <i class="fa fa-chevron-circle-left fa-lg show-price-in"></i>
+                        @endif
+                    </th>
+                    <th rowspan="2" class="text-center check-in">
+                        Nhập
+                        @if($agent->isMobile())
+                            <i class="fa fa-chevron-circle-right fa-lg show-amount-in"></i>
+                        @endif
+                    </th>
+                    <th rowspan="2" class="text-center amount-in hide-item-sm">Thành Tiền</th>
+                    <th colspan="2" class="text-center">Xuất</th>
+                    <th rowspan="2" class="text-center last-qty">
+                        <span>Tồn Cuối</span>
+                        @if($agent->isMobile())
+                            <i class="fa fa-chevron-circle-right fa-lg show-move-in-out"></i>
+                        @endif
+                    </th>
                     <th rowspan="2" class="text-center hide-item-sm move-in">Nhập Chuyển</th>
                     <th rowspan="2" class="text-center hide-item-sm move-out">Xuất Chuyển</th>
-                    <th colspan="2" class="text-center">Xuất</th>
-                    <th rowspan="2" class="text-center last-qty">Tồn Cuối</th>
                 </tr>
                 <tr>
                     <th class="text-center check-out">Xuất</th>
@@ -118,7 +140,7 @@
                 <tbody>
                 @foreach($materialTypes as $materialType)
                     <tr role="row" style="background-color: yellowgreen">
-                        <td colspan="12" class="font-weight-bold">{{$materialType->material_type_name}}</td>
+                        <td colspan="12" class="font-weight-bold calculator-colspan">{{$materialType->material_type_name}}</td>
                     </tr>
                     @if(isset($materials))
                         @foreach($materials as $material)
@@ -129,9 +151,15 @@
                                         <input type="hidden" value="{{$material->price}}" name="price">
                                     </td>
                                     <td class="text-center hide-item-sm">{{$material->id}}</td>
-                                    <td>{{$material->material_name}}</td>
+                                    <td>
+                                        @if($agent->isMobile())
+                                            {{$material->material_short_name}}
+                                        @else
+                                            {{$material->material_name}}
+                                        @endif
+                                    </td>
                                     <td class="hide-item-sm">{{$material->unit->unit_name}}</td>
-                                    <td class="text-right hide-item-sm">
+                                    <td class="text-right hide-item-sm price">
                                         @can('input_daily.update', $currentDate)
                                             <a data-toggle="modal" class="changePricePopupClick"
                                                data-url="{{route('input_daily.update_daily')}}"
@@ -151,19 +179,19 @@
                                     <td>
                                         <input style="background-color: #B9D3EE;font-weight: bold" class="input-daily form-control double" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
                                     </td>
-                                    <td class="text-right"><span class="amount_in">{{\App\Helpers\AppHelper::formatMoney($material->amount_in)}}</span></td>
-                                    <td class="hide-item-sm">
-                                        <input class="input-daily form-control double" name="qty_in_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in_move)}}">
-                                    </td>
-                                    <td class="hide-item-sm">
-                                        <input class="input-daily form-control double" name="qty_out_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_out_move)}}">
-                                    </td>
+                                    <td class="text-right hide-item-sm amount-in"><span class="amount_in">{{\App\Helpers\AppHelper::formatMoney($material->amount_in)}}</span></td>
                                     <td class="text-right"><span class="qty_out">{{\App\Helpers\AppHelper::formatMoney($material->qty_out)}}</span></td>
                                     <td>
                                         <input class="input-daily form-control double" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
                                     </td>
                                     <td class="text-right">
                                         <input style="background-color: #66CC66;font-weight: bold" class="input-daily form-control double" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
+                                    </td>
+                                    <td class="hide-item-sm move-in">
+                                        <input class="input-daily form-control double" name="qty_in_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in_move)}}">
+                                    </td>
+                                    <td class="hide-item-sm move-out">
+                                        <input class="input-daily form-control double" name="qty_out_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_out_move)}}">
                                     </td>
                                 </tr>
                             @endif
@@ -173,10 +201,13 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="@if($agent->isMobile()) 3 @else 6 @endif" class="text-center" style="background-color: #5cd08d">Tổng Tiền Nhập</td>
-                        <td class="text-right" style="color: red"><span class="total-amount-check-in">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckIn)}}</span></td>
-                        <td colspan="2" class="text-center hide-item-sm" style="background-color: #5cd08d">Tổng Tiền Xuất</td>
-                        <td class="text-right hide-item-sm" colspan="3" style="color: red"><span class="total-amount-check-out">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckOut)}}</span></td>
+                        <td colspan="12" class="text-center calculator-colspan" style="background-color: #5cd08d">
+                            Tổng Tiền Nhập : <span class="total-amount-check-in" style="color: red">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckIn)}}</span>
+                            <span class="total-amount-check-out hide">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckOut)}}</span>
+                        </td>
+{{--                        <td class="text-right" style="color: red"><span class="total-amount-check-in">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckIn)}}</span></td>--}}
+{{--                        <td colspan="2" class="text-center hide-item-sm" style="background-color: #5cd08d">Tổng Tiền Xuất</td>--}}
+{{--                        <td class="text-right hide-item-sm" colspan="3" style="color: red"><span class="total-amount-check-out">{{\App\Helpers\AppHelper::formatMoney($totalAmountCheckOut)}}</span></td>--}}
                     </tr>
                 </tfoot>
             </table>
@@ -348,6 +379,15 @@
 
         }
 
+        function calculatorColspan(){
+            $('td.calculator-colspan').each(function(){
+                let tableTr = $(this).closest('table').find('tbody tr').eq(1);
+                let countShow = tableTr.find('td:visible').length;
+                $(this).attr('colspan',countShow);
+            });
+        }
+
+        let classHideSm = 'hide-item-sm';
         $(document).ready(function(){
             let editForm = @can('input_daily.update', $currentDate) 1; @else 0; @endcan
             $('input.input-daily').on('change',function(){
@@ -383,7 +423,29 @@
                     $(this).remove();
                 });
             }
+            $('.show-price-in').on('click',function(){
+                $(this).closest('table').find('th.price').removeClass(classHideSm);
+                $(this).closest('table').find('td.price').removeClass(classHideSm);
+                $(this).hide();
+                calculatorColspan();
+            });
 
+            $('.show-amount-in').on('click',function(){
+                $(this).closest('table').find('th.amount-in').removeClass(classHideSm);
+                $(this).closest('table').find('td.amount-in').removeClass(classHideSm);
+                $(this).hide();
+                calculatorColspan();
+            });
+
+            $('.show-move-in-out').on('click',function(){
+                $(this).closest('table').find('th.move-in').removeClass(classHideSm);
+                $(this).closest('table').find('td.move-in').removeClass(classHideSm);
+                $(this).closest('table').find('th.move-out').removeClass(classHideSm);
+                $(this).closest('table').find('td.move-out').removeClass(classHideSm);
+                $(this).hide();
+                calculatorColspan();
+            });
+            calculatorColspan();
             changePricePopup();
         });
     </script>

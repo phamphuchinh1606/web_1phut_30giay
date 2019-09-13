@@ -38,5 +38,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::resource('menu', 'App\Policies\MenuPolicy');
         Gate::resource('time_keeping', 'App\Policies\EmployeeTimeKeepingPolicy');
         Gate::resource('input_daily', 'App\Policies\InputDailyPolicy');
+        Gate::define('input_daily.canOfDay', 'App\Policies\InputDailyPolicy@canOfDay');
     }
 }

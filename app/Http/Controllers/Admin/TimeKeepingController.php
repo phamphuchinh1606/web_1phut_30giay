@@ -16,10 +16,12 @@ use Illuminate\Support\Facades\Auth;
 class TimeKeepingController extends Controller
 {
     private $timeKeepingService;
+    private $employeeRepository;
 
-    public function __construct(TimeKeepingService $timeKeepingService)
+    public function __construct(TimeKeepingService $timeKeepingService, EmployeeRepository $employeeRepository)
     {
         $this->timeKeepingService = $timeKeepingService;
+        $this->employeeRepository = $employeeRepository;
     }
 
     public function index(){
@@ -39,5 +41,23 @@ class TimeKeepingController extends Controller
     public function updateTimeKeeping(Request $request){
         $resultQty = $this->timeKeepingService->updateTimeKeeping($request->all());
         return response()->json($resultQty);
+    }
+
+    public function printViewTimeKeeping($id, Request $request){
+        $currentDate = SessionHelper::getSelectedMonth();
+        $branchId = SessionHelper::getSelectedBranchId();
+        $result = $this->timeKeepingService->getTimeKeeping($branchId, $currentDate,$id);
+        $employees = $result['employees'];
+//        $employee = $this->employeeRepository->find($id);
+        if(count($employees) > 0) $employee = $employees[0];
+        return $this->viewAdmin('timekeeping.print_view_time_keeping',[
+            'currentDate' => $currentDate,
+            'branchId' => $branchId,
+            'employees' => $result['employees'],
+            'employee' => $employee,
+            'infoDays' => $result['infoDays'],
+            'arrayEmployeeDaily' => $result['arrayEmployeeDaily'],
+            'totalSalaryAmount' => $result['totalSalaryAmount']
+        ]);
     }
 }

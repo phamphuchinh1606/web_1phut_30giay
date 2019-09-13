@@ -35,6 +35,10 @@ class InputDailyPolicy
         }
     }
 
+    public function canOfDay(Authenticatable $user){
+        return false;
+    }
+
     public function view(Authenticatable $user)
     {
 //        return true;

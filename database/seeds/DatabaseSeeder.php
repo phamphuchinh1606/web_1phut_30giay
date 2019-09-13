@@ -12,21 +12,21 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            MaterialTypeSeeder::class,
-            UnitSeeder::class,
-            BranchSeeder::class,
-            ProductSeeder::class,
+//            MaterialTypeSeeder::class,
+//            UnitSeeder::class,
+//            BranchSeeder::class,
+//            ProductSeeder::class,
             MaterialSeeder::class,
-            EmployeeSeeder::class,
-            UserSeeder::class,
-            SupplierSeeder::class,
-            MenuSeeder::class,
-            RoleTypeSeeder::class,
-            RoleSeeder::class,
-            ScreenSeeder::class,
-            PermissionSeeder::class,
-            RolePermisstionScreenSeeder::class,
-            UserRoleSeeder::class
+//            EmployeeSeeder::class,
+//            UserSeeder::class,
+//            SupplierSeeder::class,
+//            MenuSeeder::class,
+//            RoleTypeSeeder::class,
+//            RoleSeeder::class,
+//            ScreenSeeder::class,
+//            PermissionSeeder::class,
+//            RolePermisstionScreenSeeder::class,
+//            UserRoleSeeder::class
         ]);
     }
 }

@@ -1,5 +1,9 @@
 @extends('admin.layouts.master')
 
+@section('head.css')
+    <link href="{{\App\Helpers\AppHelper::assetPublic('css/admin/plugins/print.min.css')}}" rel="stylesheet">
+@endsection
+
 <style>
     table.dataTable{
         width: auto;
@@ -113,7 +117,10 @@
                         <th colspan="2" class="text-center employee">NV</th>
                         @foreach($employees as $employee)
                             <th class="text-center">
-                                {{$employee->name}}
+                                <span class="">{{$employee->name}}</span>
+                                <a href="javascript:void(0)" url-print="{{ route('admin.time_keeping.print_view',['id' => $employee->id]) }}" class="pl-2 btn-print-view">
+                                    <i class="fa fa-print fa-lg"></i>
+                                </a>
                             </th>
                         @endforeach
                         <th colspan="4" class="text-center"></th>
@@ -236,6 +243,7 @@
 @endsection
 
 @section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/jquery.printPage.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js')}}"></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/time-keeping.js')}}"></script>
     <script>
@@ -243,6 +251,12 @@
             $('input.input-time-keeping').on('change',function(){
                 TimeKeepingAPI.updateTimeKeeping(this);
             });
+
+            let pluginOptions = {
+                attr : "url-print",
+                message: "Đang tạo tài liệu. Vui lòng chờ đợi."
+            };
+            $('.btn-print-view').printPage(pluginOptions);
         });
     </script>
 @endsection
