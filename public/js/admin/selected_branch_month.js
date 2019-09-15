@@ -11,6 +11,7 @@ SelectedBranchMonth.updateSelectedBranch = function(branchId, branchName, callba
             dataType: 'json',
             beforeSend: function() {
                 // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+                ModalConfirm.showLoading();
             },
             success: function(data) {
                 if ((typeof callback) === 'function') {
@@ -26,6 +27,7 @@ SelectedBranchMonth.updateSelectedBranch = function(branchId, branchName, callba
             },
             complete: function(jqxhr, text) {
                 // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+                ModalConfirm.hideLoading();
             }
         };
     jQuery.ajax(params);
@@ -42,6 +44,7 @@ SelectedBranchMonth.updateSelectedMonth = function(date, callback){
             dataType: 'json',
             beforeSend: function() {
                 // $body.trigger('beforeUpdateCartNote.ajaxCart', note);
+                ModalConfirm.showLoading();
             },
             success: function(data) {
                 if ((typeof callback) === 'function') {
@@ -57,6 +60,7 @@ SelectedBranchMonth.updateSelectedMonth = function(date, callback){
             },
             complete: function(jqxhr, text) {
                 // $body.trigger('completeUpdateCartNote.ajaxCart', [this, jqxhr, text]);
+                ModalConfirm.hideLoading();
             }
         };
     jQuery.ajax(params);

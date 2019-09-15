@@ -30,7 +30,7 @@ class PermissionRoleCommon{
 
     public static function rolePermission(){
         $minutes = 30;
-        Cache::flush();
+//        Cache::flush();
         $rolePermission = Cache::remember("role_permission_screens",$minutes, function(){
             return RolePermissionScreenRepository::getRolePermissionCache();
         });
