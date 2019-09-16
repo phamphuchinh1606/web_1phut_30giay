@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Helpers\AppHelper;
+use App\Helpers\ArrayHelper;
 use App\Helpers\DateTimeHelper;
 use App\Models\OrderCancel;
 use App\Models\OrderCheckIn;
@@ -10,6 +11,7 @@ use App\Models\SettingOfDay;
 use App\Models\StockDaily;
 use App\Models\Supplier;
 use App\Repositories\Eloquents\AssignEmployeeSaleCartSmallRepository;
+use App\Repositories\Eloquents\BranchRepository;
 use App\Repositories\Eloquents\EmployeeBranchRepository;
 use App\Repositories\Eloquents\EmployeeDailyRepository;
 use App\Repositories\Eloquents\EmployeeRepository;
@@ -70,6 +72,7 @@ class MaterialService extends BaseService {
         UserRoleRepository $userRoleRepository,
         SettingRepository $settingRepository,
         FinanceRepository $financeRepository,
+        BranchRepository $branchRepository,
         TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
@@ -78,7 +81,7 @@ class MaterialService extends BaseService {
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
             $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository,
             $roleRepository, $screenRepository, $rolePermissionScreenRepository, $userRepository, $userBranchRepository,
-            $userRoleRepository, $settingRepository, $financeRepository);
+            $userRoleRepository, $settingRepository, $financeRepository, $branchRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 
@@ -467,5 +470,70 @@ class MaterialService extends BaseService {
             DB::rollBack();
             dd($exception);
         }
+    }
+
+    public function getPrepareMaterial($branchId, $date){
+        $materialIds = [11,12,13,16];
+        $materials = $this->materialRepository->getPrepareMaterial($materialIds);
+        $branches = $this->branchRepository->selectAll();
+        $checkOutMaterialIds = [1,2,3,4];
+        $checkOutMaterials = $this->materialRepository->getPrepareMaterial($checkOutMaterialIds);
+        $branchIds = ArrayHelper::toArrayListObject($branches,'id');
+        $checkOuts = $this->orderCheckOutRepository->getOrderCheckOutByMaterial($branchIds,$checkOutMaterialIds,$date);
+        $mapTotalQtyMaterial = [
+            11 => [1,3],
+            12 => [1,3],
+            13 => [1,2,3],
+            16 => [4]
+        ];
+        $mapCheckOut = ArrayHelper::parseListObjectToArrayKey($checkOuts,['branch_id','material_id']);
+        foreach ($materials as $material){
+            $itemBranches = [];
+            foreach ($branches as $branch){
+                $keys = $mapTotalQtyMaterial[$material->id];
+                $totalQty = 0;
+                $detailQty = '';
+                if($material->id != 11){
+                    foreach ($keys as $key){
+                        $keyItem = $branch->id . '_' . $key;
+                        if(isset($mapCheckOut[$keyItem])){
+                            $checkOut = $mapCheckOut[$keyItem];
+                            $totalQty+= $checkOut->qty;
+                            $detailQty.= (!empty($detailQty) ? ' , ' : '') . $checkOut->material->material_short_name. ":".$checkOut->qty;
+                        }
+                    }
+                }else{
+                    $settingBranch = $this->settingRepository->findByKey(['branch_id' => $branch->id]);
+                    if(isset($settingBranch)){
+                        $totalQty = AppHelper::formatMoney($settingBranch->chicken_num);
+                    }
+                }
+                $branchItem = $branch->replicate();
+                $branchItem->qty_in = $totalQty;
+                $branchItem->detail_qty_in = $detailQty;
+                $itemBranches[] = $branchItem;
+            }
+            $material->branches = $itemBranches;
+        }
+
+        foreach ($checkOutMaterials as $checkOutMaterial){
+            $itemBranches = [];
+            foreach ($branches as $branch){
+                $key = $branch->id . '_' . $checkOutMaterial->id;
+                $branchItem = $branch->replicate();
+                if(isset($mapCheckOut[$key])){
+                    $checkOut = $mapCheckOut[$key];
+                    $branchItem->check_out_qty = $checkOut->qty;
+                }else{
+                    $branchItem->check_out_qty = 0;
+                }
+                $itemBranches[] = $branchItem;
+            }
+            $checkOutMaterial->branches = $itemBranches;
+        }
+        $result['materials'] = $materials;
+        $result['checkOutMaterials'] = $checkOutMaterials;
+        $result['branches'] = $branches;
+        return $result;
     }
 }

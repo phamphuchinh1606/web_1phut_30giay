@@ -22,4 +22,13 @@ class OrderCheckOutRepository extends BaseRepository
         return $this->model::where('branch_id',$branchId)->where('check_out_date',$date)->sum('amount');
     }
 
+    public function getOrderCheckOutByMaterial($branchIds, $materialIds, $date){
+        if(!is_array($branchIds)) $branchIds = [$branchIds];
+        if(!is_array($materialIds)) $materialIds = [$materialIds];
+        return $this->model::whereIn('branch_id',$branchIds)
+            ->whereIn('material_id',$materialIds)
+            ->where('check_out_date',$date)
+            ->get();
+    }
+
 }

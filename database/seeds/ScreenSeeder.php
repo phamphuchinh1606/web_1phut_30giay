@@ -37,6 +37,13 @@ class ScreenSeeder extends Seeder
                 'screen_type' => 1//Admin
             ],
             [
+                'screen_id' => 'prepare_material',
+                'screen_name' => 'Chuẩn Bị Nguyên Liệu',
+                'screen_url' => '/admin/prepare-material',
+                'parent_screen_id' => null,
+                'screen_type' => 1//Admin
+            ],
+            [
                 'screen_id' => 'sale_report',
                 'screen_name' => 'Doanh Số',
                 'screen_url' => '/admin/sale-report',

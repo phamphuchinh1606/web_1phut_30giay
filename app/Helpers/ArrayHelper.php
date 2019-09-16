@@ -27,4 +27,16 @@ class ArrayHelper{
         }
         return $resultArray;
     }
+
+    public static function toArrayListObject($array, $keyValue){
+        $resultArray = [];
+        if(isset($array)){
+            foreach ($array as $objectItem){
+                $valueItem = null;
+                eval('$valueItem = !isset($objectItem->'.$keyValue.') ? null : $objectItem->'.$keyValue.';');
+                $resultArray[] = $valueItem;
+            }
+        }
+        return $resultArray;
+    }
 }

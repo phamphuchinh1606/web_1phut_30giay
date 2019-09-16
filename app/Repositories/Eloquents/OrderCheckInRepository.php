@@ -115,4 +115,12 @@ class OrderCheckInRepository extends BaseRepository
             ->get();
     }
 
+    public function getOrderCheckInByMaterial($branchIds, $materialIds){
+        if(!is_array($branchIds)) $branchIds = [$branchIds];
+        if(!is_array($materialIds)) $materialIds = [$materialIds];
+        return $this->model::whereIn('branch_id',$branchIds)
+            ->whereIn('material_id',$materialIds)
+            ->get();
+    }
+
 }

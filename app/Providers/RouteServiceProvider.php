@@ -78,7 +78,7 @@ class RouteServiceProvider extends ServiceProvider
 //        $middlewareAdmin = ['web'];
         $listRoute = ['route_home','route_product','route_input_daily','route_time_keeping', 'route_payment_bill',
             'route_sale_report','route_check_in','route_setting','route_employee','route_sale_cart_small','route_finance',
-            'route_role', 'route_user', 'route_material'];
+            'route_role', 'route_user', 'route_material', 'route_prepare_material'];
         foreach ($listRoute as $routeName){
             Route::middleware($middlewareAdmin)
                 ->namespace($this->namespaceAdmin)

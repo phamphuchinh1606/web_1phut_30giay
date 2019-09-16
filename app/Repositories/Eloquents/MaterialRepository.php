@@ -118,4 +118,8 @@ class MaterialRepository extends BaseRepository
             ->get();
     }
 
+    public function getPrepareMaterial($materialIds){
+        return $this->model::where("is_show_input",'1')->whereIn('id',$materialIds)->get();
+    }
+
 }

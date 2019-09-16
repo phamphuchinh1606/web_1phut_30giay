@@ -48,6 +48,17 @@ class MenuSeeder extends Seeder
                 'sort_num' => 3
             ],
             [
+                'menu_id' => 'prepare_material',
+                'menu_name' => 'Chuẩn Bị Nguyên Liệu',
+                'menu_url' => '/admin/prepare-material',
+                'menu_route' => 'admin.prepare_material',
+                'menu_icon_class' => 'icon-globe-alt',
+                'parent_menu_id' => null,
+                'is_show' => 1,
+                'menu_type' => 1,//Admin
+                'sort_num' => 3
+            ],
+            [
                 'menu_id' => 'sale_report',
                 'menu_name' => 'Doanh Số',
                 'menu_url' => '/admin/sale-report',
