@@ -18,7 +18,8 @@ class CreateSettingAppsTable extends Migration
             $table->integer('branch_id');
             $table->decimal('rent_amount',12,2)->nullable();
             $table->decimal('percent_shipping',12,2)->nullable();
-            $table->decimal('chicken_num')->nullable();
+            $table->decimal('ham_chicken_num')->nullable();
+            $table->decimal('pita_chicken_num')->nullable();
             $table->timestamps();
         });
     }

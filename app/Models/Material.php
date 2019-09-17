@@ -4,6 +4,12 @@ namespace App\Models;
 
 class Material extends BaseModel
 {
+    public const MATERIAL_CHICKEN_ID = 11;
+    public const MATERIAL_MEAT_ID = 12;
+    public const MATERIAL_EGG_ID = 13;
+    public const MATERIAL_SAUSAGE_ID = 16;
+
+
     public function Unit(){
         return $this->belongsTo('App\Models\Unit','unit_id','id');
     }

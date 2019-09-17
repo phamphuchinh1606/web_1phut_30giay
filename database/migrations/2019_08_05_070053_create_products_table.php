@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->double('price')->nullable();
             $table->integer('part_num')->nullable()->default(1);
             $table->integer('product_the_same_id')->nullable();
+            $table->integer('material_id')->nullable();
             $table->timestamps();
         });
     }

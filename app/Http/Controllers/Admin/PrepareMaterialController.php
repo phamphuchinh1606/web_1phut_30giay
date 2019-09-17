@@ -33,7 +33,8 @@ class PrepareMaterialController extends Controller
             'currentDate' => $currentDate,
             'materials' => $result['materials'],
             'checkOutMaterials' => $result['checkOutMaterials'],
-            'branches' => $result['branches']
+            'branches' => $result['branches'],
+            'products' => $result['products']
         ]);
     }
 }

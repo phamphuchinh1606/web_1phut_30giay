@@ -24,7 +24,7 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-responsive-sm table-bordered">
+                            <table class="table table-responsive-sm table-bordered table-sm">
                                 <thead>
                                 <tr>
                                     @foreach($branches as $branch)
@@ -41,15 +41,12 @@
                                             </td>
                                         </tr>
                                         <tr class="text-center">
-                                            <?php $totalQtyIn = 0; ?>
-                                            @foreach($material->branches as $branch)
-                                                <?php $totalQtyIn+= $branch->qty_in; ?>
+                                            @foreach($material->prepare_materials as $prepareMaterial)
                                                 <td>
-                                                    {{$branch->qty_in}}<br>
-                                                    {{$branch->detail_qty_in}}
+                                                    {{$prepareMaterial->qty_material}}
                                                 </td>
                                             @endforeach
-                                            <td>{{$totalQtyIn}}</td>
+                                            <td>{{$material->total_qty_material}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -74,16 +71,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($checkOutMaterials as $checkOutMaterial)
-                                        <tr>
-                                            <td>{{$checkOutMaterial->material_short_name}}</td>
-                                            <?php $totalOutQty = 0; ?>
-                                            @foreach($checkOutMaterial->branches as $branch)
-                                                <?php $totalOutQty+= $branch->check_out_qty; ?>
-                                                <td class="text-center">{{$branch->check_out_qty}}</td>
+                                    @foreach($products as $product)
+                                        @if($product->id < 5)
+                                        <tr class="text-center">
+                                            <td>
+                                                {{$product->product_name}}
+                                            </td>
+                                            @foreach($product->prepare_materials as $prepareMaterial)
+                                                <td>
+                                                    {{\App\Helpers\AppHelper::formatMoney($prepareMaterial->qty_check_out)}}
+                                                </td>
                                             @endforeach
-                                            <td class="text-center">{{$totalOutQty}}</td>
+                                            <td class="text-center">{{$product->total_qty_check_out}}</td>
                                         </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>
@@ -96,7 +97,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-responsive-sm table-bordered">
+                                <table class="table table-responsive-sm table-bordered table-sm">
                                     <thead>
                                     <tr>
                                         @foreach($branches as $branch)
@@ -105,47 +106,16 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="bg-secondary theme-color">
-                                            <td colspan="2">
-                                                Pita Gà , Ham Gà
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="row text-center">
-                                                    <div class="form-group col-6 text-center">
-                                                        <label for="ccmonth">Ham</label>
-                                                        <input class="form-control number text-right" name="qty_cancel" value="1">
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <label for="ccyear">Pita</label>
-                                                        <input class="form-control number text-right" name="qty_cancel" value="1">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="row text-center">
-                                                    <div class="form-group col-6">
-                                                        <label for="ccmonth">Ham</label>
-                                                        <input class="form-control double text-right" name="qty_cancel" value="1">
-                                                    </div>
-                                                    <div class="form-group col-6">
-                                                        <label for="ccyear">Pita</label>
-                                                        <input class="form-control double text-right" name="qty_cancel" value="1">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @foreach($checkOutMaterials as $checkOutMaterial)
+                                        @foreach($products as $product)
                                             <tr class="bg-secondary theme-color">
                                                 <td colspan="2">
-                                                    {{$checkOutMaterial->material_name}}
+                                                    {{$product->product_name}}
                                                 </td>
                                             </tr>
                                             <tr>
-                                                @foreach($checkOutMaterial->branches as $branch)
+                                                @foreach($product->prepare_materials as $prepareMaterial)
                                                     <td>
-                                                        <input class="form-control double text-right" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($branch->check_out_qty)}}">
+                                                        <input autocomplete="off" class="form-control double text-right" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($prepareMaterial->qty_prepare)}}">
                                                     </td>
                                                 @endforeach
                                             </tr>

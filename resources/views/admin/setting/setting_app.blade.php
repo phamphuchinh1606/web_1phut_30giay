@@ -38,10 +38,13 @@
                     <input class="form-control double" id="percent_shipping" value="{{$settingApp->percent_shipping}}" name="percent_shipping" type="text" placeholder="Phần trăm phí vận chuyển">
                 </div>
                 <div class="form-group">
-                    <label for="percent_shipping">Miếng Gà Chiên Hàng Ngày</label>
-                    <input class="form-control double" id="chicken_num" value="{{$settingApp->chicken_num}}" name="chicken_num" type="text" placeholder="Miếng gà chiên hàng ngày">
+                    <label for="ham_chicken_num">Hamburger Gà Chiên Hàng Ngày</label>
+                    <input class="form-control double" id="ham_chicken_num" value="{{$settingApp->ham_chicken_num}}" name="ham_chicken_num" type="text" placeholder="Hamburger gà chiên hàng ngày">
                 </div>
-
+                <div class="form-group">
+                    <label for="pita_chicken_num">Pita Gà Chiên Hàng Ngày</label>
+                    <input class="form-control double" id="pita_chicken_num" value="{{$settingApp->pita_chicken_num}}" name="pita_chicken_num" type="text" placeholder="Pita gà chiên hàng ngày">
+                </div>
             </div>
             <div class="card-footer">
                 <button class="btn btn-sm btn-primary" type="submit">

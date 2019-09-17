@@ -4,9 +4,11 @@ namespace App\Services;
 use App\Helpers\AppHelper;
 use App\Helpers\ArrayHelper;
 use App\Helpers\DateTimeHelper;
+use App\Models\Material;
 use App\Models\OrderCancel;
 use App\Models\OrderCheckIn;
 use App\Models\OrderCheckOut;
+use App\Models\Product;
 use App\Models\SettingOfDay;
 use App\Models\StockDaily;
 use App\Models\Supplier;
@@ -478,7 +480,88 @@ class MaterialService extends BaseService {
         $branches = $this->branchRepository->selectAll();
         $checkOutMaterialIds = [1,2,3,4];
         $checkOutMaterials = $this->materialRepository->getPrepareMaterial($checkOutMaterialIds);
+        $settingBranches = $this->settingRepository->selectAll();
         $branchIds = ArrayHelper::toArrayListObject($branches,'id');
+        $mapBranch = ArrayHelper::parseListObjectToArrayKey($branches,'id');
+        $mapSettingBranch = ArrayHelper::parseListObjectToArrayKey($settingBranches,'branch_id');
+
+        $productPrepareMaterials = $this->productRepository->getProductPrepareMaterial($branchIds,$date);
+        $mapProductPrepareMaterial = ArrayHelper::parseListObjectToArrayKey($productPrepareMaterials,['branch_id','product_id']);
+        $products = $this->productRepository->selectAll();
+        foreach ($products as $product){
+            $totalQtyPrepare = 0;
+            $totalQtyCheckOut = 0;
+            $itemPrepareMaterials = [];
+            foreach ($branches as $branch){
+                $key = $branch->id . '_' . $product->id;
+                $itemPrepareMaterial = new \stdClass();
+                $itemPrepareMaterial->branch_id = $branch->id;
+                if(isset($mapProductPrepareMaterial[$key])){
+                    $productPrepareMaterial = $mapProductPrepareMaterial[$key];
+                    if(isset($productPrepareMaterial->qty_prepare)){
+                        $itemPrepareMaterial->qty_prepare = isset($productPrepareMaterial->qty_prepare) ? $productPrepareMaterial->qty_prepare : $productPrepareMaterial->qty_out;
+                    }else if($product->id == Product::PRODUCT_HAMBURGER_CHICKEN_ID){
+                        $settingBranch = $mapSettingBranch[$branch->id];
+                        $itemPrepareMaterial->qty_prepare = isset($settingBranch->ham_chicken_num) ? $settingBranch->ham_chicken_num : 0;
+                    }else if($product->id == Product::PRODUCT_PITA_CHICKEN_ID){
+                        $settingBranch = $mapSettingBranch[$branch->id];
+                        $itemPrepareMaterial->qty_prepare = isset($settingBranch->pita_chicken_num) ? $settingBranch->pita_chicken_num : 0;
+                    }else{
+                        $itemPrepareMaterial->qty_prepare = isset($productPrepareMaterial->qty_prepare) ? $productPrepareMaterial->qty_prepare : $productPrepareMaterial->qty_out;
+                    }
+                    $itemPrepareMaterial->qty_check_out = $productPrepareMaterial->qty_out;
+                }else{
+                    $itemPrepareMaterial->qty_prepare = 0;
+                    $itemPrepareMaterial->qty_check_out = 0;
+                }
+                $totalQtyPrepare+= $itemPrepareMaterial->qty_prepare;
+                $totalQtyCheckOut+= $itemPrepareMaterial->qty_check_out;
+                $itemPrepareMaterials[$branch->id] = $itemPrepareMaterial;
+            }
+            $product->prepare_materials = $itemPrepareMaterials;
+            $product->total_qty_prepare = $totalQtyPrepare;
+            $product->total_qty_check_out = $totalQtyCheckOut;
+        }
+
+        $mapProduct = ArrayHelper::parseListObjectToArrayKey($products,'id');
+        $mapTotalQtyMaterial = [
+            Material::MATERIAL_CHICKEN_ID => [Product::PRODUCT_HAMBURGER_CHICKEN_ID,Product::PRODUCT_PITA_CHICKEN_ID],
+            Material::MATERIAL_MEAT_ID => [Product::PRODUCT_HAMBURGER_ID,Product::PRODUCT_PITA_ID],
+            Material::MATERIAL_EGG_ID => [Product::PRODUCT_HAMBURGER_ID,Product::PRODUCT_SANDWICH_ID,Product::PRODUCT_PITA_ID],
+            Material::MATERIAL_SAUSAGE_ID => [Product::PRODUCT_HOT_DOG_ID]
+        ];
+        $mapTotalQtyChicken= [];
+        foreach ($materials as $material){
+            $itemPrepareMaterials = [];
+            $productIds = $mapTotalQtyMaterial[$material->id];
+            $totalBranchQty = 0;
+            foreach ($branches as $branch){
+                $item = new \StdClass();
+                $item->branch_id = $branch->id;
+                $item->branch_name = $branch->branch_name;
+                $totalQty = 0;
+                foreach ($productIds as $productId){
+                    $product = $mapProduct[$productId];
+                    if(isset($product->prepare_materials[$branch->id])){
+                        $totalQty+= $product->prepare_materials[$branch->id]->qty_prepare;
+                    }
+                }
+                if($material->id == Material::MATERIAL_CHICKEN_ID){
+                    $mapTotalQtyChicken[$branch->id] = $totalQty;
+                }
+
+                if($material->id == Material::MATERIAL_MEAT_ID && isset($mapTotalQtyChicken[$branch->id])){
+                    $totalQty-= $mapTotalQtyChicken[$branch->id];
+                }
+
+                $item->qty_material = $totalQty;
+                $itemPrepareMaterials[$branch->id] = $item;
+                $totalBranchQty+= $totalQty;
+            }
+            $material->prepare_materials = $itemPrepareMaterials;
+            $material->total_qty_material = $totalBranchQty;
+        }
+
         $checkOuts = $this->orderCheckOutRepository->getOrderCheckOutByMaterial($branchIds,$checkOutMaterialIds,$date);
         $mapTotalQtyMaterial = [
             11 => [1,3],
@@ -487,35 +570,38 @@ class MaterialService extends BaseService {
             16 => [4]
         ];
         $mapCheckOut = ArrayHelper::parseListObjectToArrayKey($checkOuts,['branch_id','material_id']);
-        foreach ($materials as $material){
-            $itemBranches = [];
-            foreach ($branches as $branch){
-                $keys = $mapTotalQtyMaterial[$material->id];
-                $totalQty = 0;
-                $detailQty = '';
-                if($material->id != 11){
-                    foreach ($keys as $key){
-                        $keyItem = $branch->id . '_' . $key;
-                        if(isset($mapCheckOut[$keyItem])){
-                            $checkOut = $mapCheckOut[$keyItem];
-                            $totalQty+= $checkOut->qty;
-                            $detailQty.= (!empty($detailQty) ? ' , ' : '') . $checkOut->material->material_short_name. ":".$checkOut->qty;
-                        }
-                    }
-                }else{
-                    $settingBranch = $this->settingRepository->findByKey(['branch_id' => $branch->id]);
-                    if(isset($settingBranch)){
-                        $totalQty = AppHelper::formatMoney($settingBranch->chicken_num);
-                    }
-                }
-                $branchItem = $branch->replicate();
-                $branchItem->qty_in = $totalQty;
-                $branchItem->detail_qty_in = $detailQty;
-                $itemBranches[] = $branchItem;
-            }
-            $material->branches = $itemBranches;
-        }
 
+
+//
+//        foreach ($materials as $material){
+//            $itemBranches = [];
+//            foreach ($branches as $branch){
+//                $keys = $mapTotalQtyMaterial[$material->id];
+//                $totalQty = 0;
+//                $detailQty = '';
+//                if($material->id != 11){
+//                    foreach ($keys as $key){
+//                        $keyItem = $branch->id . '_' . $key;
+//                        if(isset($mapCheckOut[$keyItem])){
+//                            $checkOut = $mapCheckOut[$keyItem];
+//                            $totalQty+= $checkOut->qty;
+//                            $detailQty.= (!empty($detailQty) ? ' , ' : '') . $checkOut->material->material_short_name. ":".$checkOut->qty;
+//                        }
+//                    }
+//                }else{
+//                    $settingBranch = $mapBranch[$branch->id];
+//                    if(isset($settingBranch)){
+//                        $totalQty = AppHelper::formatMoney($settingBranch->chicken_num);
+//                    }
+//                }
+//                $branchItem = $branch->replicate();
+//                $branchItem->qty_in = $totalQty;
+//                $branchItem->detail_qty_in = $detailQty;
+//                $itemBranches[] = $branchItem;
+//            }
+//            $material->branches = $itemBranches;
+//        }
+//
         foreach ($checkOutMaterials as $checkOutMaterial){
             $itemBranches = [];
             foreach ($branches as $branch){
@@ -534,6 +620,7 @@ class MaterialService extends BaseService {
         $result['materials'] = $materials;
         $result['checkOutMaterials'] = $checkOutMaterials;
         $result['branches'] = $branches;
+        $result['products'] = $products;
         return $result;
     }
 }
