@@ -170,6 +170,10 @@ Popup confirm
     display: unset;
 }
 
+.color-red{
+    color: #ff0000;
+}
+
 div.card-body{
     padding: .25rem !important;
 }

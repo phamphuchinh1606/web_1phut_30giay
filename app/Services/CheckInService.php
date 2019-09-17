@@ -32,10 +32,22 @@ class CheckInService extends BaseService {
                     }
                     if(Supplier::SUPPLIER_1P_30S_ID == $supplier->id){
                         if(isset($arrayCheckInAddDaily[$keyDate])){
+//                            if($keyDate == '2019-09-12'){
+//                                dump($totalAmount,$arrayCheckInAddDaily[$keyDate]->total_amount);
+//                            }
                             $totalAmount+= $arrayCheckInAddDaily[$keyDate]->total_amount;
                             $totalQty+= $arrayCheckInAddDaily[$keyDate]->total_qty;
+//                            if($keyDate == '2019-09-12'){
+//                                dump($totalAmount);
+//                            }
                         }
                     }
+//                    if($keyDate == '2019-09-12'){
+//                        if(Supplier::SUPPLIER_1P_30S_ID == $supplier->id){
+//                            dump($totalAmount);
+//                        }
+//
+//                    }
                 }
                 eval('$week->total_amount_'.$supplier->id.'=$totalAmount;');
                 eval('$week->total_qty_'.$supplier->id.'=$totalQty;');

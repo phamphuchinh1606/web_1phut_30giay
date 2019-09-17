@@ -24,11 +24,11 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-responsive-sm table-bordered table-sm">
+                            <table class="table table-responsive-sm table-bordered table-sm" style="display: table">
                                 <thead>
-                                <tr>
+                                <tr class="text-center">
                                     @foreach($branches as $branch)
-                                        <th>{{$branch->branch_name}}</th>
+                                        <th>{{$branch->branch_short_name}}</th>
                                     @endforeach
                                     <th>Tổng</th>
                                 </tr>
@@ -43,10 +43,29 @@
                                         <tr class="text-center">
                                             @foreach($material->prepare_materials as $prepareMaterial)
                                                 <td>
-                                                    {{$prepareMaterial->qty_material}}
+                                                    @if($material->id == \App\Models\Material::MATERIAL_EGG_ID)
+                                                        <span class="color-red">{{$prepareMaterial->prepare_qty_total}}</span> Miếng
+                                                        <br>
+                                                        Ham : {{$prepareMaterial->prepare_qty_ham}} m<br>
+                                                        Pita : {{$prepareMaterial->prepare_qty_pita}} m<br>
+                                                        Sandwich : {{$prepareMaterial->prepare_qty_sandwich}} m<br>
+                                                    @else
+                                                        <span class="color-red">{{$prepareMaterial->qty_material}}</span>
+                                                    @endif
                                                 </td>
                                             @endforeach
-                                            <td>{{$material->total_qty_material}}</td>
+                                            <td>
+                                                @if($material->id == \App\Models\Material::MATERIAL_EGG_ID)
+                                                    <span class="color-red">{{$material->prepare_qty_total}}</span> Miếng
+                                                    <br>
+                                                    Ham : {{$material->prepare_qty_ham}} m<br>
+                                                    Pita : {{$material->prepare_qty_pita}} m<br>
+                                                    Sandwich : {{$material->prepare_qty_sandwich}} m<br>
+                                                @else
+                                                    <span class="color-red">{{$material->total_qty_material}}</span>
+                                                @endif
+
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -60,12 +79,12 @@
                             Số Lượng Đã Đặt
                         </div>
                         <div class="card-body">
-                            <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                            <table class="table table-responsive-sm table-bordered table-striped table-sm" style="display: table">
                                 <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Nguyên Liệu</th>
                                     @foreach($branches as $branch)
-                                        <th>{{$branch->branch_name}}</th>
+                                        <th>{{$branch->branch_short_name}}</th>
                                     @endforeach
                                     <th>Tổng</th>
                                 </tr>
@@ -101,14 +120,15 @@
                                     <thead>
                                     <tr>
                                         @foreach($branches as $branch)
-                                            <th class="text-center">{{$branch->branch_name}}</th>
+                                            <th class="text-center">{{$branch->branch_short_name}}</th>
                                         @endforeach
+                                        <th>Tổng</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($products as $product)
                                             <tr class="bg-secondary theme-color">
-                                                <td colspan="2">
+                                                <td colspan="3">
                                                     {{$product->product_name}}
                                                 </td>
                                             </tr>
@@ -118,6 +138,7 @@
                                                         <input autocomplete="off" class="form-control double text-right" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($prepareMaterial->qty_prepare)}}">
                                                     </td>
                                                 @endforeach
+                                                <td class="text-center" style="vertical-align: middle">{{$product->total_qty_prepare}}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

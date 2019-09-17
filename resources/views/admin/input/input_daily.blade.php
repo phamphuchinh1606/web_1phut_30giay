@@ -177,21 +177,21 @@
                                     </td>
                                     <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($material->qty_first)}}</td>
                                     <td>
-                                        <input style="background-color: #B9D3EE;font-weight: bold" class="input-daily form-control double" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
+                                        <input style="background-color: #B9D3EE;font-weight: bold" autocomplete="off" class="input-daily form-control double" name="qty_in" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in)}}">
                                     </td>
                                     <td class="text-right hide-item-sm amount-in"><span class="amount_in">{{\App\Helpers\AppHelper::formatMoney($material->amount_in)}}</span></td>
                                     <td class="text-right"><span class="qty_out">{{\App\Helpers\AppHelper::formatMoney($material->qty_out)}}</span></td>
                                     <td>
-                                        <input class="input-daily form-control double" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
+                                        <input autocomplete="off" class="input-daily form-control double" name="qty_cancel" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_cancel)}}">
                                     </td>
                                     <td class="text-right">
-                                        <input style="background-color: #66CC66;font-weight: bold" class="input-daily form-control double" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
+                                        <input autocomplete="off" style="background-color: #66CC66;font-weight: bold" class="input-daily form-control double" name="qty_last" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_last)}}">
                                     </td>
                                     <td class="hide-item-sm move-in">
-                                        <input class="input-daily form-control double" name="qty_in_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in_move)}}">
+                                        <input autocomplete="off" class="input-daily form-control double" name="qty_in_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_in_move)}}">
                                     </td>
                                     <td class="hide-item-sm move-out">
-                                        <input class="input-daily form-control double" name="qty_out_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_out_move)}}">
+                                        <input autocomplete="off" class="input-daily form-control double" name="qty_out_move" value="{{\App\Helpers\AppHelper::formatMoney($material->qty_out_move)}}">
                                     </td>
                                 </tr>
                             @endif
@@ -235,10 +235,10 @@
                                     <td class="text-center hide-item-sm">{{$employee->id}}</td>
                                     <td>{{$employee->name}}</td>
                                     <td>
-                                        <input class="input-employee form-control double" name="first_hours" value="{{$employee->first_hours}}">
+                                        <input autocomplete="off" class="input-employee form-control double" name="first_hours" value="{{$employee->first_hours}}">
                                     </td>
                                     <td>
-                                        <input class="input-employee form-control double" name="last_hours" value="{{$employee->last_hours}}">
+                                        <input autocomplete="off" class="input-employee form-control double" name="last_hours" value="{{$employee->last_hours}}">
                                     </td>
                                     <td class="text-right">
                                         <span class="total-amount-employee">
@@ -279,7 +279,7 @@
                                     <td class="text-right">{{\App\Helpers\AppHelper::formatMoney($product->price)}}</td>
                                     <td class="text-right">
                                         @if($product->id > 4)
-                                            <input class="input-sale form-control double" name="product_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty)}}">
+                                            <input autocomplete="off" class="input-sale form-control double" name="product_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty)}}">
                                             <input type="hidden" name="product_the_same_id" value="{{$product->product_the_same_id}}">
                                             <input type="hidden" name="product_id" value="{{$product->id}}">
                                         @else
@@ -297,7 +297,7 @@
                             <tr>
                                 <td colspan="3" class="text-center">Tiền Thực Thu</td>
                                 <td class="text-right">
-                                    <input class="input-bill form-control double" style="width: 100px;padding: 2px 2px;" value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
+                                    <input autocomplete="off" class="input-bill form-control double" style="width: 100px;padding: 2px 2px;" value="{{\App\Helpers\AppHelper::formatMoney($orderBill->real_amount)}}">
                                 </td>
                             </tr>
                             <tr>

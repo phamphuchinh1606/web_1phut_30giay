@@ -32,7 +32,6 @@ class PrepareMaterialController extends Controller
             'branchId' => $branchId,
             'currentDate' => $currentDate,
             'materials' => $result['materials'],
-            'checkOutMaterials' => $result['checkOutMaterials'],
             'branches' => $result['branches'],
             'products' => $result['products']
         ]);
