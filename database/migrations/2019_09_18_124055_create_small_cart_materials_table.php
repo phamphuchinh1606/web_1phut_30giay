@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSmallCarProductsTable extends Migration
+class CreateSmallCartMaterialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateSmallCarProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('small_car_products', function (Blueprint $table) {
+        Schema::create('small_cart_materials', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('small_car_location_id');
-            $table->integer('product_id')->nullable();
-            $table->decimal('qty_no_vegetables');
-            $table->decimal('qty_have_vegetables');
+            $table->integer('material_id');
+            $table->string('material_name');
+            $table->decimal('qty');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateSmallCarProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('small_car_products');
+        Schema::dropIfExists('small_cart_materials');
     }
 }

@@ -38,6 +38,10 @@
                         Sandwich : {{$material->prepare_qty_sandwich}} m<br>
                     @else
                         <span class="color-red">{{$material->total_qty_material}}</span>
+                        <br>{{$material->total_part_qty_material}} Bịch
+                        @if($material->total_part_qty_material_remainder > 0)
+                            <br> {{$material->total_part_qty_material_remainder}} @if($material->id == \App\Models\Material::MATERIAL_SAUSAGE_ID) Cây @else Miếng @endif
+                        @endif
                     @endif
 
                 </td>

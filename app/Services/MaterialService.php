@@ -486,6 +486,7 @@ class MaterialService extends BaseService {
         $mapSettingBranch = ArrayHelper::parseListObjectToArrayKey($settingBranches,'branch_id');
 
         $productPrepareMaterials = $this->productRepository->getProductPrepareMaterial($branchIds,$date);
+
         $mapProductPrepareMaterial = ArrayHelper::parseListObjectToArrayKey($productPrepareMaterials,['branch_id','product_id']);
         $products = $this->productRepository->selectAll();
         foreach ($products as $product){
@@ -595,6 +596,22 @@ class MaterialService extends BaseService {
             }
             $material->prepare_materials = $itemPrepareMaterials;
             $material->total_qty_material = $totalBranchQty;
+            $material->total_part_qty_material_ = 0;
+            $material->total_part_qty_material_remainder = 0;
+            switch ($material->id){
+                case Material::MATERIAL_CHICKEN_ID:
+                    $material->total_part_qty_material = (int)$totalBranchQty/5;
+                    $material->total_part_qty_material_remainder = (int)$totalBranchQty%5;
+                    break;
+                case Material::MATERIAL_MEAT_ID:
+                    $material->total_part_qty_material = (int)($totalBranchQty/15);
+                    $material->total_part_qty_material_remainder = (int)$totalBranchQty%15;
+                    break;
+                case Material::MATERIAL_SAUSAGE_ID:
+                    $material->total_part_qty_material = (int)($totalBranchQty/13);
+                    $material->total_part_qty_material_remainder = (int)$totalBranchQty%13;
+                    break;
+            }
         }
 
         $result['materials'] = $materials;

@@ -37,7 +37,7 @@ class ProductRepository extends BaseRepository
         $tablePrepareMaterialName = PrepareMaterial::getTableName();
         $tableCheckOutName = OrderCheckOut::getTableName();
         $tableBranchName = Branch::getTableName();
-
+        if(!is_string($date)) $date = $date->format('Y-m-d');
         $subQuery = Product::join("$tableBranchName",function($join) use ($tableBranchName){
             $join->on("$tableBranchName.id","$tableBranchName.id");
         })
