@@ -170,6 +170,27 @@ class ScreenSeeder extends Seeder
                 'parent_screen_id' => 'setting',
                 'screen_type' => 1//Admin
             ],
+            [
+                'screen_id' => 'small_car',
+                'screen_name' => 'Danh Sách Xe Nhỏ',
+                'screen_url' => '/admin/setting/small-car',
+                'parent_screen_id' => 'setting',
+                'screen_type' => 1//Admin
+            ],
+            [
+                'screen_id' => 'small_car.insert',
+                'screen_name' => 'Thêm Mới Xe Nhỏ',
+                'screen_url' => '/admin/setting/small-car/create',
+                'parent_screen_id' => 'setting',
+                'screen_type' => 1//Admin
+            ],
+            [
+                'screen_id' => 'small_car.update',
+                'screen_name' => 'Cập Nhật Xe Nhỏ',
+                'screen_url' => '/admin/setting/small-car/create',
+                'parent_screen_id' => 'setting',
+                'screen_type' => 1//Admin
+            ],
 //           User
             [
                 'screen_id' => 'input_employee',

@@ -148,6 +148,18 @@ class MenuSeeder extends Seeder
                 'child_sort_num' => 1
             ],
             [
+                'menu_id' => 'small_car',
+                'menu_name' => 'Danh Sách Xe Nhỏ',
+                'menu_url' => '/admin/setting/small-car',
+                'menu_route' => 'admin.setting.small_car',
+                'menu_icon_class' => 'icon-drop',
+                'parent_menu_id' => 'setting',
+                'is_show' => 1,
+                'menu_type' => 1,//Admin
+                'sort_num' => 10,
+                'child_sort_num' => 2
+            ],
+            [
                 'menu_id' => 'user',
                 'menu_name' => 'NV Quản Lý',
                 'menu_url' => 'admin/setting/user',

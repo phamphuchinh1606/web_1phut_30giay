@@ -8,6 +8,12 @@
     <meta name="author" content="Łukasz Holeczek">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
     <link id="favicon" rel="shortcut icon" href="{{\App\Helpers\AppHelper::assetPublic('favicon.ico')}}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{\App\Helpers\AppHelper::assetPublic('favicon.ico')}}">
+    <link rel="apple-touch-icon" href="{{\App\Helpers\AppHelper::assetPublic('favicon.ico')}}" />
+    <link rel="apple-touch-icon" sizes="152x152" href="{{\App\Helpers\AppHelper::assetPublic('favicon.ico')}}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{\App\Helpers\AppHelper::assetPublic('favicon.ico')}}">
+    <link rel="apple-touch-icon-precomposed" href="{{\App\Helpers\AppHelper::assetPublic('favicon.ico')}}" />
+
     <!-- CSRF Token -->
     <meta name="_token" content="{{ csrf_token() }}">
     <title>@yield('head.title','Quan Ly - 1 Phut 30 Giay')</title>
