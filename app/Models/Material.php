@@ -22,3 +22,4 @@ class Material extends BaseModel
         return $this->belongsTo('App\Models\Supplier','supplier_id','id');
     }
 }
+

@@ -11,6 +11,7 @@
 |
 */
 Route::get('/prepare-material','PrepareMaterialController@index')->name('prepare_material');
+Route::post('/prepare-material/update','PrepareMaterialController@updatePrepareMaterial')->name('prepare_material.update');
 
 
 

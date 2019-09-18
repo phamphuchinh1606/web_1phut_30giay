@@ -54,6 +54,7 @@
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/form.input.number.js') }}" type='text/javascript'></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/plugins/tooltips.js') }}" type='text/javascript'></script>
     <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/modal-confirm.js') }}" type='text/javascript'></script>
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/JQuery-Ajax.js') }}" type='text/javascript'></script>
 </head>
 
 <body class="app header-fixed sidebar-fixed aside-menu-fixed pace-done sidebar-lg-show">

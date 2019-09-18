@@ -26,6 +26,7 @@ use App\Repositories\Eloquents\OrderCancelRepository;
 use App\Repositories\Eloquents\OrderCheckInRepository;
 use App\Repositories\Eloquents\OrderCheckOutRepository;
 use App\Repositories\Eloquents\PaymentBillRepository;
+use App\Repositories\Eloquents\PrepareMaterialRepository;
 use App\Repositories\Eloquents\ProductRepository;
 use App\Repositories\Eloquents\RolePermissionScreenRepository;
 use App\Repositories\Eloquents\RoleRepository;
@@ -75,6 +76,7 @@ class MaterialService extends BaseService {
         SettingRepository $settingRepository,
         FinanceRepository $financeRepository,
         BranchRepository $branchRepository,
+        PrepareMaterialRepository $prepareMaterialRepository,
         TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
@@ -83,7 +85,7 @@ class MaterialService extends BaseService {
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
             $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository,
             $roleRepository, $screenRepository, $rolePermissionScreenRepository, $userRepository, $userBranchRepository,
-            $userRoleRepository, $settingRepository, $financeRepository, $branchRepository);
+            $userRoleRepository, $settingRepository, $financeRepository, $branchRepository,$prepareMaterialRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 
@@ -599,5 +601,32 @@ class MaterialService extends BaseService {
         $result['branches'] = $branches;
         $result['products'] = $products;
         return $result;
+    }
+
+    public function updatePrepareMaterial($values){
+        $branchId = $values['branch_id'];
+        $date = $values['last_date'];
+        $productId = $values['product_id'];
+        $inputName = $values['name'];
+        $inputValue = $values['value'];
+        if(!is_string($date)){
+            $date = DateTimeHelper::dateFormat($date,'Y-m-d');
+        }
+        try {
+            DB::beginTransaction();
+            $wheres = [
+                'branch_id' => $branchId,
+                'date_daily' => $date,
+                'product_id' => $productId
+            ];
+            $valueUpdates = [
+                'qty' => $inputValue
+            ];
+            $this->prepareMaterialRepository->updateOrCreate($valueUpdates,$wheres);
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollBack();
+            dd($exception);
+        }
     }
 }

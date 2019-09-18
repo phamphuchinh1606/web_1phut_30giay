@@ -31,9 +31,27 @@ class PrepareMaterialController extends Controller
         return $this->viewAdmin('prepareMaterial.index',[
             'branchId' => $branchId,
             'currentDate' => $currentDate,
+            'lastDate' => $lastDate,
             'materials' => $result['materials'],
             'branches' => $result['branches'],
             'products' => $result['products']
         ]);
+    }
+
+    public function updatePrepareMaterial(Request $request){
+        $lastDate = DateTimeHelper::dateFromString($request->last_date);
+        $branchId = SessionHelper::getSelectedBranchId();
+        $values = $request->all();
+        $this->materialService->updatePrepareMaterial($values);
+        $result = $this->materialService->getPrepareMaterial($branchId, $lastDate);
+        return response()
+            ->view('admin.prepareMaterial.partials.__prepare_material_content',[
+                'branchId' => $branchId,
+                'lastDate' => $lastDate,
+                'materials' => $result['materials'],
+                'branches' => $result['branches'],
+                'products' => $result['products']
+            ],200)
+            ->header('Content-Type','application/html');
     }
 }

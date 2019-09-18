@@ -53,8 +53,7 @@ class EmployeeRepository extends BaseRepository
         $query = $this->model->where('delete_flg',Constant::DELETE_FLG_OFF)
             ->join($tableEmployeeBranchName,"$tableEmployeeBranchName.employee_id","$tableEmployeeName.id")
             ->join($tableAssignEmployeeSaleCartSmallName,"$tableAssignEmployeeSaleCartSmallName.employee_id","$tableEmployeeName.id")
-            ->where("$tableEmployeeBranchName.branch_id",$branchId)
-            ->where('employee_sale_card_small',Constant::EMPLOYEE_SALE_CARD_SMALL);
+            ->where("$tableEmployeeBranchName.branch_id",$branchId);
         if(isset($employeeId)){
             $query->where("$tableEmployeeName.id", $employeeId);
         }

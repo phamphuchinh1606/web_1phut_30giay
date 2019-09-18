@@ -19,6 +19,7 @@ use App\Repositories\Eloquents\OrderCancelRepository;
 use App\Repositories\Eloquents\OrderCheckInRepository;
 use App\Repositories\Eloquents\OrderCheckOutRepository;
 use App\Repositories\Eloquents\PaymentBillRepository;
+use App\Repositories\Eloquents\PrepareMaterialRepository;
 use App\Repositories\Eloquents\ProductRepository;
 use App\Repositories\Eloquents\RolePermissionScreenRepository;
 use App\Repositories\Eloquents\RoleRepository;
@@ -65,6 +66,7 @@ class BaseService {
     protected $settingRepository;
     protected $financeRepository;
     protected $branchRepository;
+    protected $prepareMaterialRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
@@ -75,7 +77,8 @@ class BaseService {
                 SaleCartSmallRepository $saleCartSmallRepository, EmployeeBranchRepository $employeeBranchRepository,
                 AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository, RoleRepository $roleRepository ,ScreenRepository $screenRepository,
                 RolePermissionScreenRepository $rolePermissionScreenRepository, UserRepository $userRepository, UserBranchRepository $userBranchRepository,
-                UserRoleRepository $userRoleRepository, SettingRepository $settingRepository, FinanceRepository $financeRepository, BranchRepository $branchRepository)
+                UserRoleRepository $userRoleRepository, SettingRepository $settingRepository, FinanceRepository $financeRepository, BranchRepository $branchRepository,
+                PrepareMaterialRepository $prepareMaterialRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -105,6 +108,7 @@ class BaseService {
         $this->settingRepository = $settingRepository;
         $this->financeRepository = $financeRepository;
         $this->branchRepository = $branchRepository;
+        $this->prepareMaterialRepository = $prepareMaterialRepository;
     }
 
     public function checkDateIsOfDay($branchId, $date){
