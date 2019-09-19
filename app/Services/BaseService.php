@@ -28,6 +28,9 @@ use App\Repositories\Eloquents\SaleRepository;
 use App\Repositories\Eloquents\ScreenRepository;
 use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Repositories\Eloquents\SettingRepository;
+use App\Repositories\Eloquents\SmallCarLocationRepository;
+use App\Repositories\Eloquents\SmallCarMaterialRepository;
+use App\Repositories\Eloquents\SmallCarProductRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
 use App\Repositories\Eloquents\UnitRepository;
@@ -67,6 +70,9 @@ class BaseService {
     protected $financeRepository;
     protected $branchRepository;
     protected $prepareMaterialRepository;
+    protected $smallCarLocationRepository;
+    protected $smallCarProductRepository;
+    protected $smallCarMaterialRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
@@ -78,7 +84,8 @@ class BaseService {
                 AssignEmployeeSaleCartSmallRepository $assignEmployeeSaleCartSmallRepository, RoleRepository $roleRepository ,ScreenRepository $screenRepository,
                 RolePermissionScreenRepository $rolePermissionScreenRepository, UserRepository $userRepository, UserBranchRepository $userBranchRepository,
                 UserRoleRepository $userRoleRepository, SettingRepository $settingRepository, FinanceRepository $financeRepository, BranchRepository $branchRepository,
-                PrepareMaterialRepository $prepareMaterialRepository)
+                PrepareMaterialRepository $prepareMaterialRepository, SmallCarLocationRepository $smallCarLocationRepository, SmallCarProductRepository $smallCarProductRepository,
+                SmallCarMaterialRepository $smallCarMaterialRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -109,6 +116,9 @@ class BaseService {
         $this->financeRepository = $financeRepository;
         $this->branchRepository = $branchRepository;
         $this->prepareMaterialRepository = $prepareMaterialRepository;
+        $this->smallCarLocationRepository = $smallCarLocationRepository;
+        $this->smallCarProductRepository = $smallCarProductRepository;
+        $this->smallCarMaterialRepository = $smallCarMaterialRepository;
     }
 
     public function checkDateIsOfDay($branchId, $date){

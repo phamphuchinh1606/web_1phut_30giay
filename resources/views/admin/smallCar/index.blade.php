@@ -12,8 +12,9 @@
                 <thead>
                 <tr role="row">
                     <th class="text-center" width="50">STT</th>
-                    <th class="text-center" width="300">Tên Xe Nhỏ</th>
-                    <th class="text-center" width="100">Địa Chỉ</th>
+                    <th class="text-center">Tên Xe Nhỏ</th>
+                    <th class="text-center hide-item-sm"">Địa Chỉ</th>
+                    <th class="text-center">Hiển Thị</th>
                     <th class="text-center"></th>
                 </tr>
                 </thead>
@@ -21,15 +22,22 @@
                 @foreach($smallCarLocations as $index => $smallCarLocation)
                     <tr>
                         <td>{{$index+1}}</td>
-                        <td>{{$smallCarLocations->car_name}}</td>
-                        <td>{{$smallCarLocations->address}}</td>
+                        <td>{{$smallCarLocation->car_name}}</td>
+                        <td class="hide-item-sm">{{$smallCarLocation->address}}</td>
                         <td>
-                            <a class="btn btn-info" href="{{route('admin.setting.role.update',['id' => $role->id])}}">
+                            @if($smallCarLocation->is_show == 1)
+                                Hiển thị
+                            @else
+                                Không hiển thị
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-info" href="{{route('admin.setting.small_car.update',['id' => $smallCarLocation->id])}}">
                                 <i class="fa fa-edit"></i>
                             </a>
                             <a data-toggle="modal" class="btn btn-danger anchorClick"
-                               data-url="{{route('admin.small_car.update',['id' => $smallCarLocation->id]) }}"
-                               data-name="{{$smallCarLocations->car_name}}" href="#deleteModal">
+                               data-url="{{route('admin.setting.small_car.delete',['id' => $smallCarLocation->id]) }}"
+                               data-name="{{$smallCarLocation->car_name}}" href="#deleteModal">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                         </td>

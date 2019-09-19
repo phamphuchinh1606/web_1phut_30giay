@@ -15,9 +15,10 @@ class CreateSmallCartMaterialsTable extends Migration
     {
         Schema::create('small_cart_materials', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('small_car_location_id');
             $table->integer('material_id');
-            $table->string('material_name');
-            $table->decimal('qty');
+            $table->string('material_name')->nullable();
+            $table->decimal('qty')->nullable();
             $table->timestamps();
         });
     }

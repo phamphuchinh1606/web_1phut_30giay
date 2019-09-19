@@ -8,6 +8,13 @@ class AppHelper{
         return asset("$publicPath/$file");
     }
 
+    public static function valueSwitch($value){
+        if (isset($value) && $value == Constant::SWITCH_FLG_ON) {
+            return 1;
+        }
+        return 0;
+    }
+
     public static function formatMoney($value, $nullShowZero = false){
         if(!isset($value) && !$nullShowZero){
             return '';

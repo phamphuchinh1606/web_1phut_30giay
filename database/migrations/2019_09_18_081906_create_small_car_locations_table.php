@@ -18,6 +18,7 @@ class CreateSmallCarLocationsTable extends Migration
             $table->integer('branch_id');
             $table->string('car_name')->nullable();
             $table->string('address')->nullable();
+            $table->integer('is_show')->default(1);
             $table->timestamps();
         });
     }

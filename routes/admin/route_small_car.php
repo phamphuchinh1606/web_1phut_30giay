@@ -16,5 +16,6 @@ Route::get('/setting/small-car/create','SmallCarController@showCreate')->name('s
 Route::post('/setting/small-car/create','SmallCarController@create')->name('setting.small_car.create');
 Route::get('/setting/small-car/update/{id}','SmallCarController@showUpdate')->name('setting.small_car.update');
 Route::post('/setting/small-car/update/{id}','SmallCarController@update')->name('setting.small_car.update');
+Route::post('/setting/small-car/delete/{id}','SmallCarController@update')->name('setting.small_car.delete');
 
 
