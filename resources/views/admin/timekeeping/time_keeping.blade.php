@@ -118,9 +118,11 @@
                         @foreach($employees as $employee)
                             <th class="text-center">
                                 <span class="">{{$employee->name}}</span>
+                                @if($agent->isDesktop())
                                 <a href="javascript:void(0)" url-print="{{ route('admin.time_keeping.print_view',['id' => $employee->id]) }}" class="pl-2 btn-print-view">
                                     <i class="fa fa-print fa-lg"></i>
                                 </a>
+                                @endif
                             </th>
                         @endforeach
                         <th colspan="4" class="text-center"></th>

@@ -12,8 +12,13 @@ class SmallCarLocation extends BaseModel
         return $this->hasMany(SmallCartMaterial::class,'small_car_location_id');
     }
 
+    public function small_car_location_of_day(){
+        return $this->hasMany(SmallCarLocationOfDay::class,'small_car_location_id');
+    }
+
     public function deleteRelation(){
         $this->small_car_products()->delete();
         $this->small_car_materials()->delete();
+        $this->small_car_location_of_day()->delete();
     }
 }

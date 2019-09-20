@@ -20,18 +20,26 @@ class SmallCarMaterialRepository extends BaseRepository
         $this->model = $model;
     }
 
-    public function getSmallCarMaterial($branchId){
+    public function getSmallCarMaterial($branchId,$smallCarLocationId = null){
         $tableMaterialName = Material::getTableName();
         $tableSmallCarMaterialName = SmallCartMaterial::getTableName();
         $tableSmallCarLocation = SmallCarLocation::getTableName();
         $materialIds = [Material::MATERIAL_PEPSI_ID, Material::MATERIAL_COCOA_ID, Material::MATERIAL_MILK_TEA];
-        return Material::leftjoin("$tableSmallCarMaterialName", "$tableSmallCarMaterialName.material_id","$tableMaterialName.id")
-            ->leftjoin("$tableSmallCarLocation",function($join) use($branchId,$tableSmallCarLocation,$tableSmallCarMaterialName){
-                $join->on("$tableSmallCarLocation.id","$tableSmallCarMaterialName.small_car_location_id")
-                    ->where("$tableSmallCarLocation.branch_id",$branchId);
+
+        $subTable = $this->model::join("$tableSmallCarLocation","$tableSmallCarLocation.id","$tableSmallCarMaterialName.small_car_location_id")
+            ->where("$tableSmallCarLocation.branch_id",$branchId)
+            ->where("$tableSmallCarLocation.id",$smallCarLocationId)
+            ->select(
+                "$tableSmallCarMaterialName.material_id",
+                "$tableSmallCarMaterialName.qty");
+        $subTableName = "subTable";
+
+
+        return Material::leftjoinSub($subTable,"$subTableName",function($join) use ($subTableName,$tableMaterialName){
+                $join->on("$subTableName.material_id","$tableMaterialName.id");
             })
             ->whereIn("$tableMaterialName.id",$materialIds)
-            ->select("$tableMaterialName.*","$tableSmallCarMaterialName.qty")
+            ->select("$tableMaterialName.*","$subTableName.qty")
             ->get();
     }
 

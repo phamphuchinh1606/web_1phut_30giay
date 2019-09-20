@@ -20,20 +20,27 @@ class SmallCarProductRepository extends BaseRepository
         $this->model = $model;
     }
 
-    public function getSmallCarProduct($branchId, $smallCarLocationId){
+    public function getSmallCarProduct($branchId, $smallCarLocationId = null){
         $tableProductName = Product::getTableName();
         $tableSmallCarProductName = SmallCarProduct::getTableName();
         $tableSmallCarLocation = SmallCarLocation::getTableName();
-        return Product::leftjoin("$tableSmallCarProductName", "$tableSmallCarProductName.product_id","$tableProductName.id")
-            ->leftjoin("$tableSmallCarLocation",function($join) use($branchId,$smallCarLocationId,$tableSmallCarLocation,$tableSmallCarProductName){
-                $join->on("$tableSmallCarLocation.id","$tableSmallCarProductName.small_car_location_id")
-                    ->where("$tableSmallCarLocation.branch_id",$branchId)
-                    ->where("$tableSmallCarLocation.id",$smallCarLocationId);
+        $subTable = $this->model::join("$tableSmallCarLocation","$tableSmallCarLocation.id","$tableSmallCarProductName.small_car_location_id")
+                ->where("$tableSmallCarLocation.branch_id",$branchId)
+                ->where("$tableSmallCarLocation.id",$smallCarLocationId)
+                ->select(
+                    "$tableSmallCarProductName.product_id",
+                    "$tableSmallCarProductName.qty_no_vegetables",
+                    "$tableSmallCarProductName.qty_have_vegetables",
+                    DB::raw("(IFNULL($tableSmallCarProductName.qty_no_vegetables,0) + IFNULL($tableSmallCarProductName.qty_have_vegetables,0)) as total_qty"));
+        $subTableName = "subTable";
+        return Product::leftjoinSub($subTable,"$subTableName",function($join) use ($subTableName,$tableProductName){
+                $join->on("$subTableName.product_id","$tableProductName.id");
             })
             ->select("$tableProductName.*",
-                "$tableSmallCarProductName.qty_no_vegetables",
-                "$tableSmallCarProductName.qty_have_vegetables",
-                DB::raw("($tableSmallCarProductName.qty_no_vegetables + $tableSmallCarProductName.qty_have_vegetables) as total_qty"))
+                "$subTableName.qty_no_vegetables",
+                "$subTableName.qty_have_vegetables",
+                "$subTableName.total_qty")
+            ->orderBy("$tableProductName.id")
             ->get();
     }
 

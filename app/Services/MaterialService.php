@@ -35,6 +35,10 @@ use App\Repositories\Eloquents\SaleRepository;
 use App\Repositories\Eloquents\ScreenRepository;
 use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Repositories\Eloquents\SettingRepository;
+use App\Repositories\Eloquents\SmallCarLocationOfDayRepository;
+use App\Repositories\Eloquents\SmallCarLocationRepository;
+use App\Repositories\Eloquents\SmallCarMaterialRepository;
+use App\Repositories\Eloquents\SmallCarProductRepository;
 use App\Repositories\Eloquents\StockDailyRepository;
 use App\Repositories\Eloquents\SupplierRepository;
 use App\Repositories\Eloquents\UnitRepository;
@@ -77,6 +81,10 @@ class MaterialService extends BaseService {
         FinanceRepository $financeRepository,
         BranchRepository $branchRepository,
         PrepareMaterialRepository $prepareMaterialRepository,
+        SmallCarLocationRepository $smallCarLocationRepository,
+        SmallCarProductRepository $smallCarProductRepository,
+        SmallCarMaterialRepository $smallCarMaterialRepository,
+        SmallCarLocationOfDayRepository $smallCarLocationOfDayRepository,
         TimeKeepingService $timeKeepingService
     ) {
         parent::__construct($materialRepository, $materialTypeRepository, $unitRepository, $orderCheckInRepository,
@@ -85,7 +93,9 @@ class MaterialService extends BaseService {
             $employeeTimeKeepingRepository, $paymentBillRepository, $supplierRepository, $settingOfDayRepository,
             $saleCartSmallRepository, $employeeBranchRepository, $assignEmployeeSaleCartSmallRepository,
             $roleRepository, $screenRepository, $rolePermissionScreenRepository, $userRepository, $userBranchRepository,
-            $userRoleRepository, $settingRepository, $financeRepository, $branchRepository,$prepareMaterialRepository);
+            $userRoleRepository, $settingRepository, $financeRepository, $branchRepository, $prepareMaterialRepository,
+            $smallCarLocationRepository, $smallCarProductRepository, $smallCarMaterialRepository,
+            $smallCarLocationOfDayRepository);
         $this->timeKeepingService = $timeKeepingService;
     }
 

@@ -28,6 +28,7 @@ use App\Repositories\Eloquents\SaleRepository;
 use App\Repositories\Eloquents\ScreenRepository;
 use App\Repositories\Eloquents\SettingOfDayRepository;
 use App\Repositories\Eloquents\SettingRepository;
+use App\Repositories\Eloquents\SmallCarLocationOfDayRepository;
 use App\Repositories\Eloquents\SmallCarLocationRepository;
 use App\Repositories\Eloquents\SmallCarMaterialRepository;
 use App\Repositories\Eloquents\SmallCarProductRepository;
@@ -73,6 +74,7 @@ class BaseService {
     protected $smallCarLocationRepository;
     protected $smallCarProductRepository;
     protected $smallCarMaterialRepository;
+    protected $smallCarLocationOfDayRepository;
 
     public function __construct(MaterialRepository $materialRepository, MaterialTypeRepository $materialTypeRepository, UnitRepository $unitRepository,
                 OrderCheckInRepository $orderCheckInRepository, OrderCheckOutRepository $orderCheckOutRepository, OrderCancelRepository $orderCancelRepository,
@@ -85,7 +87,7 @@ class BaseService {
                 RolePermissionScreenRepository $rolePermissionScreenRepository, UserRepository $userRepository, UserBranchRepository $userBranchRepository,
                 UserRoleRepository $userRoleRepository, SettingRepository $settingRepository, FinanceRepository $financeRepository, BranchRepository $branchRepository,
                 PrepareMaterialRepository $prepareMaterialRepository, SmallCarLocationRepository $smallCarLocationRepository, SmallCarProductRepository $smallCarProductRepository,
-                SmallCarMaterialRepository $smallCarMaterialRepository)
+                SmallCarMaterialRepository $smallCarMaterialRepository, SmallCarLocationOfDayRepository $smallCarLocationOfDayRepository)
     {
         $this->materialRepository = $materialRepository;
         $this->materialTypeRepository = $materialTypeRepository;
@@ -119,6 +121,7 @@ class BaseService {
         $this->smallCarLocationRepository = $smallCarLocationRepository;
         $this->smallCarProductRepository = $smallCarProductRepository;
         $this->smallCarMaterialRepository = $smallCarMaterialRepository;
+        $this->smallCarLocationOfDayRepository = $smallCarLocationOfDayRepository;
     }
 
     public function checkDateIsOfDay($branchId, $date){

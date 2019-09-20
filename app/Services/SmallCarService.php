@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Hash;
 
 class SmallCarService extends BaseService {
 
+    public function getSmallCarLocationFull($branchId, $date = null){
+        $smallCarLocations = $this->smallCarLocationRepository->selectAllIsShow($date);
+        foreach ($smallCarLocations as $smallCarLocation){
+            $smallCarLocation->products = $this->smallCarProductRepository->getSmallCarProduct($branchId, $smallCarLocation->id);
+            $smallCarLocation->materials = $this->smallCarMaterialRepository->getSmallCarMaterial($branchId, $smallCarLocation->id);
+        }
+        return $smallCarLocations;
+    }
+
     public function createSmallCarLocation($values){
         $values['is_show'] = AppHelper::valueSwitch(isset($values['is_show']) ? $values['is_show'] : null);
         $branchId = $values['branch_id'];
@@ -79,6 +88,30 @@ class SmallCarService extends BaseService {
         }
         foreach ($smallCarMaterials as $materialId => $itemValues){
             $this->smallCarMaterialRepository->create($itemValues);
+        }
+        if(isset($values['check_week'])){
+            $weeks = $values['check_week'];
+            foreach ($weeks as $week){
+                $this->smallCarLocationOfDayRepository->create([
+                    'small_car_location_id' => $smallCarLocationId,
+                    'week_no' => $week
+                ]);
+            }
+        }
+    }
+
+    public function deleteSmallCarLocation($id){
+        try {
+            DB::beginTransaction();
+            $smallCar = $this->smallCarLocationRepository->find($id);
+            if(isset($smallCar)){
+                $smallCar->deleteRelation();
+            }
+            $smallCar->delete();
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollBack();
+            dd($exception);
         }
     }
 

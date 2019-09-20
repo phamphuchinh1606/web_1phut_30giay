@@ -1,5 +1,19 @@
 @extends('admin.layouts.master')
 
+@section('body.js')
+    <script src="{{\App\Helpers\AppHelper::assetPublic('js/admin/small-car.js')}}"></script>
+    <script>
+        $(document).ready(function(){
+            $('input.product_input_qty').on('change',function(){
+                SmallCarAPI.calculatorProductQty(this);
+            });
+            $('input.material_input_qty').on('change',function(){
+                SmallCarAPI.calculatorMaterialQty(this);
+            });
+        });
+    </script>
+@endsection
+
 @section('body.content')
     <div class="card">
         <div class="card-header">
@@ -27,6 +41,23 @@
                                     <input class="switch-input" id="is_show" {{$smallCarLocation->is_show_check}} type="checkbox" name="is_show">
                                     <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
                                 </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Ngày Không Bán Trong Tuần</label>
+                            <div class="col-md-9 col-form-label">
+                                @foreach($weekMap as $key => $week)
+                                    <?php $selected = false; ?>
+                                    @foreach($smallCarLocationOfDays as $smallCarLocationOfDay)
+                                        @if($smallCarLocationOfDay->week_no == $key)
+                                            <?php $selected = true; ?>
+                                        @endif
+                                    @endforeach
+                                    <div class="form-check form-check-inline mr-1">
+                                        <input name="check_week[]" class="form-check-input" @if($selected) checked @endif id="inline-checkbox{{$key}}" type="checkbox" value="{{$key}}">
+                                        <label class="form-check-label" for="inline-checkbox{{$key}}">{{$week}}</label>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -59,13 +90,13 @@
                                         <tr>
                                             <td>{{$product->product_short_name}}</td>
                                             <td>
-                                                <input autocomplete="off" class="form-control number text-right" name="qty_have_vegetables_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty_have_vegetables)}}"/>
+                                                <input autocomplete="off" class="product_input_qty qty_have_vegetables form-control number text-right" name="qty_have_vegetables_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty_have_vegetables)}}"/>
                                             </td>
                                             <td>
-                                                <input autocomplete="off" class="form-control number text-right" name="qty_no_vegetables_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty_no_vegetables)}}"/>
+                                                <input autocomplete="off" class="product_input_qty qty_no_vegetables form-control number text-right" name="qty_no_vegetables_{{$product->id}}" value="{{\App\Helpers\AppHelper::formatMoney($product->qty_no_vegetables)}}"/>
                                             </td>
                                             <td class="text-center" style="vertical-align: middle">
-                                                <span>{{\App\Helpers\AppHelper::formatMoney($product->total_qty)}}</span>
+                                                <span class="product_total_qty">{{\App\Helpers\AppHelper::formatMoney($product->total_qty)}}</span>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -73,9 +104,9 @@
                                     <tfoot>
                                     <tr class="bg-gray text-right">
                                         <td class="text-center">Tổng</td>
-                                        <td class="pr-3">{{\App\Helpers\AppHelper::formatMoney($totalQtyHaveVegetables)}}</td>
-                                        <td class="pr-3">{{\App\Helpers\AppHelper::formatMoney($totalQtyNoVegetables)}}</td>
-                                        <td class="pr-3">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</td>
+                                        <td class="pr-3 total_qty_have_vegetables">{{\App\Helpers\AppHelper::formatMoney($totalQtyHaveVegetables)}}</td>
+                                        <td class="pr-3 total_qty_no_vegetables">{{\App\Helpers\AppHelper::formatMoney($totalQtyNoVegetables)}}</td>
+                                        <td class="pr-3 total_qty_vegetables">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</td>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -87,7 +118,7 @@
                                 Thiết Lặp Số Lượng Nước
                             </div>
                             <div class="card-body">
-                                <table class="table table-responsive-sm table-bordered table-sm">
+                                <table class="table table-bordered table-sm">
                                     <thead>
                                     <tr class="text-center">
                                         <th>Loại Nước</th>
@@ -101,7 +132,7 @@
                                         <tr>
                                             <td>{{$material->material_short_name}}</td>
                                             <td>
-                                                <input autocomplete="off" class="form-control text-right" name="qty_{{$material->id}}" value="{{\App\Helpers\AppHelper::formatMoney($material->qty)}}"/>
+                                                <input autocomplete="off" class="material_input_qty form-control text-right" name="qty_{{$material->id}}" value="{{\App\Helpers\AppHelper::formatMoney($material->qty)}}"/>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -109,7 +140,7 @@
                                     <tfoot>
                                     <tr class="bg-gray text-center">
                                         <td>Tổng</td>
-                                        <td class="text-right pr-3">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</td>
+                                        <td class="text-right pr-3 material_input_qty_total">{{\App\Helpers\AppHelper::formatMoney($totalQty)}}</td>
                                     </tr>
                                     </tfoot>
                                 </table>

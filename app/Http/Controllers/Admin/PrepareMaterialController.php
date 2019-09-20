@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Services\MaterialService;
+use App\Services\SmallCarService;
 use Illuminate\Http\Request;
 
 class PrepareMaterialController extends Controller
 {
     private $materialService;
+    private $smallCarService;
 
-    public function __construct(MaterialService $materialService)
+    public function __construct(MaterialService $materialService, SmallCarService $smallCarService)
     {
         $this->materialService = $materialService;
+        $this->smallCarService = $smallCarService;
     }
 
 
@@ -26,15 +29,22 @@ class PrepareMaterialController extends Controller
             }
             $currentDate = DateTimeHelper::dateFromString($date);
         }
-        $lastDate = $currentDate->addDay(1);
+        $hour = DateTimeHelper::now()->hour;
+        if($hour >= 7){
+            $lastDate = $currentDate->addDay(1);
+        }else{
+            $lastDate = $currentDate;
+        }
         $result = $this->materialService->getPrepareMaterial($branchId, $lastDate);
+        $smallCarLocations = $this->smallCarService->getSmallCarLocationFull($branchId,$lastDate);
         return $this->viewAdmin('prepareMaterial.index',[
             'branchId' => $branchId,
             'currentDate' => $currentDate,
             'lastDate' => $lastDate,
             'materials' => $result['materials'],
             'branches' => $result['branches'],
-            'products' => $result['products']
+            'products' => $result['products'],
+            'smallCarLocations' => $smallCarLocations
         ]);
     }
 
@@ -53,5 +63,27 @@ class PrepareMaterialController extends Controller
                 'products' => $result['products']
             ],200)
             ->header('Content-Type','application/html');
+    }
+
+    public function printView(Request $request){
+        $currentDate = SessionHelper::getSelectedMonth();
+        $branchId = SessionHelper::getSelectedBranchId();
+        $hour = DateTimeHelper::now()->hour;
+        if($hour >= 7){
+            $lastDate = $currentDate->addDay(1);
+        }else{
+            $lastDate = $currentDate;
+        }
+        $result = $this->materialService->getPrepareMaterial($branchId, $lastDate);
+        $smallCarLocations = $this->smallCarService->getSmallCarLocationFull($branchId,$lastDate);
+        return $this->viewAdmin('prepareMaterial.print_view',[
+            'branchId' => $branchId,
+            'currentDate' => $currentDate,
+            'lastDate' => $lastDate,
+            'materials' => $result['materials'],
+            'branches' => $result['branches'],
+            'products' => $result['products'],
+            'smallCarLocations' => $smallCarLocations
+        ]);
     }
 }

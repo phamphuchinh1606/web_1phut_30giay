@@ -58,10 +58,15 @@ class LoginEmployeeController extends Controller
         $this->validateLogin($request);
         $email = $request->email;
         $password = $request->password;
-        $remember = false;
+        $remember = true;
         if ($this->guard()->attempt(['employee_login_id' => $email, 'password' => $password, 'delete_flg' => 0], $remember)) {
             if($this->guard()->check()){
-                $branch = $this->branchRepository->find(1);
+                $employee = $this->guard()->user();
+                $branchId = $employee->default_branch_id;
+                if(!isset($branchId) && isset($employee->employee_branches) && count($employee->employee_branches) > 0){
+                    $branchId = $employee->employee_branches[0]->branch_id;
+                }
+                $branch = $this->branchRepository->find($branchId);
                 if(isset($branch)){
                     SessionHelper::setSelectedBranchId($branch->id);
                     SessionHelper::setSelectedBranchName($branch->branch_name);

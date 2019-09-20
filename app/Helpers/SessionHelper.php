@@ -30,7 +30,7 @@ class SessionHelper{
     }
 
     public static function getSelectedMonth(){
-        return Session::get(self::KEY_SELECTED_MONTH);
+        return Session::get(self::KEY_SELECTED_MONTH)->clone();
     }
 
 }

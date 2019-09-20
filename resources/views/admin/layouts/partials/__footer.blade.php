@@ -1,10 +1,10 @@
 <footer class="app-footer">
     <div>
-        <a href="https://coreui.io/pro/">CoreUI Pro</a>
-        <span>© 2018 creativeLabs.</span>
+        <a href="{{route('admin.home')}}">Quản Lý 1p30s</a>
+        <span>© 2019 Create</span>
     </div>
     <div class="ml-auto">
-        <span>Powered by</span>
-        <a href="https://coreui.io/pro/">CoreUI Pro</a>
+        <span>Thiết Kế</span>
+        <a href="{{route('admin.home')}}">Phú Chinh</a>
     </div>
 </footer>

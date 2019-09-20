@@ -1,4 +1,9 @@
 <div class="col-md-12">
+    <style>
+        table.table td{
+            vertical-align: middle;
+        }
+    </style>
     <table class="table table-responsive-sm table-bordered table-sm" style="display: table">
         <thead>
         <tr class="text-center">

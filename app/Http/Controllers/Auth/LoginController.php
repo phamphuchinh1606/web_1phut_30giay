@@ -59,7 +59,7 @@ class LoginController extends Controller
         $this->validateLogin($request);
         $email = $request->email;
         $password = $request->password;
-        $remember = false;
+        $remember = true;
 
         if ($this->guard()->attempt(['email' => $email, 'password' => $password, 'user_type_id' => 1,'delete_flg' => 0], $remember)) {
             if($this->guard()->check()){
