@@ -3,12 +3,24 @@
 namespace App\Http\Middleware;
 
 use App\Common\Constant;
+use App\Helpers\SessionHelper;
+use App\Repositories\Eloquents\BranchRepository;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Closure;
+use Illuminate\Contracts\Auth\Factory as Auth;
 
 class AuthenticateEmployee extends Middleware
 {
+
+    protected $branchRepository;
+
+    public function __construct(Auth $auth, BranchRepository $branchRepository)
+    {
+        parent::__construct($auth);
+        $this->branchRepository = $branchRepository;
+    }
+
     /** redirectTo
      * @param $request
      * @return string
@@ -42,6 +54,12 @@ class AuthenticateEmployee extends Middleware
 
         foreach ($guards as $guard) {
             if ($this->auth->guard($guard)->check()) {
+                $branchId = SessionHelper::getSelectedBranchId();
+                if(!isset($branchId)){
+                    $branch = $this->branchRepository->find(1);
+                    SessionHelper::setSelectedBranchId($branch->id);
+                    SessionHelper::setSelectedBranchName($branch->branch_name);
+                }
                 return $this->auth->shouldUse($guard);
             }
         }
