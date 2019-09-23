@@ -10,11 +10,13 @@ class RoleConstant{
     public const ROLE_TYPE_ROOT = 99;
 
     public const MENU_TYPE_ADMIN_CODE = 1;
+    public const MENU_TYPE_ADMIN_NAME = "Admin";
     public const MENU_TYPE_EMPLOYEE_CODE = 2;
+    public const MENU_TYPE_EMPLOYEE_NAME = "Employee";
 
     public const SCREEN_TYPE_ADMIN_CODE = 1;
     public const SCREEN_TYPE_ADMIN_NAME = "Admin";
-    public const SCREEN_TYPE_EMPLOYEE_CODE = 1;
+    public const SCREEN_TYPE_EMPLOYEE_CODE = 2;
     public const SCREEN_TYPE_EMPLOYEE_NAME = "Employee";
 
     public const PERMISSION_VIEW_ID = "1";
@@ -33,6 +35,18 @@ class RoleConstant{
                 break;
             case self::SCREEN_TYPE_EMPLOYEE_CODE:
                 return self::SCREEN_TYPE_EMPLOYEE_NAME;
+                break;
+        }
+        return "";
+    }
+
+    public static function menuTypeName($menuTypeId){
+        switch ($menuTypeId){
+            case self::MENU_TYPE_ADMIN_CODE:
+                return self::MENU_TYPE_ADMIN_NAME;
+                break;
+            case self::MENU_TYPE_EMPLOYEE_CODE:
+                return self::MENU_TYPE_EMPLOYEE_NAME;
                 break;
         }
         return "";

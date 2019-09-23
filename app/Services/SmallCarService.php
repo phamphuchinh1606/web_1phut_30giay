@@ -6,6 +6,7 @@ use App\Helpers\AppHelper;
 use App\Helpers\ArrayHelper;
 use App\Helpers\DateTimeHelper;
 use App\Models\BaseModel;
+use App\Models\Material;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,11 +14,41 @@ class SmallCarService extends BaseService {
 
     public function getSmallCarLocationFull($branchId, $date = null){
         $smallCarLocations = $this->smallCarLocationRepository->selectAllIsShow($date);
+        $totalQtyPepsi = 0;
+        $totalQtyCocoa = 0;
+        $totalQtyMilkTea = 0;
         foreach ($smallCarLocations as $smallCarLocation){
             $smallCarLocation->products = $this->smallCarProductRepository->getSmallCarProduct($branchId, $smallCarLocation->id);
+            $totalQtyProduct = 0;
+            foreach ($smallCarLocation->products as $product){
+                $totalQtyProduct+= $product->total_qty;
+            }
+            $smallCarLocation->total_qty_product = $totalQtyProduct;
+
             $smallCarLocation->materials = $this->smallCarMaterialRepository->getSmallCarMaterial($branchId, $smallCarLocation->id);
+            $totalQtyMaterial = 0;
+            foreach ($smallCarLocation->materials as $material){
+                $totalQtyMaterial+= $material->qty;
+                switch ($material->id){
+                    case Material::MATERIAL_PEPSI_ID:
+                        $totalQtyPepsi+= $material->qty;
+                        break;
+                    case Material::MATERIAL_COCOA_ID:
+                        $totalQtyCocoa+= $material->qty;
+                        break;
+                    case Material::MATERIAL_MILK_TEA:
+                        $totalQtyMilkTea+= $material->qty;
+                        break;
+                }
+            }
+            $smallCarLocation->total_qty_material = $totalQtyMaterial;
         }
-        return $smallCarLocations;
+        $result['total_qty_pepsi'] = $totalQtyPepsi;
+        $result['total_qty_cocoa'] = $totalQtyCocoa;
+        $result['total_qty_milk_tea'] = $totalQtyMilkTea;
+        $result['total_qty_material'] = $totalQtyPepsi + $totalQtyCocoa + $totalQtyMilkTea;
+        $result['small_car_locations'] = $smallCarLocations;
+        return $result;
     }
 
     public function createSmallCarLocation($values){

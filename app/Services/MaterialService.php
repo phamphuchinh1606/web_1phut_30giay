@@ -159,16 +159,14 @@ class MaterialService extends BaseService {
                     break;
                 case 'qty_first':
                     if($this->checkDateIsOfDay($branchId,$dailyDate)){
-                        if($this->checkDateIsOfDay($branchId,$lastDay)){
-                            $arrayValue = array_merge($values,[
-                                'date' => $lastDay,
-                                'name' => 'qty_last',
-                            ]);
-                            $this->updateInputDaily($arrayValue, false);
-                        }else{
-                            $wheres = array_merge($wheres,['stock_date' => $dailyDate]);
-                            $this->stockDailyRepository->updateOrCreate($valueUpdate,$wheres);
-                        }
+                        $arrayValue = array_merge($values,[
+                            'date' => $lastDay,
+                            'name' => 'qty_first',
+                        ]);
+                        $this->updateInputDaily($arrayValue, false);
+
+                        $wheres = array_merge($wheres,['stock_date' => $dailyDate]);
+                        $this->stockDailyRepository->updateOrCreate($valueUpdate,$wheres);
                     }
                     break;
                 case 'qty_last':

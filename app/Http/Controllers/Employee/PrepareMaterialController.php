@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
@@ -41,7 +41,7 @@ class PrepareMaterialController extends Controller
         $result = $this->materialService->getPrepareMaterial($branchId, $lastDate);
         $resultSmallLocation = $this->smallCarService->getSmallCarLocationFull($branchId,$lastDate);
         $smallCarLocations = $resultSmallLocation['small_car_locations'];
-        return $this->viewAdmin('prepareMaterial.index',[
+        return $this->viewEmployee('prepareMaterial.index',[
             'branchId' => $branchId,
             'currentDate' => $currentDate,
             'lastDate' => $lastDate,
@@ -63,7 +63,7 @@ class PrepareMaterialController extends Controller
         $this->materialService->updatePrepareMaterial($values);
         $result = $this->materialService->getPrepareMaterial($branchId, $lastDate);
         return response()
-            ->view('admin.prepareMaterial.partials.__prepare_material_content',[
+            ->view('employee.prepareMaterial.partials.__prepare_material_content',[
                 'branchId' => $branchId,
                 'lastDate' => $lastDate,
                 'materials' => $result['materials'],
@@ -85,7 +85,7 @@ class PrepareMaterialController extends Controller
         $result = $this->materialService->getPrepareMaterial($branchId, $lastDate);
         $resultSmallLocation = $this->smallCarService->getSmallCarLocationFull($branchId,$lastDate);
         $smallCarLocations = $resultSmallLocation['small_car_locations'];
-        return $this->viewAdmin('prepareMaterial.print_view',[
+        return $this->viewEmployee('prepareMaterial.print_view',[
             'branchId' => $branchId,
             'currentDate' => $currentDate,
             'lastDate' => $lastDate,

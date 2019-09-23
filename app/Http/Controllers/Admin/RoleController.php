@@ -39,7 +39,7 @@ class RoleController extends Controller
     public function showUpdate($id){
         $role = $this->roleRepository->find($id);
         $permissions = $this->permissionRepository->selectAll();
-        $screenMap = $this->roleService->getScreenAll();
+        $screenMap = $this->roleService->getScreenAll($role->id);
         $assignPermissions = PermissionRoleCommon::assignPermissionList();
         $rolePermissionScreens = $this->rolePermissionScreenRepository->getRolePermissionGroupScreen($id);
         return $this->viewAdmin('role.update_role',[

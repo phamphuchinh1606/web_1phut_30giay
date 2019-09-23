@@ -15,6 +15,16 @@ class AppHelper{
         return 0;
     }
 
+    public static function isShowName($isShowCode){
+        switch ($isShowCode){
+            case 1:
+                return "Hiển Thị";
+                break;
+            default:
+                return "Ẩn";
+        }
+    }
+
     public static function formatMoney($value, $nullShowZero = false){
         if(!isset($value) && !$nullShowZero){
             return '';

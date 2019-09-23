@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Common\Constant;
+use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Repositories\Eloquents\BranchRepository;
 use Illuminate\Auth\AuthenticationException;
@@ -55,10 +56,14 @@ class AuthenticateEmployee extends Middleware
         foreach ($guards as $guard) {
             if ($this->auth->guard($guard)->check()) {
                 $branchId = SessionHelper::getSelectedBranchId();
+                $month = SessionHelper::getSelectedMonth();
                 if(!isset($branchId)){
                     $branch = $this->branchRepository->find(1);
                     SessionHelper::setSelectedBranchId($branch->id);
                     SessionHelper::setSelectedBranchName($branch->branch_name);
+                }
+                if(!isset($month)){
+                    SessionHelper::setSelectedMonth(DateTimeHelper::now());
                 }
                 return $this->auth->shouldUse($guard);
             }

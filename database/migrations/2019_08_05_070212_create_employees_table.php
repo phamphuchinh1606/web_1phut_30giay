@@ -28,6 +28,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('default_branch_id')->nullable();
             $table->string('password')->nullable();
             $table->integer('delete_flg')->default(0);
+            $table->string('remember_token')->nullable();
             $table->timestamps();
         });
     }

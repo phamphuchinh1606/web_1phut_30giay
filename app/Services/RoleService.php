@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class RoleService extends BaseService {
 
-    public function getScreenAll(){
-        $listScreen = $this->screenRepository->selectAll();
+    public function getScreenAll($roleId = null){
+        $listScreen = $this->screenRepository->getScreenByRole($roleId);
         $screens = [];
         foreach ($listScreen as $screen){
             $screens[$screen->screen_type][] = $screen;

@@ -219,6 +219,30 @@ class MenuSeeder extends Seeder
                 'sort_num' => 10,
                 'child_sort_num' => 6
             ],
+            [
+                'menu_id' => 'setting_menu',
+                'menu_name' => 'Danh Sách Menu',
+                'menu_url' => '/admin/setting/menu',
+                'menu_route' => 'admin.setting.menu',
+                'menu_icon_class' => 'icon-tag',
+                'parent_menu_id' => 'setting',
+                'is_show' => 1,
+                'menu_type' => 1,//Admin
+                'sort_num' => 10,
+                'child_sort_num' => 7
+            ],
+            [
+                'menu_id' => 'setting_screen',
+                'menu_name' => 'Danh Sách Màn Hình',
+                'menu_url' => '/admin/setting/screen',
+                'menu_route' => 'admin.setting.screen',
+                'menu_icon_class' => 'icon-picture',
+                'parent_menu_id' => 'setting',
+                'is_show' => 1,
+                'menu_type' => 1,//Admin
+                'sort_num' => 10,
+                'child_sort_num' => 8
+            ],
             //Employee Screen
             [
                 'menu_id' => 'input_employee',

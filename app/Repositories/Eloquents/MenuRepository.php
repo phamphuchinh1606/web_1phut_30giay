@@ -49,4 +49,12 @@ class MenuRepository extends BaseRepository
         return $menus;
     }
 
+    public function getAllMenu(){
+        return $this->model::orderBy('menu_type')->orderBy('sort_num')->orderBy('child_sort_num')->get();
+    }
+
+    public function getMenuParentIsNull(){
+        return $this->model::whereNull('parent_menu_id')->orderBy('menu_type')->orderBy('sort_num')->orderBy('child_sort_num')->get();
+    }
+
 }

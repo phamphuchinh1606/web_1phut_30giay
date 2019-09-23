@@ -4,7 +4,10 @@
             @include('admin.prepareMaterial.partials.__last_date_prepare_material')
         </div>
         <div class="row">
-            @include('admin.prepareMaterial.partials.__small_car_location')
+            @include('admin.prepareMaterial.partials.__small_car_product')
+        </div>
+        <div class="row">
+            @include('admin.prepareMaterial.partials.__small_car_material')
         </div>
     </div>
     <div class="col-md-6">

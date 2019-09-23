@@ -14,7 +14,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label for="screen_id">Màn Hình</label>
-                                    <select class="form-control" id="screen_id" name="screen_id">
+                                    <select class="form-control" id="screen_id" name="screen_id" required>
                                         @foreach($screenMap as $key_screen => $screens)
                                             <optgroup label="{{\App\Common\RoleConstant::screenTypeName($key_screen)}}">
                                                 @foreach($screens as $key => $screen)
