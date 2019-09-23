@@ -24,6 +24,14 @@
                             <input autocomplete="off" class="form-control" id="menu_url" name="menu_url" type="text" placeholder="Link url">
                         </div>
                         <div class="form-group">
+                            <label for="menu_route">Tên Route</label>
+                            <input autocomplete="off" class="form-control" id="menu_route" name="menu_route" type="text" placeholder="Tên route">
+                        </div>
+                        <div class="form-group">
+                            <label for="menu_icon_class">Icon Class</label>
+                            <input autocomplete="off" class="form-control" id="menu_icon_class" name="menu_icon_class" type="text" placeholder="Icon class">
+                        </div>
+                        <div class="form-group">
                             <label for="sort_num">Thứ Tự</label>
                             <input autocomplete="off" class="form-control" id="sort_num" name="sort_num" type="text" placeholder="Thứ tự">
                         </div>
@@ -42,7 +50,7 @@
                         </div>
                         <div class="form-group">
                             <label for="screen_parent_id">Menu Cha</label>
-                            <select class="form-control" id="menu_parent_id" name="menu_parent_id">
+                            <select class="form-control" id="parent_menu_id" name="parent_menu_id">
                                 <option value="">Chọn menu cha</option>
                                 @foreach($menuMap as $key_menu => $menus)
                                     <optgroup label="{{\App\Common\RoleConstant::menuTypeName($key_menu)}}">
