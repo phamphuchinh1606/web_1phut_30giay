@@ -5,7 +5,7 @@
         <div class="card-header text-center">
             <h1 class="font-weight-bold">Chuẩn Bị Nguyên Liệu Ngày {{\App\Helpers\DateTimeHelper::dateFormat($currentDate,'d/m/Y')}}</h1>
         </div>
-        <div class="card-body mt-2">
+        <div class="card-body mt-2 font-weight-bold font-xl">
             <div class="row">
                 <div class="col-6">
                     <div class="row">
