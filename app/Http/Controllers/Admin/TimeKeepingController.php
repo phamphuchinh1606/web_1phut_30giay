@@ -39,7 +39,9 @@ class TimeKeepingController extends Controller
     }
 
     public function updateTimeKeeping(Request $request){
-        $resultQty = $this->timeKeepingService->updateTimeKeeping($request->all());
+        $value = $request->all();
+        if(!isset($value['branch_id'])) $value['branch_id'] = SessionHelper::getSelectedBranchId();
+        $resultQty = $this->timeKeepingService->updateTimeKeeping($value);
         return response()->json($resultQty);
     }
 
