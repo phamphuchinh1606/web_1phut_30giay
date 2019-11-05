@@ -10,9 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',function(){
-    return redirect()->route('time_keeping');
-})->name('home');
-Route::get('/home',function(){
-    return redirect()->route('time_keeping');
-});
+Route::get('/','PrepareMaterialController@index')->name('home');
+Route::get('/home','PrepareMaterialController@index');
+//Route::get('/',function(){
+//    return redirect()->route('prepare_material');
+//})->name('home');
+//Route::get('/home',function(){
+//    return redirect()->route('prepare_material');
+//});

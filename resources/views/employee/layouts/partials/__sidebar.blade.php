@@ -1,34 +1,44 @@
 <div class="sidebar">
     <nav class="sidebar-nav ps ps--active-y">
         <ul class="nav">
-            @foreach($menus as $menu)
-                @if(isset($menu->menu_route) && !empty($menu->menu_route))
-                    @can('menu.view', $menu)
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route($menu->menu_route)}}">
-                            <i class="nav-icon {{$menu->menu_icon_class}}"></i> {{$menu->menu_name}}
-                        </a>
-                    </li>
-                    @endcan
-                @elseif(isset($menu->child_menus) && count($menu->child_menus) > 0)
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#">
-                            <i class="nav-icon {{$menu->menu_icon_class}}"></i> {{$menu->menu_name}}</a>
-                        <ul class="nav-dropdown-items">
-                            @foreach($menu->child_menus as $menuChild)
-                                @can('menu.view', $menuChild)
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route($menuChild->menu_route)}}">
-                                        <i class="nav-icon {{$menuChild->menu_icon_class}}"></i>
-                                        {{$menuChild->menu_name}}
-                                    </a>
-                                </li>
-                                @endcan
-                            @endforeach
-                        </ul>
-                    </li>
-                @endif
-            @endforeach
+            @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                @foreach($menus as $menu)
+                    @if(isset($menu->menu_route) && !empty($menu->menu_route))
+                        @can('menu.view', $menu)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route($menu->menu_route)}}">
+                                    <i class="nav-icon {{$menu->menu_icon_class}}"></i> {{$menu->menu_name}}
+                                </a>
+                            </li>
+                        @endcan
+                    @elseif(isset($menu->child_menus) && count($menu->child_menus) > 0)
+                        <li class="nav-item nav-dropdown">
+                            <a class="nav-link nav-dropdown-toggle" href="#">
+                                <i class="nav-icon {{$menu->menu_icon_class}}"></i> {{$menu->menu_name}}</a>
+                            <ul class="nav-dropdown-items">
+                                @foreach($menu->child_menus as $menuChild)
+                                    @can('menu.view', $menuChild)
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{route($menuChild->menu_route)}}">
+                                                <i class="nav-icon {{$menuChild->menu_icon_class}}"></i>
+                                                {{$menuChild->menu_name}}
+                                            </a>
+                                        </li>
+                                    @endcan
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endif
+                @endforeach
+            @else
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('prepare_material')}}">
+                        <i class="nav-icon icon-globe-alt"></i>
+                        Chuẩn Bị NL
+                    </a>
+                </li>
+            @endif
+
 
 {{--            <li class="nav-item">--}}
 {{--                <a class="nav-link" href="{{route('admin.home')}}">--}}

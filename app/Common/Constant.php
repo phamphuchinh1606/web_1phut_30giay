@@ -6,6 +6,8 @@ class Constant{
     public const AUTH_GUARD_ADMIN = "web";
     public const AUTH_GUARD_EMPLOYEE = "employee";
 
+    public const BRANCH_DEFAULT_ID = 1;
+
     public const DELETE_FLG_ON = 1;
     public const DELETE_FLG_OFF = 0;
 

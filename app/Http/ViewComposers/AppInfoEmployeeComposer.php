@@ -66,6 +66,8 @@ class AppInfoEmployeeComposer
                 }else{
                     self::$branches = $this->branchRepository->getListByEmployeeAssign($user->id);
                 }
+            }else{
+                self::$branches = [];
             }
         }
         if(!isset(self::$menus)){

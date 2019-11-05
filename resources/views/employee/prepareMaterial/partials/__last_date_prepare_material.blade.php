@@ -7,7 +7,7 @@
     <table class="table table-responsive-sm table-bordered table-sm" style="display: table">
         <thead>
         <tr class="text-center">
-            @foreach($branches as $branch)
+            @foreach($branchList as $branch)
                 <th>{{$branch->branch_short_name}}</th>
             @endforeach
             <th>Tổng</th>

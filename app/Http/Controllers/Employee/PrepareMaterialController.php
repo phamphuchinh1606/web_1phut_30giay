@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Employee;
 
+use App\Common\Constant;
 use App\Helpers\DateTimeHelper;
 use App\Helpers\SessionHelper;
 use App\Services\MaterialService;
@@ -21,8 +22,18 @@ class PrepareMaterialController extends Controller
 
 
     public function index($date = null, Request $request){
-        $currentDate = SessionHelper::getSelectedMonth()->clone();
+        $currentDate = SessionHelper::getSelectedMonth();
         $branchId = SessionHelper::getSelectedBranchId();
+        if(isset($currentDate)){
+            $currentDate = $currentDate->clone();
+        }else{
+            $currentDate = DateTimeHelper::now();
+            SessionHelper::setSelectedMonth($currentDate->clone());
+        }
+        if(!isset($branchId)){
+            $branchId = Constant::BRANCH_DEFAULT_ID;
+            SessionHelper::setSelectedBranchId($branchId);
+        }
         if(isset($date)){
             if(DateTimeHelper::dateFormat($currentDate,'Y-m') != DateTimeHelper::dateFormat(DateTimeHelper::dateFromString($date),'Y-m')){
                 return redirect()->route('admin.input_daily');
@@ -46,7 +57,7 @@ class PrepareMaterialController extends Controller
             'currentDate' => $currentDate,
             'lastDate' => $lastDate,
             'materials' => $result['materials'],
-            'branches' => $result['branches'],
+            'branchList' => $result['branches'],
             'products' => $result['products'],
             'smallCarLocations' => $smallCarLocations,
             'total_qty_pepsi' => $resultSmallLocation['total_qty_pepsi'],

@@ -621,7 +621,6 @@ class MaterialService extends BaseService {
                     break;
             }
         }
-
         $result['materials'] = $materials;
         $result['branches'] = $branches;
         $result['products'] = $products;

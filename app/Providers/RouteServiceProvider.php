@@ -91,11 +91,18 @@ class RouteServiceProvider extends ServiceProvider
     private function routeEmployee(){
         //Router admin
         $middlewareAdmin = ['web','auth.employee'];
+        $middlewareWeb = ['web'];
         $listRoute = ['route_input_daily','route_time_keeping', 'route_payment_bill','route_sale_cart_small', 'route_home','route_prepare_material'];
         foreach ($listRoute as $routeName){
-            Route::middleware($middlewareAdmin)
-                ->namespace($this->namespaceEmployee)
-                ->group(base_path('routes/employee/'.$routeName.'.php'));
+            if($routeName == 'route_prepare_material' || $routeName == 'route_home'){
+                Route::middleware($middlewareWeb)
+                    ->namespace($this->namespaceEmployee)
+                    ->group(base_path('routes/employee/'.$routeName.'.php'));
+            }else{
+                Route::middleware($middlewareAdmin)
+                    ->namespace($this->namespaceEmployee)
+                    ->group(base_path('routes/employee/'.$routeName.'.php'));
+            }
         }
     }
 
