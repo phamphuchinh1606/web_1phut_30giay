@@ -228,6 +228,15 @@ class DateTimeHelper{
         $month = $date->month;
         $day = $date->day;
         $arrayMonth = [];
+        if($month == 1){
+            $dateMonth = Carbon::createFromDate($year - 1,12,1, self::timezone());
+            $monthItem = new \StdClass();
+            $monthItem->date = $dateMonth;
+            $monthItem->month = 12;
+            $monthItem->month_str = "Tháng 12";
+            $monthItem->date_str = $dateMonth->format('Y/m');
+            $arrayMonth[] = $monthItem;
+        }
         for($i = 1; $i <= $month ; $i ++){
             $dateMonth = Carbon::createFromDate($year,$i,$day, self::timezone());
             $monthItem = new \StdClass();
